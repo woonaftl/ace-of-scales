@@ -1,0 +1,69 @@
+[gd_scene load_steps=13 format=3 uid="uid://htemy10s8l38"]
+
+[ext_resource type="Script" path="res://scripts/tile_control.gd" id="1_dh102"]
+[ext_resource type="Script" path="res://scripts/game.gd" id="1_q3i1u"]
+[ext_resource type="Texture2D" uid="uid://bu65wleqbcmvb" path="res://assets/graphics/tile_vacant.svg" id="3_exdp3"]
+[ext_resource type="Texture2D" uid="uid://b420jdubv3avj" path="res://assets/graphics/tile_highlight.svg" id="4_da6ef"]
+[ext_resource type="Texture2D" uid="uid://clig577gf0ine" path="res://assets/graphics/tile_error.svg" id="5_77hh7"]
+[ext_resource type="Script" path="res://scripts/tile_map.gd" id="6_78rt2"]
+[ext_resource type="Texture2D" uid="uid://ce3bhmayn3b54" path="res://assets/graphics/tile_occupied.svg" id="6_op4q3"]
+
+[sub_resource type="TileSetAtlasSource" id="TileSetAtlasSource_8h7ua"]
+texture = ExtResource("3_exdp3")
+texture_region_size = Vector2i(128, 128)
+0:0/0 = 0
+
+[sub_resource type="TileSetAtlasSource" id="TileSetAtlasSource_i2lwl"]
+texture = ExtResource("4_da6ef")
+texture_region_size = Vector2i(128, 128)
+0:0/0 = 0
+
+[sub_resource type="TileSetAtlasSource" id="TileSetAtlasSource_fp8l2"]
+texture = ExtResource("5_77hh7")
+texture_region_size = Vector2i(128, 128)
+0:0/0 = 0
+
+[sub_resource type="TileSetAtlasSource" id="TileSetAtlasSource_ip42d"]
+texture = ExtResource("6_op4q3")
+texture_region_size = Vector2i(128, 128)
+0:0/0 = 0
+
+[sub_resource type="TileSet" id="TileSet_8gkoc"]
+tile_size = Vector2i(128, 128)
+sources/0 = SubResource("TileSetAtlasSource_8h7ua")
+sources/1 = SubResource("TileSetAtlasSource_i2lwl")
+sources/2 = SubResource("TileSetAtlasSource_fp8l2")
+sources/3 = SubResource("TileSetAtlasSource_ip42d")
+
+[node name="Game" type="Control"]
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+mouse_filter = 1
+script = ExtResource("1_q3i1u")
+
+[node name="TileContainer" type="CenterContainer" parent="."]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="TileControl" type="Control" parent="TileContainer"]
+unique_name_in_owner = true
+custom_minimum_size = Vector2(384, 384)
+layout_mode = 2
+script = ExtResource("1_dh102")
+
+[node name="TileMap" type="TileMap" parent="TileContainer/TileControl"]
+tile_set = SubResource("TileSet_8gkoc")
+rendering_quadrant_size = 8
+format = 2
+layer_0/tile_data = PackedInt32Array(0, 0, 0, 1, 0, 0, 2, 0, 0, 65536, 0, 0, 65537, 0, 0, 65538, 0, 0, 131072, 0, 0, 131073, 0, 0, 131074, 0, 0)
+script = ExtResource("6_78rt2")
+
+[connection signal="gui_input" from="TileContainer/TileControl" to="TileContainer/TileControl" method="_on_gui_input"]

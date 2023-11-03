@@ -11,8 +11,18 @@ config_version=5
 [application]
 
 config/name="Game-off-2023"
+run/main_scene="res://scripts/game.tscn"
 config/features=PackedStringArray("4.2", "GL Compatibility")
-config/icon="res://icon.svg"
+config/icon="res://assets/graphics/icon.svg"
+
+[autoload]
+
+UserSettings="*res://scripts/user_settings.gd"
+
+[display]
+
+window/size/viewport_width=1280
+window/size/viewport_height=720
 
 [rendering]
 
