@@ -5,18 +5,32 @@ const ROTATED_CARDS_Y_OFFSET: float = 8.
 const CARD_ROTATION: float = 0.03
 
 
+var player: Player
+
+
 @onready var tile_control: Control = %TileControl as Control
+@onready var energy_label: Label = %EnergyLabel as Label
 
 
 func _ready():
+	player = Player.new()
+	player.energy = 1
+	tile_control.player = player
 	for index in range(5):
 		var new_card = preload("res://scripts/card.tscn").instantiate()
 		new_card.add_to_group("card_in_hand")
 		add_child(new_card)
 		new_card.position = Vector2(0., get_viewport_rect().size.y)
+		new_card.player = player
+		new_card.blueprint = [
+			preload("res://blueprints/ash.tres"),
+			preload("res://blueprints/cinder.tres"),
+			preload("res://blueprints/ember.tres")
+		].pick_random()
 
 
 func _process(_delta: float) -> void:
+	energy_label.text = str(player.energy)
 	# selected card
 	for selected_card in get_tree().get_nodes_in_group("card_selected"):
 		var target = get_global_mouse_position()

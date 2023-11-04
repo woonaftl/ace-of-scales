@@ -1,6 +1,7 @@
 extends Control
 
 
+var player: Player
 @onready var tile_map: TileMap = $TileMap as TileMap
 
 
@@ -16,10 +17,11 @@ func _on_gui_input(event: InputEvent):
 		var selected_card = get_tree().get_first_node_in_group("card_selected")
 		if is_instance_valid(selected_card):
 			get_viewport().set_input_as_handled()
-			if tile_map.is_pos_vacant(mouse_pos):
+			if tile_map.is_pos_vacant(mouse_pos) and player.energy >= selected_card.blueprint.play_cost:
 				selected_card.remove_from_group("card_selected")
 				selected_card.add_to_group("card_on_board")
 				selected_card.target_position = snap_to_tiles_global(mouse_pos)
+				player.energy -= selected_card.blueprint.play_cost
 			else:
 				selected_card.remove_from_group("card_selected")
 				selected_card.add_to_group("card_in_hand")

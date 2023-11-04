@@ -1,0 +1,11 @@
+[gd_resource type="Resource" script_class="Blueprint" load_steps=2 format=3 uid="uid://f4110xb2bh43"]
+
+[ext_resource type="Script" path="res://blueprints/blueprint.gd" id="1_8mjln"]
+
+[resource]
+script = ExtResource("1_8mjln")
+name = "Ember"
+description = "3 dmg to target"
+play_cost = 2
+hit_points = 4
+shed_cost = 3

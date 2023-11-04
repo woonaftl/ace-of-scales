@@ -1,0 +1,11 @@
+[gd_resource type="Resource" script_class="Blueprint" load_steps=2 format=3 uid="uid://bmubj3ad0fy37"]
+
+[ext_resource type="Script" path="res://blueprints/blueprint.gd" id="1_s7ntm"]
+
+[resource]
+script = ExtResource("1_s7ntm")
+name = "Cinder"
+description = "1 dmg in one direction"
+play_cost = 1
+hit_points = 2
+shed_cost = 4

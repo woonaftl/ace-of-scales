@@ -1,0 +1,11 @@
+[gd_resource type="Resource" script_class="Blueprint" load_steps=2 format=3 uid="uid://d3uu5e2yd487r"]
+
+[ext_resource type="Script" path="res://blueprints/blueprint.gd" id="1_mmsyy"]
+
+[resource]
+script = ExtResource("1_mmsyy")
+name = "Ash"
+description = "1 dmg to neighbors"
+play_cost = 1
+hit_points = 3
+shed_cost = 3

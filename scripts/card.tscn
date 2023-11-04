@@ -1,7 +1,8 @@
-[gd_scene load_steps=3 format=3 uid="uid://doltcoflrwktf"]
+[gd_scene load_steps=4 format=3 uid="uid://doltcoflrwktf"]
 
 [ext_resource type="Script" path="res://scripts/card.gd" id="1_nei3b"]
 [ext_resource type="Texture2D" uid="uid://dr8hbh4gadbta" path="res://assets/graphics/card_blank.svg" id="2_pn3le"]
+[ext_resource type="Texture2D" uid="uid://blxkrpdcaai8v" path="res://assets/graphics/energy.svg" id="3_osvk8"]
 
 [node name="Card" type="Area2D"]
 script = ExtResource("1_nei3b")
@@ -31,6 +32,7 @@ layout_mode = 2
 mouse_filter = 2
 
 [node name="NameLabel" type="Label" parent="Sprite2D/MarginContainer/Control"]
+unique_name_in_owner = true
 layout_mode = 1
 anchors_preset = 10
 anchor_right = 1.0
@@ -41,18 +43,20 @@ text = "CARD_NAME"
 horizontal_alignment = 1
 
 [node name="TextLabel" type="Label" parent="Sprite2D/MarginContainer/Control"]
-custom_minimum_size = Vector2(128, 64)
+unique_name_in_owner = true
+custom_minimum_size = Vector2(0, 54)
 layout_mode = 1
 anchors_preset = 12
 anchor_top = 1.0
 anchor_right = 1.0
 anchor_bottom = 1.0
-offset_top = -23.0
+offset_top = -49.0
 grow_horizontal = 2
 grow_vertical = 0
 theme_override_colors/font_color = Color(0.27451, 0.254902, 0.160784, 1)
-text = "CARD_TEXT"
+text = "long text test here"
 horizontal_alignment = 1
+autowrap_mode = 2
 
 [node name="ScaleUpButton" type="Button" parent="Sprite2D/MarginContainer/Control"]
 unique_name_in_owner = true
@@ -69,6 +73,41 @@ grow_horizontal = 2
 grow_vertical = 0
 focus_mode = 0
 text = "SCALE UP"
+
+[node name="EnergyControl" type="Control" parent="Sprite2D/MarginContainer/Control"]
+custom_minimum_size = Vector2(32, 32)
+layout_mode = 1
+anchors_preset = 0
+offset_right = 32.0
+offset_bottom = 32.0
+tooltip_text = "Your current energy.
+Energy is spent on playing cards.
+Energy is gained by controlling the board."
+
+[node name="Sprite2D" type="Sprite2D" parent="Sprite2D/MarginContainer/Control/EnergyControl"]
+scale = Vector2(0.25, 0.25)
+texture = ExtResource("3_osvk8")
+centered = false
+
+[node name="EnergyLabel" type="Label" parent="Sprite2D/MarginContainer/Control/EnergyControl"]
+unique_name_in_owner = true
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -4.0
+offset_top = -10.0
+offset_right = 4.0
+offset_bottom = 10.0
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_colors/font_color = Color(0.215686, 0.156863, 0.219608, 1)
+theme_override_font_sizes/font_size = 14
+text = "X"
+horizontal_alignment = 1
+vertical_alignment = 1
 
 [node name="CollisionPolygon2D" type="CollisionPolygon2D" parent="."]
 polygon = PackedVector2Array(64, 64, -64, 64, -64, -64, 64, -64)

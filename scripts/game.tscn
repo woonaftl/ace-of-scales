@@ -1,12 +1,13 @@
-[gd_scene load_steps=13 format=3 uid="uid://htemy10s8l38"]
+[gd_scene load_steps=14 format=3 uid="uid://htemy10s8l38"]
 
 [ext_resource type="Script" path="res://scripts/tile_control.gd" id="1_dh102"]
 [ext_resource type="Script" path="res://scripts/game.gd" id="1_q3i1u"]
-[ext_resource type="Texture2D" uid="uid://bu65wleqbcmvb" path="res://assets/graphics/tile_vacant.svg" id="3_exdp3"]
-[ext_resource type="Texture2D" uid="uid://b420jdubv3avj" path="res://assets/graphics/tile_highlight.svg" id="4_da6ef"]
-[ext_resource type="Texture2D" uid="uid://clig577gf0ine" path="res://assets/graphics/tile_error.svg" id="5_77hh7"]
+[ext_resource type="Texture2D" uid="uid://bu65wleqbcmvb" path="res://assets/graphics/tiles/tile_vacant.svg" id="3_exdp3"]
+[ext_resource type="Texture2D" uid="uid://b420jdubv3avj" path="res://assets/graphics/tiles/tile_highlight.svg" id="4_da6ef"]
+[ext_resource type="Texture2D" uid="uid://clig577gf0ine" path="res://assets/graphics/tiles/tile_error.svg" id="5_77hh7"]
 [ext_resource type="Script" path="res://scripts/tile_map.gd" id="6_78rt2"]
-[ext_resource type="Texture2D" uid="uid://ce3bhmayn3b54" path="res://assets/graphics/tile_occupied.svg" id="6_op4q3"]
+[ext_resource type="Texture2D" uid="uid://ce3bhmayn3b54" path="res://assets/graphics/tiles/tile_occupied.svg" id="6_op4q3"]
+[ext_resource type="Texture2D" uid="uid://blxkrpdcaai8v" path="res://assets/graphics/energy.svg" id="8_d4f4y"]
 
 [sub_resource type="TileSetAtlasSource" id="TileSetAtlasSource_8h7ua"]
 texture = ExtResource("3_exdp3")
@@ -65,5 +66,55 @@ rendering_quadrant_size = 8
 format = 2
 layer_0/tile_data = PackedInt32Array(0, 0, 0, 1, 0, 0, 2, 0, 0, 65536, 0, 0, 65537, 0, 0, 65538, 0, 0, 131072, 0, 0, 131073, 0, 0, 131074, 0, 0)
 script = ExtResource("6_78rt2")
+
+[node name="EnergyControl" type="Control" parent="."]
+custom_minimum_size = Vector2(128, 128)
+layout_mode = 1
+anchors_preset = 2
+anchor_top = 1.0
+anchor_bottom = 1.0
+offset_top = -128.0
+offset_right = 128.0
+grow_vertical = 0
+tooltip_text = "Your current energy.
+Energy is spent on playing cards.
+Energy is gained by controlling the board."
+
+[node name="Sprite2D" type="Sprite2D" parent="EnergyControl"]
+texture = ExtResource("8_d4f4y")
+centered = false
+
+[node name="EnergyLabel" type="Label" parent="EnergyControl"]
+unique_name_in_owner = true
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -50.5
+offset_top = -11.5
+offset_right = 50.5
+offset_bottom = 11.5
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_colors/font_color = Color(0.215686, 0.156863, 0.219608, 1)
+theme_override_font_sizes/font_size = 42
+text = "999"
+horizontal_alignment = 1
+
+[node name="EndTurnButton" type="Button" parent="."]
+unique_name_in_owner = true
+layout_mode = 1
+anchors_preset = 3
+anchor_left = 1.0
+anchor_top = 1.0
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_left = -90.0
+offset_top = -31.0
+grow_horizontal = 0
+grow_vertical = 0
+text = "END TURN"
 
 [connection signal="gui_input" from="TileContainer/TileControl" to="TileContainer/TileControl" method="_on_gui_input"]

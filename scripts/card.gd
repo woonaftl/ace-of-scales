@@ -4,8 +4,6 @@ extends Area2D
 const SPEED = 8.
 
 
-var player
-var blueprint
 var is_mouse_inside = false
 var is_selectable = false
 var target_position: Vector2
@@ -13,6 +11,18 @@ var target_position: Vector2
 
 @onready var scale_up_button: Button = %ScaleUpButton as Button
 @onready var sprite: Sprite2D = %Sprite2D as Sprite2D
+@onready var name_label: Label = %NameLabel as Label
+@onready var text_label: Label = %TextLabel as Label
+@onready var energy_label: Label = %EnergyLabel as Label
+@onready var player: Player
+
+
+@onready var blueprint: Blueprint:
+	set(new_value):
+		blueprint = new_value
+		name_label.text = blueprint.name
+		text_label.text = blueprint.description
+		energy_label.text = str(blueprint.play_cost)
 
 
 func _process(delta: float) -> void:
@@ -26,7 +36,7 @@ func _process(delta: float) -> void:
 		scale_up_button.visible = true
 		z_index = 0
 	elif is_in_group("card_in_hand"):
-		is_selectable = true
+		is_selectable = player.energy >= blueprint.play_cost
 		scale_up_button.visible = false
 		z_index = 0
 	# movement
