@@ -4,6 +4,9 @@ extends Area2D
 const SPEED = 8.
 
 
+signal user_input_failed(message: String)
+
+
 var is_mouse_inside = false
 var is_selectable = false
 var target_position: Vector2
@@ -25,6 +28,10 @@ var target_position: Vector2
 		energy_label.text = str(blueprint.play_cost)
 
 
+func _ready() -> void:
+	user_input_failed.connect(EventBus._on_user_input_failed)
+
+
 func _process(delta: float) -> void:
 	if is_in_group("card_selected"):
 		is_selectable = false
@@ -36,7 +43,7 @@ func _process(delta: float) -> void:
 		scale_up_button.visible = true
 		z_index = 0
 	elif is_in_group("card_in_hand"):
-		is_selectable = player.energy >= blueprint.play_cost
+		is_selectable = true
 		scale_up_button.visible = false
 		z_index = 0
 	# movement
@@ -49,8 +56,11 @@ func _unhandled_input(event: InputEvent) -> void:
 		for selected_card in get_tree().get_nodes_in_group("card_selected"):
 			selected_card.add_to_group("card_in_hand")
 			selected_card.remove_from_group("card_selected")
-		add_to_group("card_selected")
-		remove_from_group("card_in_hand")
+		if player.energy >= blueprint.play_cost:
+			add_to_group("card_selected")
+			remove_from_group("card_in_hand")
+		else:
+			user_input_failed.emit("Not enough energy")
 		get_viewport().set_input_as_handled()
 
 

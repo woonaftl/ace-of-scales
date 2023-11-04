@@ -1,0 +1,13 @@
+[gd_scene load_steps=2 format=3 uid="uid://cg1mmn6krubg"]
+
+[ext_resource type="Script" path="res://scripts/floating_hint.gd" id="1_u0rf0"]
+
+[node name="FloatingHint" type="Label"]
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_font_sizes/font_size = 24
+text = "MESSAGE"
+script = ExtResource("1_u0rf0")

@@ -13,20 +13,11 @@ var player: Player
 
 
 func _ready():
+	EventBus.user_input_failed.connect(_on_user_input_failed)
 	player = Player.new()
 	player.energy = 1
 	tile_control.player = player
-	for index in range(5):
-		var new_card = preload("res://scripts/card.tscn").instantiate()
-		new_card.add_to_group("card_in_hand")
-		add_child(new_card)
-		new_card.position = Vector2(0., get_viewport_rect().size.y)
-		new_card.player = player
-		new_card.blueprint = [
-			preload("res://blueprints/ash.tres"),
-			preload("res://blueprints/cinder.tres"),
-			preload("res://blueprints/ember.tres")
-		].pick_random()
+	_deal_cards()
 
 
 func _process(_delta: float) -> void:
@@ -57,3 +48,30 @@ func _unhandled_input(event: InputEvent) -> void:
 		for node in get_tree().get_nodes_in_group("card_selected"):
 			node.remove_from_group("card_selected")
 			node.add_to_group("card_in_hand")
+
+
+func _on_end_turn_button_pressed() -> void:
+	player.energy = len(get_tree().get_nodes_in_group("card_on_board"))
+	_deal_cards()
+
+
+func _deal_cards() -> void:
+	var cards_in_hand_count: int = len(get_tree().get_nodes_in_group("card_in_hand"))
+	for index in 5 - cards_in_hand_count:
+		var new_card = preload("res://scripts/card.tscn").instantiate()
+		new_card.add_to_group("card_in_hand")
+		add_child(new_card)
+		new_card.position = Vector2(0., get_viewport_rect().size.y)
+		new_card.player = player
+		new_card.blueprint = [
+			preload("res://blueprints/ash.tres"),
+			preload("res://blueprints/cinder.tres"),
+			preload("res://blueprints/ember.tres")
+		].pick_random()
+
+
+func _on_user_input_failed(message: String) -> void:
+	var new_floating_text = preload("res://scripts/floating_hint.tscn").instantiate()
+	add_child(new_floating_text)
+	new_floating_text.global_position = get_global_mouse_position()
+	new_floating_text.text = message
