@@ -8,7 +8,9 @@ var y_max: int = 2
 func _process(_delta: float) -> void:
 	reset_cells()
 	for card: Node in get_tree().get_nodes_in_group("card_on_board"):
-		set_occupied_pos(card.global_position)
+		for x in card.board_scale.x:
+			for y in card.board_scale.y:
+				set_occupied_cell(card.board_position + Vector2i(x, y))
 	for card: Node in get_tree().get_nodes_in_group("card_selected"):
 		highlight_pos(card.global_position)
 
@@ -67,3 +69,10 @@ func highlight_cell(cell: Vector2i) -> void:
 
 func global_to_map(p_global: Vector2) -> Vector2i:
 	return local_to_map(to_local(p_global))
+
+
+func get_position_from_board_position_and_scale(
+	board_position: Vector2i, 
+	board_scale: Vector2i
+) -> Vector2:
+	return to_global(map_to_local(board_position)) + (board_scale - Vector2i.ONE) * 64.
