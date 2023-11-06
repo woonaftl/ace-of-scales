@@ -10,13 +10,20 @@ signal user_input_failed(message: String)
 var is_mouse_inside = false
 var is_selectable = false
 var target_position: Vector2
+var board_position: Vector2i
+var hit_points: int
 
 
-@onready var scale_up_button: Button = %ScaleUpButton as Button
 @onready var sprite: Sprite2D = %Sprite2D as Sprite2D
+@onready var dragon_sprite: Sprite2D = %DragonSprite as Sprite2D
 @onready var name_label: Label = %NameLabel as Label
 @onready var text_label: Label = %TextLabel as Label
+@onready var energy_control: Control = %EnergyControl as Control
 @onready var energy_label: Label = %EnergyLabel as Label
+@onready var scale_up_control: Control = %ScaleUpControl as Control
+@onready var scale_up_label: Label = %ScaleUpLabel as Label
+@onready var hit_points_control: Control = %HitPointsControl as Control
+@onready var hit_points_label: Label = %HitPointsLabel as Label
 @onready var player: Player
 
 
@@ -26,6 +33,9 @@ var target_position: Vector2
 		name_label.text = blueprint.name
 		text_label.text = blueprint.description
 		energy_label.text = str(blueprint.play_cost)
+		scale_up_label.text = str(blueprint.scale_up_cost)
+		hit_points = blueprint.hit_points
+		dragon_sprite.texture = blueprint.texture
 
 
 func _ready() -> void:
@@ -33,18 +43,22 @@ func _ready() -> void:
 
 
 func _process(delta: float) -> void:
+	hit_points_label.text = str(hit_points)
 	if is_in_group("card_selected"):
 		is_selectable = false
-		scale_up_button.visible = false
+		energy_control.visible = true
+		scale_up_control.visible = false
 		z_index = 16
 		rotation = 0.
 	elif is_in_group("card_on_board"):
 		is_selectable = false
-		scale_up_button.visible = true
+		energy_control.visible = false
+		scale_up_control.visible = true
 		z_index = 0
 	elif is_in_group("card_in_hand"):
 		is_selectable = true
-		scale_up_button.visible = false
+		energy_control.visible = true
+		scale_up_control.visible = false
 		z_index = 0
 	# movement
 	var distance = global_position.distance_to(target_position)
@@ -62,6 +76,19 @@ func _unhandled_input(event: InputEvent) -> void:
 		else:
 			user_input_failed.emit("Not enough energy")
 		get_viewport().set_input_as_handled()
+
+
+func _on_scale_up_area_pressed():
+	var selected_card = get_tree().get_first_node_in_group("card_selected")
+	if is_instance_valid(selected_card):
+		user_input_failed.emit("This place is already occupied")
+		selected_card.remove_from_group("card_selected")
+		selected_card.add_to_group("card_in_hand")
+	else:
+		if player.energy >= blueprint.scale_up_cost:
+			user_input_failed.emit("Trying to scale up")
+		else:
+			user_input_failed.emit("Not enough energy")
 
 
 func get_size():

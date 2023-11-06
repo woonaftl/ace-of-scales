@@ -15,7 +15,7 @@ var player: Player
 func _ready():
 	EventBus.user_input_failed.connect(_on_user_input_failed)
 	player = Player.new()
-	player.energy = 1
+	player.energy = 10
 	tile_control.player = player
 	_deal_cards()
 
@@ -26,7 +26,8 @@ func _process(_delta: float) -> void:
 	for selected_card in get_tree().get_nodes_in_group("card_selected"):
 		var target = get_global_mouse_position()
 		if tile_control.get_global_rect().has_point(target):
-			target = tile_control.snap_to_tiles_global(target)
+			if tile_control.can_place_card_here():
+				target = tile_control.snap_to_tiles_global(target)
 		selected_card.target_position = target
 	# cards in hand
 	var cards_in_hand = get_tree().get_nodes_in_group("card_in_hand")
@@ -51,8 +52,13 @@ func _unhandled_input(event: InputEvent) -> void:
 
 
 func _on_end_turn_button_pressed() -> void:
-	player.energy = len(get_tree().get_nodes_in_group("card_on_board"))
-	_deal_cards()
+	var selected_card = get_tree().get_first_node_in_group("card_selected")
+	if is_instance_valid(selected_card):
+		selected_card.remove_from_group("card_selected")
+		selected_card.add_to_group("card_in_hand")
+	else:
+		player.energy = len(get_tree().get_nodes_in_group("card_on_board"))
+		_deal_cards()
 
 
 func _deal_cards() -> void:
@@ -60,7 +66,7 @@ func _deal_cards() -> void:
 	for index in 5 - cards_in_hand_count:
 		var new_card = preload("res://scripts/card.tscn").instantiate()
 		new_card.add_to_group("card_in_hand")
-		add_child(new_card)
+		tile_control.add_child(new_card)
 		new_card.position = Vector2(0., get_viewport_rect().size.y)
 		new_card.player = player
 		new_card.blueprint = [

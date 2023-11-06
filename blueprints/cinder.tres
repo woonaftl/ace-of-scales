@@ -1,11 +1,13 @@
-[gd_resource type="Resource" script_class="Blueprint" load_steps=2 format=3 uid="uid://bmubj3ad0fy37"]
+[gd_resource type="Resource" script_class="Blueprint" load_steps=3 format=3 uid="uid://bmubj3ad0fy37"]
 
 [ext_resource type="Script" path="res://blueprints/blueprint.gd" id="1_s7ntm"]
+[ext_resource type="Texture2D" uid="uid://b5yx0rf04yh1n" path="res://assets/graphics/blueprints/cinder.svg" id="2_0184l"]
 
 [resource]
 script = ExtResource("1_s7ntm")
 name = "Cinder"
 description = "1 dmg in one direction"
+texture = ExtResource("2_0184l")
 play_cost = 1
 hit_points = 2
-shed_cost = 4
+scale_up_cost = 4

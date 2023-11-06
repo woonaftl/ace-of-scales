@@ -1,8 +1,11 @@
-[gd_scene load_steps=4 format=3 uid="uid://doltcoflrwktf"]
+[gd_scene load_steps=7 format=3 uid="uid://doltcoflrwktf"]
 
 [ext_resource type="Script" path="res://scripts/card.gd" id="1_nei3b"]
 [ext_resource type="Texture2D" uid="uid://dr8hbh4gadbta" path="res://assets/graphics/card_blank.svg" id="2_pn3le"]
 [ext_resource type="Texture2D" uid="uid://blxkrpdcaai8v" path="res://assets/graphics/energy.svg" id="3_osvk8"]
+[ext_resource type="Texture2D" uid="uid://6msxmgdirik4" path="res://assets/graphics/hit_points.svg" id="4_1mrel"]
+[ext_resource type="Script" path="res://scripts/scale_up_area.gd" id="4_02b53"]
+[ext_resource type="Texture2D" uid="uid://dhsoeaivb5d1r" path="res://assets/graphics/scale_up.svg" id="4_jn3co"]
 
 [node name="Card" type="Area2D"]
 script = ExtResource("1_nei3b")
@@ -31,6 +34,11 @@ theme_override_constants/margin_bottom = 8
 layout_mode = 2
 mouse_filter = 2
 
+[node name="DragonSprite" type="Sprite2D" parent="Sprite2D/MarginContainer/Control"]
+unique_name_in_owner = true
+position = Vector2(56, 44)
+scale = Vector2(0.25, 0.25)
+
 [node name="NameLabel" type="Label" parent="Sprite2D/MarginContainer/Control"]
 unique_name_in_owner = true
 layout_mode = 1
@@ -58,31 +66,14 @@ text = "long text test here"
 horizontal_alignment = 1
 autowrap_mode = 2
 
-[node name="ScaleUpButton" type="Button" parent="Sprite2D/MarginContainer/Control"]
-unique_name_in_owner = true
-layout_mode = 1
-anchors_preset = 7
-anchor_left = 0.5
-anchor_top = 1.0
-anchor_right = 0.5
-anchor_bottom = 1.0
-offset_left = -40.5
-offset_top = -31.0
-offset_right = 40.5
-grow_horizontal = 2
-grow_vertical = 0
-focus_mode = 0
-text = "SCALE UP"
-
 [node name="EnergyControl" type="Control" parent="Sprite2D/MarginContainer/Control"]
+unique_name_in_owner = true
 custom_minimum_size = Vector2(32, 32)
 layout_mode = 1
 anchors_preset = 0
 offset_right = 32.0
 offset_bottom = 32.0
-tooltip_text = "Your current energy.
-Energy is spent on playing cards.
-Energy is gained by controlling the board."
+mouse_filter = 2
 
 [node name="Sprite2D" type="Sprite2D" parent="Sprite2D/MarginContainer/Control/EnergyControl"]
 scale = Vector2(0.25, 0.25)
@@ -109,8 +100,91 @@ text = "X"
 horizontal_alignment = 1
 vertical_alignment = 1
 
+[node name="HitPointsControl" type="Control" parent="Sprite2D/MarginContainer/Control"]
+unique_name_in_owner = true
+custom_minimum_size = Vector2(32, 32)
+layout_mode = 1
+anchors_preset = 1
+anchor_left = 1.0
+anchor_right = 1.0
+offset_left = -32.0
+offset_bottom = 32.0
+grow_horizontal = 0
+mouse_filter = 2
+
+[node name="Sprite2D" type="Sprite2D" parent="Sprite2D/MarginContainer/Control/HitPointsControl"]
+scale = Vector2(0.25, 0.25)
+texture = ExtResource("4_1mrel")
+centered = false
+
+[node name="HitPointsLabel" type="Label" parent="Sprite2D/MarginContainer/Control/HitPointsControl"]
+unique_name_in_owner = true
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -4.0
+offset_top = -10.0
+offset_right = 4.0
+offset_bottom = 10.0
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_colors/font_color = Color(0.215686, 0.156863, 0.219608, 1)
+theme_override_font_sizes/font_size = 14
+text = "X"
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="ScaleUpControl" type="Control" parent="Sprite2D/MarginContainer/Control"]
+unique_name_in_owner = true
+visible = false
+custom_minimum_size = Vector2(32, 32)
+layout_mode = 1
+anchors_preset = 0
+offset_right = 32.0
+offset_bottom = 32.0
+tooltip_text = "Click here to scale this card up, increasing its size.
+You need energy to do it."
+mouse_filter = 1
+
+[node name="ScaleUpArea" type="Area2D" parent="Sprite2D/MarginContainer/Control/ScaleUpControl"]
+script = ExtResource("4_02b53")
+
+[node name="Sprite2D" type="Sprite2D" parent="Sprite2D/MarginContainer/Control/ScaleUpControl/ScaleUpArea"]
+scale = Vector2(0.25, 0.25)
+texture = ExtResource("4_jn3co")
+centered = false
+
+[node name="ScaleUpLabel" type="Label" parent="Sprite2D/MarginContainer/Control/ScaleUpControl/ScaleUpArea"]
+unique_name_in_owner = true
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = 11.5
+offset_top = 6.0
+offset_right = 20.5
+offset_bottom = 26.0
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_colors/font_color = Color(0.215686, 0.156863, 0.219608, 1)
+theme_override_font_sizes/font_size = 14
+text = "X"
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="CollisionPolygon2D" type="CollisionPolygon2D" parent="Sprite2D/MarginContainer/Control/ScaleUpControl/ScaleUpArea"]
+scale = Vector2(0.25, 0.25)
+polygon = PackedVector2Array(68, 3.2, 74, 9.2, 74, 11.4, 123, 79.4, 123, 81.5, 128, 91.6, 125.1, 92, 123.1, 95, 87, 95, 87, 122.8, 82.8, 127, 44, 127, 44, 125.1, 41, 123.1, 41, 95, 5.2, 95, 1, 90.8, 1, 85.4, 60, 3.4, 60, 1, 68, 1)
+
 [node name="CollisionPolygon2D" type="CollisionPolygon2D" parent="."]
 polygon = PackedVector2Array(64, 64, -64, 64, -64, -64, 64, -64)
 
 [connection signal="mouse_entered" from="." to="." method="_on_mouse_entered"]
 [connection signal="mouse_exited" from="." to="." method="_on_mouse_exited"]
+[connection signal="mouse_entered" from="Sprite2D/MarginContainer/Control/ScaleUpControl/ScaleUpArea" to="Sprite2D/MarginContainer/Control/ScaleUpControl/ScaleUpArea" method="_on_mouse_entered"]
+[connection signal="mouse_exited" from="Sprite2D/MarginContainer/Control/ScaleUpControl/ScaleUpArea" to="Sprite2D/MarginContainer/Control/ScaleUpControl/ScaleUpArea" method="_on_mouse_exited"]
+[connection signal="pressed" from="Sprite2D/MarginContainer/Control/ScaleUpControl/ScaleUpArea" to="." method="_on_scale_up_area_pressed"]

@@ -1,11 +1,13 @@
-[gd_resource type="Resource" script_class="Blueprint" load_steps=2 format=3 uid="uid://f4110xb2bh43"]
+[gd_resource type="Resource" script_class="Blueprint" load_steps=3 format=3 uid="uid://f4110xb2bh43"]
 
 [ext_resource type="Script" path="res://blueprints/blueprint.gd" id="1_8mjln"]
+[ext_resource type="Texture2D" uid="uid://7d238wq3yrun" path="res://assets/graphics/blueprints/ember.svg" id="2_v7eg6"]
 
 [resource]
 script = ExtResource("1_8mjln")
 name = "Ember"
 description = "3 dmg to target"
+texture = ExtResource("2_v7eg6")
 play_cost = 2
 hit_points = 4
-shed_cost = 3
+scale_up_cost = 3

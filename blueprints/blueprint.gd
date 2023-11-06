@@ -7,4 +7,4 @@ class_name Blueprint
 @export var texture: Texture2D
 @export var play_cost: int
 @export var hit_points: int
-@export var shed_cost: int
+@export var scale_up_cost: int

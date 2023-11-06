@@ -3,6 +3,7 @@
 [ext_resource type="Script" path="res://scripts/floating_hint.gd" id="1_u0rf0"]
 
 [node name="FloatingHint" type="Label"]
+z_index = 64
 anchors_preset = 15
 anchor_right = 1.0
 anchor_bottom = 1.0

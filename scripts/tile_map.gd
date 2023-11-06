@@ -63,3 +63,7 @@ func highlight_cell(cell: Vector2i) -> void:
 			set_cell(0, cell, 2, Vector2i.ZERO)
 		elif get_cell_source_id(0, cell) == 0:
 			set_cell(0, cell, 1, Vector2i.ZERO)
+
+
+func global_to_map(p_global: Vector2) -> Vector2i:
+	return local_to_map(to_local(p_global))
