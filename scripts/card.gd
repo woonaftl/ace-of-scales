@@ -19,6 +19,7 @@ var board_scale: Vector2i = Vector2i.ONE
 
 
 @onready var sprite: Sprite2D = %Sprite2D as Sprite2D
+@onready var card_container: MarginContainer = %CardContainer as MarginContainer
 @onready var dragon_sprite: Sprite2D = %DragonSprite as Sprite2D
 @onready var name_label: Label = %NameLabel as Label
 @onready var text_label: Label = %TextLabel as Label
@@ -50,13 +51,33 @@ func _process(delta: float) -> void:
 	hit_points_label.text = str(hit_points)
 	hit_points_control.visible = board_scale > Vector2i.ONE
 	if is_in_group("card_selected"):
+		if player.is_human:
+			sprite.texture = preload("res://assets/graphics/card_blank_blue.svg")
+		else:
+			sprite.texture = preload("res://assets/graphics/card_blank_red.svg")
+		card_container.visible = true
 		is_selectable = false
 		energy_control.visible = true
 		scale_up_control.visible = false
 		z_index = 16
 		rotation = 0.
 		scale = board_scale
+	elif is_in_group("card_in_deck"):
+		if player.is_human:
+			sprite.texture = preload("res://assets/graphics/card_back_blue.svg")
+		else:
+			sprite.texture = preload("res://assets/graphics/card_back_red.svg")
+		card_container.visible = false
+		is_selectable = false
+		z_index = 0
+		rotation = 0.
+		scale = board_scale
 	elif is_in_group("card_on_board"):
+		if player.is_human:
+			sprite.texture = preload("res://assets/graphics/card_blank_blue.svg")
+		else:
+			sprite.texture = preload("res://assets/graphics/card_blank_red.svg")
+		card_container.visible = true
 		is_selectable = false
 		energy_control.visible = false
 		scale_up_control.visible = true
@@ -64,12 +85,22 @@ func _process(delta: float) -> void:
 		z_index = 0
 		scale = board_scale
 	elif is_in_group("card_in_hand"):
+		if player.is_human:
+			sprite.texture = preload("res://assets/graphics/card_blank_blue.svg")
+		else:
+			sprite.texture = preload("res://assets/graphics/card_back_red.svg")
+		card_container.visible = player.is_human
 		is_selectable = true
 		energy_control.visible = true
 		scale_up_control.visible = false
 		z_index = 0
 		scale = board_scale
 	elif is_in_group("card_scaling"):
+		if player.is_human:
+			sprite.texture = preload("res://assets/graphics/card_blank_blue.svg")
+		else:
+			sprite.texture = preload("res://assets/graphics/card_blank_red.svg")
+		card_container.visible = true
 		is_selectable = false
 		energy_control.visible = false
 		scale_up_control.visible = true
@@ -98,18 +129,22 @@ func _process(delta: float) -> void:
 func _unhandled_input(event: InputEvent) -> void:
 	if event is InputEventMouseButton and event.pressed and event.button_index == MOUSE_BUTTON_LEFT and is_selectable and is_mouse_inside:
 		clear_selectiom()
-		if player.energy >= blueprint.play_cost:
+		if not player.is_human:
+			user_input_failed.emit("This is not your card")
+		elif player.energy < blueprint.play_cost:
+			user_input_failed.emit("Not enough energy")
+		else:
 			add_to_group("card_selected")
 			remove_from_group("card_in_hand")
-		else:
-			user_input_failed.emit("Not enough energy")
 		get_viewport().set_input_as_handled()
 
 
 func _on_scale_up_area_pressed():
 	if len(get_tree().get_nodes_in_group("card_selected")) == 0 and len(get_tree().get_nodes_in_group("card_scaling")) == 0:
 		get_viewport().set_input_as_handled()
-		if player.energy < blueprint.scale_up_cost:
+		if not player.is_human:
+			user_input_failed.emit("This is not your card")
+		elif player.energy < blueprint.scale_up_cost:
 			user_input_failed.emit("Not enough energy")
 		elif is_scaled_this_turn:
 			user_input_failed.emit("Already scaled this turn")

@@ -1,27 +1,70 @@
 extends Control
 
 
-const ROTATED_CARDS_Y_OFFSET: float = 8.
-const CARD_ROTATION: float = 0.03
+const ROTATED_CARDS_Y_OFFSET: float = 10.
+const CARD_ROTATION: float = 0.04
+const DEFAULT_CARDS_IN_HAND: int = 5
+const ALL_BLUEPRINTS: Array = [
+	preload("res://blueprints/ash.tres"),
+	preload("res://blueprints/cinder.tres"),
+	preload("res://blueprints/ember.tres")
+]
 
-
-var player: Player
+var human: Player
+var opponent: Player
 
 
 @onready var tile_control: Control = %TileControl as Control
 @onready var tile_map: TileMap = %TileMap as TileMap
-@onready var energy_label: Label = %EnergyLabel as Label
+@onready var human_energy_label: Label = %HumanEnergyLabel as Label
+@onready var human_deck_label: Label = %HumanDeckLabel as Label
+@onready var opponent_energy_label: Label = %OpponentEnergyLabel as Label
+@onready var opponent_deck_label: Label = %OpponentDeckLabel as Label
 
 
 func _ready():
 	EventBus.user_input_failed.connect(_on_user_input_failed)
-	player = Player.new()
-	player.energy = 10
-	_deal_cards()
+	human = Player.new()
+	human.energy = 1
+	human.is_human = true
+	opponent = Player.new()
+	opponent.energy = 1
+	opponent.is_human = false
+	for player in [human, opponent]:
+		for blueprint in ALL_BLUEPRINTS:
+			for index in 5:
+				var new_card = preload("res://scripts/card.tscn").instantiate()
+				new_card.add_to_group("card_in_deck")
+				tile_control.add_child(new_card)
+				new_card.player = player
+				new_card.blueprint = blueprint
+		var player_deck = get_tree().get_nodes_in_group("card_in_deck").filter(
+			func(card):
+				return card.player == player
+		)
+		var starting_card: Node = player_deck.pick_random()
+		starting_card.remove_from_group("card_in_deck")
+		starting_card.add_to_group("card_on_board")
+		if player == human:
+			starting_card.board_position = Vector2i(1, 2)
+		if player == opponent:
+			starting_card.board_position = Vector2i(1, 0)
+	await get_tree().create_timer(0.1).timeout
+	_deal_cards(opponent)
+	_deal_cards(human)
 
 
 func _process(_delta: float) -> void:
-	energy_label.text = str(player.energy)
+	human_energy_label.text = str(human.energy)
+	opponent_energy_label.text = str(opponent.energy)
+	human_deck_label.text = str(len(get_tree().get_nodes_in_group("card_in_deck").filter(
+		func(card):
+			return card.player == human
+	)))
+	opponent_deck_label.text = str(len(get_tree().get_nodes_in_group("card_in_deck").filter(
+		func(card):
+			return card.player == opponent
+	)))
 	# scaling card
 	for scaling_card in get_tree().get_nodes_in_group("card_scaling"):
 		var mouse_pos: Vector2 = get_global_mouse_position()
@@ -49,18 +92,36 @@ func _process(_delta: float) -> void:
 				target = tile_control.snap_to_tiles_global(target)
 		selected_card.target_position = target
 	# cards in hand
-	var cards_in_hand = get_tree().get_nodes_in_group("card_in_hand")
-	var viewport_size = get_viewport_rect().size
-	for index in len(cards_in_hand):
-		var node = cards_in_hand[index]
-		var node_size = node.get_size()
-		var relative_index = index + 0.5 - len(cards_in_hand) / 2.
-		var center_x = viewport_size.x / 2.
-		node.target_position = Vector2(
-			center_x + relative_index * node_size.x,
-			viewport_size.y - node_size.y / 2. + abs(relative_index) * ROTATED_CARDS_Y_OFFSET
+	for player in [human, opponent]:
+		var cards_in_hand = get_tree().get_nodes_in_group("card_in_hand").filter(
+			func(card):
+				return card.player == player
 		)
-		node.rotation = relative_index * CARD_ROTATION
+		var viewport_size = get_viewport_rect().size
+		for index in len(cards_in_hand):
+			var card: Node = cards_in_hand[index]
+			var card_size = card.get_size()
+			var relative_index = index + 0.5 - len(cards_in_hand) / 2.
+			var center_x = viewport_size.x / 2.
+			if card.player.is_human:
+				card.target_position = Vector2(
+					center_x + relative_index * card_size.x,
+					viewport_size.y - card_size.y / 2. + abs(relative_index) * ROTATED_CARDS_Y_OFFSET
+				)
+				card.rotation = relative_index * CARD_ROTATION
+			else:
+				card.target_position = Vector2(
+					center_x - relative_index * card_size.x,
+					card_size.y / 2. - abs(relative_index) * ROTATED_CARDS_Y_OFFSET
+				)
+				card.rotation = relative_index * CARD_ROTATION + PI
+	# cards in deck
+	for card in get_tree().get_nodes_in_group("card_in_deck"):
+		if card.player.is_human:
+			card.target_position = Vector2(64., get_viewport_rect().size.y - 64.)
+		else:
+			card.target_position = Vector2(get_viewport_rect().size.x - 64., 64.)
+	_check_lose()
 
 
 func _unhandled_input(event: InputEvent) -> void:
@@ -71,7 +132,7 @@ func _unhandled_input(event: InputEvent) -> void:
 			var scaling_card = get_tree().get_first_node_in_group("card_scaling")
 			if is_instance_valid(scaling_card):
 				if can_scale_card_here(scaling_card):
-					if player.energy >= scaling_card.blueprint.scale_up_cost:
+					if human.energy >= scaling_card.blueprint.scale_up_cost:
 						var target_board_position: Vector2i = tile_map.global_to_map(mouse_pos)
 						scaling_card.board_position = Vector2i(
 							min(target_board_position.x, scaling_card.board_position.x), 
@@ -87,10 +148,11 @@ func _unhandled_input(event: InputEvent) -> void:
 							overlapping_card.board_position = Vector2i(-1, -1)
 							overlapping_card.board_scale = Vector2i.ONE
 							overlapping_card.remove_from_group("card_on_board")
-							overlapping_card.add_to_group("card_in_hand")
+							overlapping_card.add_to_group("card_in_deck")
+							overlapping_card.player = scaling_card.player
 						scaling_card.remove_from_group("card_scaling")
 						scaling_card.add_to_group("card_on_board")
-						player.energy -= scaling_card.blueprint.scale_up_cost
+						human.energy -= scaling_card.blueprint.scale_up_cost
 					else:
 						_on_user_input_failed("Not enough energy")
 						scaling_card.remove_from_group("card_scaling")
@@ -103,11 +165,11 @@ func _unhandled_input(event: InputEvent) -> void:
 			var selected_card = get_tree().get_first_node_in_group("card_selected")
 			if is_instance_valid(selected_card):
 				if can_place_card_here():
-					if player.energy >= selected_card.blueprint.play_cost:
+					if human.energy >= selected_card.blueprint.play_cost:
 						selected_card.remove_from_group("card_selected")
 						selected_card.add_to_group("card_on_board")
 						selected_card.board_position = tile_map.global_to_map(mouse_pos)
-						player.energy -= selected_card.blueprint.play_cost
+						human.energy -= selected_card.blueprint.play_cost
 					else:
 						_on_user_input_failed("Not enough energy")
 						selected_card.remove_from_group("card_selected")
@@ -123,11 +185,15 @@ func _unhandled_input(event: InputEvent) -> void:
 
 func _on_end_turn_button_pressed() -> void:
 	if not clear_selectiom():
-		player.energy = 0
-		for card in get_tree().get_nodes_in_group("card_on_board"):
-			player.energy += card.board_scale.x * card.board_scale.y
-			card.is_scaled_this_turn = false
-		_deal_cards()
+		for player in [human, opponent]:
+			player.energy = 0
+			for card in get_tree().get_nodes_in_group("card_on_board").filter(
+				func(card):
+					return card.player == player
+			):
+				player.energy += card.board_scale.x * card.board_scale.y
+				card.is_scaled_this_turn = false
+			_deal_cards(player)
 
 
 func _on_user_input_failed(message: String) -> void:
@@ -170,8 +236,8 @@ func can_scale_card_here(card: Node) -> bool:
 
 func get_cards_in_square_of_cells(top_left_cell: Vector2i, square_size: Vector2i) -> Array:
 	var result: Array = []
-	for x in square_size.x + 1:
-		for y in square_size.y + 1:
+	for x in square_size.x:
+		for y in square_size.y:
 			result.append_array(get_cards_on_cell(top_left_cell + Vector2i(x, y)))
 	return result
 
@@ -203,19 +269,32 @@ func clear_selectiom() -> bool:
 	return result
 
 
-func _deal_cards() -> void:
-	var cards_in_hand_count: int = len(get_tree().get_nodes_in_group("card_in_hand"))
-	for index in 5 - cards_in_hand_count:
-		var new_card = preload("res://scripts/card.tscn").instantiate()
-		new_card.add_to_group("card_in_hand")
-		tile_control.add_child(new_card)
-		new_card.position = Vector2(0., get_viewport_rect().size.y)
-		new_card.player = player
-		new_card.blueprint = [
-			preload("res://blueprints/ash.tres"),
-			preload("res://blueprints/cinder.tres"),
-			preload("res://blueprints/ember.tres")
-		].pick_random()
+func _deal_cards(player: Player) -> void:
+	var cards_in_hand = get_tree().get_nodes_in_group("card_in_hand").filter(
+		func(card):
+			return card.player == player
+	)
+	for index in DEFAULT_CARDS_IN_HAND - len(cards_in_hand):
+		var cards_in_deck = get_tree().get_nodes_in_group("card_in_deck").filter(
+			func(card):
+				return card.player == player
+		)
+		var card_dealt: Node = cards_in_deck.pick_random()
+		card_dealt.remove_from_group("card_in_deck")
+		card_dealt.add_to_group("card_in_hand")
+
+
+func _check_lose() -> void:
+	for player in [human, opponent]:
+		var cards_on_board = get_tree().get_nodes_in_group("card_on_board").filter(
+			func(card):
+				return card.player == player
+		)
+		if len(cards_on_board) == 0:
+			if player == human:
+				_on_user_input_failed("You lose")
+			else:
+				_on_user_input_failed("You win")
 
 
 func to_local(p_global: Vector2) -> Vector2:

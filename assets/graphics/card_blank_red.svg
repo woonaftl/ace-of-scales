@@ -8,7 +8,7 @@
    version="1.1"
    id="svg5"
    inkscape:version="1.2.1 (9c6d41e410, 2022-07-14)"
-   sodipodi:docname="card_blank.svg"
+   sodipodi:docname="card_blank_red.svg"
    xmlns:inkscape="http://www.inkscape.org/namespaces/inkscape"
    xmlns:sodipodi="http://sodipodi.sourceforge.net/DTD/sodipodi-0.dtd"
    xmlns="http://www.w3.org/2000/svg"
@@ -48,7 +48,7 @@
      inkscape:groupmode="layer"
      id="layer1">
     <rect
-       style="fill:#aca165;fill-opacity:1;stroke:#645d3b;stroke-width:1.602;stroke-linejoin:round;stroke-opacity:1;paint-order:fill markers stroke;stroke-dasharray:none"
+       style="fill:#ac7265;fill-opacity:1;stroke:#64433b;stroke-width:1.602;stroke-linejoin:round;stroke-opacity:1;paint-order:fill markers stroke;stroke-dasharray:none"
        id="rect6600"
        width="30.147663"
        height="30.147663"
