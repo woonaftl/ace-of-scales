@@ -1,173 +1,325 @@
 extends Area2D
+class_name Card
 
 
-const SPEED = 8.
+enum CardState {
+	BOARD,
+	DRAW,
+	HAND,
+	HAND_SELECTED,
+	BOARD_SCALING,
+	BOARD_SELECTED,
+	DISCARD
+}
 
 
 signal user_input_failed(message: String)
 
 
 var is_mouse_inside = false
-var is_selectable = false
+var target_scale: Vector2
+var target_rotation: float = 0.
 var target_position: Vector2
-var board_position: Vector2i
-var hit_points: int
+var target_cell: Vector2i
+var board_cell: Vector2i
 var is_scale_animation_increasing: bool = true
-var is_scaled_this_turn: bool = false
+var is_used_this_turn: bool = false
 var is_scaling_valid: bool = false
 var board_scale: Vector2i = Vector2i.ONE
 
 
 @onready var sprite: Sprite2D = %Sprite2D as Sprite2D
 @onready var card_container: MarginContainer = %CardContainer as MarginContainer
+@onready var hit_points_bar: TextureProgressBar = %HitPointsBar as TextureProgressBar
+@onready var hit_points_label: Label = %HitPointsLabel as Label
 @onready var dragon_sprite: Sprite2D = %DragonSprite as Sprite2D
 @onready var name_label: Label = %NameLabel as Label
 @onready var text_label: Label = %TextLabel as Label
-@onready var energy_control: Control = %EnergyControl as Control
-@onready var energy_label: Label = %EnergyLabel as Label
+@onready var tooltip_panel: PanelContainer = %TooltipPanel as PanelContainer
+@onready var play_control: Control = %PlayControl as Control
+@onready var play_label: Label = %PlayLabel as Label
 @onready var scale_up_control: Control = %ScaleUpControl as Control
 @onready var scale_up_label: Label = %ScaleUpLabel as Label
-@onready var hit_points_control: Control = %HitPointsControl as Control
-@onready var hit_points_label: Label = %HitPointsLabel as Label
 @onready var player: Player
+
+
+@onready var is_highlighted: bool:
+	set(new_value):
+		is_highlighted = new_value
+		if is_highlighted:
+			modulate = Color.LIGHT_PINK
+		else:
+			modulate = Color.WHITE
+
+
+@onready var hit_points: int:
+	set(new_value):
+		if new_value < hit_points:
+			modulate = Color.RED
+			await get_tree().create_timer(0.1).timeout
+			modulate = Color.WHITE
+		hit_points = clamp(new_value, 0, 99999)
+		if hit_points == 0:
+			if board_scale.x > 1:
+				scale_down()
+			else:
+				discard()
+		hit_points_bar.value = hit_points
+		hit_points_label.text = "%s / %s" % [hit_points, blueprint.hit_points]
 
 
 @onready var blueprint: Blueprint:
 	set(new_value):
 		blueprint = new_value
 		name_label.text = blueprint.name
-		text_label.text = blueprint.description
-		energy_label.text = str(blueprint.play_cost)
-		scale_up_label.text = str(blueprint.scale_up_cost)
+		text_label.text = blueprint.ability.description
+		play_label.text = str(blueprint.play_cost)
 		hit_points = blueprint.hit_points
+		hit_points_bar.max_value = blueprint.hit_points
 		dragon_sprite.texture = blueprint.texture
 
 
+@onready var state: CardState:
+	set(new_value):
+		state = new_value
+		match state:
+			CardState.BOARD:
+				if player.is_human:
+					sprite.texture = preload("res://assets/graphics/card_blank_blue.svg")
+				else:
+					sprite.texture = preload("res://assets/graphics/card_blank_red.svg")
+				card_container.visible = true
+				z_index = 0
+				target_cell = board_cell
+			CardState.DRAW:
+				if player.is_human:
+					sprite.texture = preload("res://assets/graphics/card_back_blue.svg")
+				else:
+					sprite.texture = preload("res://assets/graphics/card_back_red.svg")
+				card_container.visible = false
+				z_index = 0
+				board_scale = Vector2i.ONE
+				hit_points = blueprint.hit_points
+				target_cell = Vector2i(-1, -1)
+			CardState.DISCARD:
+				if player.is_human:
+					sprite.texture = preload("res://assets/graphics/card_back_blue.svg")
+				else:
+					sprite.texture = preload("res://assets/graphics/card_back_red.svg")
+				card_container.visible = false
+				z_index = 0
+				board_scale = Vector2i.ONE
+				hit_points = blueprint.hit_points
+				target_cell = Vector2i(-1, -1)
+			CardState.HAND:
+				if player.is_human:
+					sprite.texture = preload("res://assets/graphics/card_blank_blue.svg")
+				else:
+					sprite.texture = preload("res://assets/graphics/card_back_red.svg")
+				card_container.visible = player.is_human
+				z_index = 0
+				board_scale = Vector2i.ONE
+				hit_points = blueprint.hit_points
+				target_cell = Vector2i(-1, -1)
+			CardState.HAND_SELECTED:
+				if player.is_human:
+					sprite.texture = preload("res://assets/graphics/card_blank_blue.svg")
+				else:
+					sprite.texture = preload("res://assets/graphics/card_blank_red.svg")
+				card_container.visible = true
+				z_index = 16
+				board_scale = Vector2i.ONE
+				hit_points = blueprint.hit_points
+			CardState.BOARD_SCALING:
+				if player.is_human:
+					sprite.texture = preload("res://assets/graphics/card_blank_blue.svg")
+				else:
+					sprite.texture = preload("res://assets/graphics/card_blank_red.svg")
+				card_container.visible = true
+				z_index = 16
+				target_cell = board_cell
+			CardState.BOARD_SELECTED:
+				if player.is_human:
+					sprite.texture = preload("res://assets/graphics/card_blank_blue.svg")
+				else:
+					sprite.texture = preload("res://assets/graphics/card_blank_red.svg")
+				card_container.visible = true
+				z_index = 16
+
+
 func _ready() -> void:
+	add_to_group("cards")
 	user_input_failed.connect(EventBus._on_user_input_failed)
 
 
 func _process(delta: float) -> void:
-	hit_points_label.text = str(hit_points)
-	hit_points_control.visible = board_scale > Vector2i.ONE
-	if is_in_group("card_selected"):
-		if player.is_human:
-			sprite.texture = preload("res://assets/graphics/card_blank_blue.svg")
-		else:
-			sprite.texture = preload("res://assets/graphics/card_blank_red.svg")
-		card_container.visible = true
-		is_selectable = false
-		energy_control.visible = true
-		scale_up_control.visible = false
-		z_index = 16
-		rotation = 0.
-		scale = board_scale
-	elif is_in_group("card_in_deck"):
-		if player.is_human:
-			sprite.texture = preload("res://assets/graphics/card_back_blue.svg")
-		else:
-			sprite.texture = preload("res://assets/graphics/card_back_red.svg")
-		card_container.visible = false
-		is_selectable = false
-		z_index = 0
-		rotation = 0.
-		scale = board_scale
-	elif is_in_group("card_on_board"):
-		if player.is_human:
-			sprite.texture = preload("res://assets/graphics/card_blank_blue.svg")
-		else:
-			sprite.texture = preload("res://assets/graphics/card_blank_red.svg")
-		card_container.visible = true
-		is_selectable = false
-		energy_control.visible = false
-		scale_up_control.visible = true
-		scale_up_control.modulate = Color.WHITE
-		z_index = 0
-		scale = board_scale
-	elif is_in_group("card_in_hand"):
-		if player.is_human:
-			sprite.texture = preload("res://assets/graphics/card_blank_blue.svg")
-		else:
-			sprite.texture = preload("res://assets/graphics/card_back_red.svg")
-		card_container.visible = player.is_human
-		is_selectable = true
-		energy_control.visible = true
-		scale_up_control.visible = false
-		z_index = 0
-		scale = board_scale
-	elif is_in_group("card_scaling"):
-		if player.is_human:
-			sprite.texture = preload("res://assets/graphics/card_blank_blue.svg")
-		else:
-			sprite.texture = preload("res://assets/graphics/card_blank_red.svg")
-		card_container.visible = true
-		is_selectable = false
-		energy_control.visible = false
-		scale_up_control.visible = true
-		scale_up_control.modulate = Color.DARK_GRAY
-		z_index = 16
-		var target_scale: Vector2
-		if is_scaling_valid:
-			target_scale = board_scale + Vector2i.ONE
-			is_scale_animation_increasing = false
-		else:
-			if scale.length_squared() > 2.5:
-				is_scale_animation_increasing = false
-			elif scale.length_squared() < 2.01:
-				is_scale_animation_increasing = true
-			if is_scale_animation_increasing:
-				target_scale = Vector2(board_scale) + Vector2(0.12, 0.12)
+	scale_up_label.text = str(get_scale_up_cost())
+	tooltip_panel.visible = is_mouse_inside and card_container.visible and len(
+		QueryCard.get_cards_in_state(CardState.BOARD_SCALING)
+	) == 0  and len(
+		QueryCard.get_cards_in_state(CardState.BOARD_SELECTED)
+	) == 0  and len(
+		QueryCard.get_cards_in_state(CardState.HAND_SELECTED)
+	) == 0
+	match state:
+		CardState.HAND_SELECTED:
+			target_rotation = 0.
+			target_scale = board_scale
+		CardState.BOARD_SELECTED:
+			target_rotation = 0.
+			target_scale = board_scale
+		CardState.DRAW:
+			target_rotation = 0.
+			target_scale = board_scale
+		CardState.DISCARD:
+			target_rotation = 0.
+			target_scale = board_scale
+		CardState.BOARD:
+			target_scale = board_scale
+			if is_highlighted:
+				target_rotation = 0.12
 			else:
-				target_scale = board_scale
-		var difference_in_scale = scale.distance_to(target_scale)
-		scale = scale.move_toward(target_scale, delta * 12. * difference_in_scale)
-	# movement
-	var distance = global_position.distance_to(target_position)
-	global_position = global_position.move_toward(target_position, delta * SPEED * distance)
+				target_rotation = 0.
+		CardState.HAND:
+			target_scale = board_scale
+		CardState.BOARD_SCALING:
+			if is_scaling_valid:
+				target_scale = board_scale + Vector2i.ONE
+				is_scale_animation_increasing = false
+			else:
+				var max_scale_extent: Vector2 = Vector2(board_scale) + Vector2(0.12, 0.12)
+				if scale.length_squared() >= max_scale_extent.length_squared() - 0.01:
+					is_scale_animation_increasing = false
+				elif scale.length_squared() <= board_scale.length_squared() + 0.01:
+					is_scale_animation_increasing = true
+				if is_scale_animation_increasing:
+					target_scale = max_scale_extent
+				else:
+					target_scale = board_scale
+	rotation = lerp(rotation, target_rotation, delta * 25.)
+	scale = lerp(scale, target_scale, delta * 12.)
+	global_position = lerp(global_position, target_position, delta * UserSettings.animation_speed)
 
 
 func _unhandled_input(event: InputEvent) -> void:
-	if event is InputEventMouseButton and event.pressed and event.button_index == MOUSE_BUTTON_LEFT and is_selectable and is_mouse_inside:
-		clear_selectiom()
-		if not player.is_human:
-			user_input_failed.emit("This is not your card")
-		elif player.energy < blueprint.play_cost:
-			user_input_failed.emit("Not enough energy")
-		else:
-			add_to_group("card_selected")
-			remove_from_group("card_in_hand")
-		get_viewport().set_input_as_handled()
+	if event is InputEventMouseButton and event.pressed and event.button_index == MOUSE_BUTTON_LEFT:
+		if state == CardState.HAND and is_mouse_inside:
+			QueryCard.clear_selectiom()
+			if get_tree().current_scene.current_turn != get_tree().current_scene.human:
+				user_input_failed.emit("Not your turn")
+			elif not player.is_human:
+				user_input_failed.emit("This is not your card")
+			elif player.energy < blueprint.play_cost:
+				user_input_failed.emit("Not enough energy")
+			else:
+				state = CardState.HAND_SELECTED
+			get_viewport().set_input_as_handled()
 
 
 func _on_scale_up_area_pressed():
-	if len(get_tree().get_nodes_in_group("card_selected")) == 0 and len(get_tree().get_nodes_in_group("card_scaling")) == 0:
-		get_viewport().set_input_as_handled()
-		if not player.is_human:
-			user_input_failed.emit("This is not your card")
-		elif player.energy < blueprint.scale_up_cost:
-			user_input_failed.emit("Not enough energy")
-		elif is_scaled_this_turn:
-			user_input_failed.emit("Already scaled this turn")
-		else:
-			remove_from_group("card_on_board")
-			add_to_group("card_scaling")
+	if len(QueryCard.get_cards_in_state(CardState.HAND_SELECTED)) == 0:
+		if len(QueryCard.get_cards_in_state(CardState.BOARD_SELECTED)) == 0:
+			if len(QueryCard.get_cards_in_state(CardState.BOARD_SCALING)) == 0:
+				get_viewport().set_input_as_handled()
+				if get_tree().current_scene.current_turn != get_tree().current_scene.human:
+					user_input_failed.emit("Not your turn")
+				elif not player.is_human:
+					user_input_failed.emit("This is not your card")
+				elif player.energy < get_scale_up_cost():
+					user_input_failed.emit("Not enough energy")
+				elif is_used_this_turn:
+					user_input_failed.emit("Already played this turn")
+				elif state == CardState.BOARD:
+					state = CardState.BOARD_SCALING
+				elif state == CardState.HAND:
+					state = CardState.HAND_SELECTED
 
 
-func clear_selectiom() -> bool:
-	var result: bool = false
-	for node in get_tree().get_nodes_in_group("card_selected"):
-		node.remove_from_group("card_selected")
-		node.add_to_group("card_in_hand")
-		result = true
-	for node in get_tree().get_nodes_in_group("card_scaling"):
-		node.remove_from_group("card_scaling")
-		node.add_to_group("card_on_board")
-		result = true
-	return result
+func _on_play_area_pressed() -> void:
+	if len(QueryCard.get_cards_in_state(CardState.HAND_SELECTED)) == 0:
+		if len(QueryCard.get_cards_in_state(CardState.BOARD_SELECTED)) == 0:
+			if len(QueryCard.get_cards_in_state(CardState.BOARD_SCALING)) == 0:
+				get_viewport().set_input_as_handled()
+				if get_tree().current_scene.current_turn != get_tree().current_scene.human:
+					user_input_failed.emit("Not your turn")
+				elif not player.is_human:
+					user_input_failed.emit("This is not your card")
+				elif player.energy < blueprint.play_cost:
+					user_input_failed.emit("Not enough energy")
+				elif is_used_this_turn:
+					user_input_failed.emit("Already played this turn")
+				elif state == CardState.BOARD:
+					state = CardState.BOARD_SELECTED
+				elif state == CardState.HAND:
+					state = CardState.HAND_SELECTED
+
+
+func scale_up(board_direction: Vector2i) -> void:
+	var cost: int = get_scale_up_cost()
+	board_cell = Vector2i(
+		min(board_direction.x, board_cell.x), 
+		min(board_direction.y, board_cell.y)
+	)
+	board_scale += Vector2i.ONE
+	is_used_this_turn = true
+	var overlapping_cards: Array = QueryCard.get_cards_in_rectangle(
+		board_cell,
+		board_scale
+	)
+	for overlapping_card in overlapping_cards:
+		overlapping_card.board_cell = Vector2i(-1, -1)
+		overlapping_card.board_scale = Vector2i.ONE
+		overlapping_card.player = player
+		overlapping_card.state = Card.CardState.DISCARD
+	state = CardState.BOARD
+	player.energy -= cost
+
+
+func scale_down() -> void:
+	board_scale = board_scale - Vector2i.ONE
+	var new_board_cells: Array = [
+		board_cell,
+		board_cell + Vector2i.RIGHT,
+		board_cell + Vector2i.DOWN,
+		board_cell + Vector2i.ONE
+	]
+	board_cell = new_board_cells.pick_random()
+	hit_points = blueprint.hit_points
+
+
+func play(new_board_cell: Vector2i) -> void:
+	state = CardState.BOARD
+	is_used_this_turn = true
+	board_cell = new_board_cell
+	player.energy -= blueprint.play_cost
+	blueprint.ability.use(self)
+
+
+func reset() -> void:
+	is_used_this_turn = false
+
+
+func discard() -> void:
+	state = CardState.DISCARD
+
+
+func get_occupied_cells(cell: Vector2i = board_cell) -> Array[Vector2i]:
+	return CellsHelpers.get_cells_inside_rectangle(cell, board_scale)
 
 
 func get_size():
 	return sprite.texture.get_size()
+
+
+func get_scale_up_cost() -> int:
+	if board_scale == Vector2i(1, 1):
+		return blueprint.scale_up_2_cost
+	elif board_scale == Vector2i(2, 2):
+		return blueprint.scale_up_3_cost
+	elif board_scale == Vector2i(3, 3):
+		return blueprint.scale_up_4_cost
+	else:
+		return blueprint.scale_up_5_cost
 
 
 func _on_mouse_entered():

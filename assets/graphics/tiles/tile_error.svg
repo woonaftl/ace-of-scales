@@ -26,8 +26,8 @@
      showgrid="true"
      showguides="true"
      inkscape:zoom="2.9825758"
-     inkscape:cx="19.446279"
-     inkscape:cy="72.420624"
+     inkscape:cx="19.781559"
+     inkscape:cy="72.755904"
      inkscape:window-width="1920"
      inkscape:window-height="1017"
      inkscape:window-x="-8"
@@ -48,11 +48,11 @@
      inkscape:groupmode="layer"
      id="layer1">
     <rect
-       style="fill:#a62323;stroke:none;stroke-width:1.8;stroke-linejoin:round;paint-order:fill markers stroke;fill-opacity:1"
+       style="fill:#a62323;fill-opacity:0.5;stroke:none;stroke-width:1.74375;stroke-linejoin:round;paint-order:fill markers stroke"
        id="rect6600"
-       width="33.866665"
-       height="33.866665"
-       x="0"
-       y="0" />
+       width="32.808334"
+       height="32.808334"
+       x="0.52916664"
+       y="0.52916664" />
   </g>
 </svg>

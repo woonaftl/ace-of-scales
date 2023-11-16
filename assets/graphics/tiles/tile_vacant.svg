@@ -8,7 +8,7 @@
    version="1.1"
    id="svg5"
    inkscape:version="1.2.1 (9c6d41e410, 2022-07-14)"
-   sodipodi:docname="tile_clear.svg"
+   sodipodi:docname="tile_vacant.svg"
    xmlns:inkscape="http://www.inkscape.org/namespaces/inkscape"
    xmlns:sodipodi="http://sodipodi.sourceforge.net/DTD/sodipodi-0.dtd"
    xmlns="http://www.w3.org/2000/svg"
@@ -25,9 +25,9 @@
      inkscape:document-units="mm"
      showgrid="true"
      showguides="true"
-     inkscape:zoom="2.9825758"
-     inkscape:cx="19.446279"
-     inkscape:cy="72.420624"
+     inkscape:zoom="4.2179991"
+     inkscape:cx="29.871983"
+     inkscape:cy="68.515898"
      inkscape:window-width="1920"
      inkscape:window-height="1017"
      inkscape:window-x="-8"
@@ -48,11 +48,11 @@
      inkscape:groupmode="layer"
      id="layer1">
     <rect
-       style="fill:#958e80;stroke:none;stroke-width:1.8;stroke-linejoin:round;paint-order:fill markers stroke;fill-opacity:1"
+       style="fill:#958e80;fill-opacity:0.5;stroke:none;stroke-width:1.74374;stroke-linejoin:round;paint-order:fill markers stroke"
        id="rect6600"
-       width="33.866665"
-       height="33.866665"
-       x="0"
-       y="0" />
+       width="32.808334"
+       height="32.808334"
+       x="0.52916664"
+       y="0.52916664" />
   </g>
 </svg>

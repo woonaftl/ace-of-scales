@@ -15,8 +15,11 @@ func _process(_delta):
 	var tile_size = tile_map.tile_set.tile_size
 	var used_rect = tile_map.get_used_rect().size
 	custom_minimum_size = Vector2(tile_size.x * used_rect.x, tile_size.y * used_rect.y)
-	for card in get_tree().get_nodes_in_group("card_on_board"):
-		card.target_position = tile_map.get_position_from_board_position_and_scale(card.board_position, card.board_scale)
+	for card in QueryCard.get_cards_in_state(Card.CardState.BOARD):
+		card.target_position = tile_map.get_position_from_board_cell_and_scale(
+			card.board_cell,
+			card.board_scale
+		)
 
 
 func cell_to_global(cell: Vector2i):

@@ -1,13 +1,17 @@
-[gd_resource type="Resource" script_class="Blueprint" load_steps=3 format=3 uid="uid://d3uu5e2yd487r"]
+[gd_resource type="Resource" script_class="Blueprint" load_steps=4 format=3 uid="uid://d3uu5e2yd487r"]
 
+[ext_resource type="Resource" uid="uid://bshec3bwlrout" path="res://abilities/damage_diagonal.tres" id="1_hv5s4"]
 [ext_resource type="Script" path="res://blueprints/blueprint.gd" id="1_mmsyy"]
 [ext_resource type="Texture2D" uid="uid://docengjaeisif" path="res://assets/graphics/blueprints/ash.svg" id="2_2ksc4"]
 
 [resource]
 script = ExtResource("1_mmsyy")
 name = "Ash"
-description = "1 dmg to neighbors"
 texture = ExtResource("2_2ksc4")
+hit_points = 2
+ability = ExtResource("1_hv5s4")
 play_cost = 1
-hit_points = 3
-scale_up_cost = 3
+scale_up_2_cost = 3
+scale_up_3_cost = 6
+scale_up_4_cost = 12
+scale_up_5_cost = 18

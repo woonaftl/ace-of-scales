@@ -11,7 +11,7 @@ config_version=5
 [application]
 
 config/name="Game-off-2023"
-run/main_scene="res://scripts/game.tscn"
+run/main_scene="res://scripts/main_menu.tscn"
 config/features=PackedStringArray("4.2", "GL Compatibility")
 config/icon="res://assets/graphics/icon.svg"
 
@@ -19,15 +19,20 @@ config/icon="res://assets/graphics/icon.svg"
 
 UserSettings="*res://scripts/user_settings.gd"
 EventBus="*res://scripts/event_bus.gd"
+QueryCard="*res://scripts/query_card.gd"
 
 [display]
 
-window/size/viewport_width=1280
-window/size/viewport_height=720
+window/size/viewport_width=1600
+window/size/viewport_height=900
 
 [filesystem]
 
 import/blender/enabled=false
+
+[gui]
+
+theme/custom_font="res://assets/fonts/taylor-sans/TaylorSans-Regular.ttf"
 
 [rendering]
 

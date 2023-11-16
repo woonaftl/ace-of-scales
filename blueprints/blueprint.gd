@@ -3,8 +3,12 @@ class_name Blueprint
 
 
 @export var name: String
-@export var description: String
 @export var texture: Texture2D
-@export var play_cost: int
 @export var hit_points: int
-@export var scale_up_cost: int
+@export var ability: Ability
+@export_category("Cost")
+@export var play_cost: int
+@export var scale_up_2_cost: int
+@export var scale_up_3_cost: int
+@export var scale_up_4_cost: int
+@export var scale_up_5_cost: int

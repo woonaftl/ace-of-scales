@@ -1,18 +1,26 @@
 extends TileMap
 
 
-var x_max: int = 2
-var y_max: int = 2
+var x_max: int
+var y_max: int
 
 
 func _process(_delta: float) -> void:
 	reset_cells()
-	for card: Node in get_tree().get_nodes_in_group("card_on_board"):
-		for x in card.board_scale.x:
-			for y in card.board_scale.y:
-				set_occupied_cell(card.board_position + Vector2i(x, y))
-	for card: Node in get_tree().get_nodes_in_group("card_selected"):
-		highlight_pos(card.global_position)
+	for card: Node in QueryCard.get_cards_in_state(Card.CardState.BOARD):
+		for x: int in card.board_scale.x:
+			for y: int in card.board_scale.y:
+				set_occupied_cell(card.board_cell + Vector2i(x, y))
+	for card: Node in QueryCard.get_cards_in_states([
+		Card.CardState.HAND_SELECTED,
+		Card.CardState.BOARD_SELECTED
+	]):
+		for cell: Vector2i in card.get_occupied_cells(card.target_cell):
+			highlight_cell(cell)
+		for cell: Vector2i in card.blueprint.ability.get_affected_cells(card):
+			if is_cell_within_playable_area(card.target_cell):
+				if is_cell_within_playable_area(cell):
+					set_cell(0, cell, 4, Vector2i.ZERO)
 
 
 func reset_cells() -> void:
@@ -67,12 +75,16 @@ func highlight_cell(cell: Vector2i) -> void:
 			set_cell(0, cell, 1, Vector2i.ZERO)
 
 
+func map_to_global(cell: Vector2i) -> Vector2:
+	return to_global(map_to_local(cell))
+
+
 func global_to_map(p_global: Vector2) -> Vector2i:
 	return local_to_map(to_local(p_global))
 
 
-func get_position_from_board_position_and_scale(
-	board_position: Vector2i, 
+func get_position_from_board_cell_and_scale(
+	board_cell: Vector2i, 
 	board_scale: Vector2i
 ) -> Vector2:
-	return to_global(map_to_local(board_position)) + (board_scale - Vector2i.ONE) * 64.
+	return to_global(map_to_local(board_cell)) + (board_scale - Vector2i.ONE) * 64.

@@ -2,13 +2,13 @@
 <!-- Created with Inkscape (http://www.inkscape.org/) -->
 
 <svg
-   width="128"
-   height="128"
-   viewBox="0 0 33.866666 33.866666"
+   width="104"
+   height="24"
+   viewBox="0 0 27.516666 6.3499999"
    version="1.1"
    id="svg5"
    inkscape:version="1.2.1 (9c6d41e410, 2022-07-14)"
-   sodipodi:docname="tile_highlight.svg"
+   sodipodi:docname="hit_points_bar_empty.svg"
    xmlns:inkscape="http://www.inkscape.org/namespaces/inkscape"
    xmlns:sodipodi="http://sodipodi.sourceforge.net/DTD/sodipodi-0.dtd"
    xmlns="http://www.w3.org/2000/svg"
@@ -25,9 +25,9 @@
      inkscape:document-units="mm"
      showgrid="true"
      showguides="true"
-     inkscape:zoom="1.0544998"
-     inkscape:cx="-97.676643"
-     inkscape:cy="106.21149"
+     inkscape:zoom="5.9651515"
+     inkscape:cx="51.968504"
+     inkscape:cy="32.689865"
      inkscape:window-width="1920"
      inkscape:window-height="1017"
      inkscape:window-x="-8"
@@ -37,9 +37,11 @@
     <inkscape:grid
        type="xygrid"
        id="grid5509"
-       spacingx="4.2333333"
-       spacingy="4.2333333"
-       empspacing="4" />
+       spacingx="2.1166666"
+       spacingy="2.1166666"
+       empspacing="4"
+       originx="0"
+       originy="0" />
   </sodipodi:namedview>
   <defs
      id="defs2" />
@@ -48,11 +50,11 @@
      inkscape:groupmode="layer"
      id="layer1">
     <rect
-       style="fill:#cdde83;fill-opacity:0.5;stroke:none;stroke-width:1.74375;stroke-linejoin:round;paint-order:fill markers stroke"
-       id="rect6600"
-       width="32.808334"
-       height="32.808334"
-       x="0.52916664"
-       y="0.52916664" />
+       style="fill:#220000;fill-opacity:1;stroke:#520000;stroke-width:0.450676;stroke-linecap:round;stroke-linejoin:round;stroke-dasharray:none;stroke-opacity:1;paint-order:fill markers stroke"
+       id="rect1622"
+       width="27.040522"
+       height="5.8738551"
+       x="0.25080669"
+       y="0.25080669" />
   </g>
 </svg>

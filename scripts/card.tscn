@@ -1,14 +1,18 @@
-[gd_scene load_steps=7 format=3 uid="uid://doltcoflrwktf"]
+[gd_scene load_steps=10 format=3 uid="uid://doltcoflrwktf"]
 
-[ext_resource type="Script" path="res://scripts/card.gd" id="1_nei3b"]
+[ext_resource type="Script" path="res://scripts/card.gd" id="1_tjl4h"]
 [ext_resource type="Texture2D" uid="uid://b6pejo7sbtw05" path="res://assets/graphics/card_blank_blue.svg" id="2_5114f"]
+[ext_resource type="Texture2D" uid="uid://p6lokh4jyo27" path="res://assets/graphics/ui/hit_points_bar_empty.svg" id="3_cs1ci"]
 [ext_resource type="Texture2D" uid="uid://blxkrpdcaai8v" path="res://assets/graphics/energy.svg" id="3_osvk8"]
-[ext_resource type="Texture2D" uid="uid://6msxmgdirik4" path="res://assets/graphics/hit_points.svg" id="4_1mrel"]
 [ext_resource type="Script" path="res://scripts/scale_up_area.gd" id="4_02b53"]
+[ext_resource type="Texture2D" uid="uid://qoxppkgoiu8p" path="res://assets/graphics/ui/hit_points_bar_full.svg" id="4_6gnhj"]
 [ext_resource type="Texture2D" uid="uid://dhsoeaivb5d1r" path="res://assets/graphics/scale_up.svg" id="4_jn3co"]
+[ext_resource type="Script" path="res://scripts/play_area.gd" id="5_wlisr"]
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_bw7m7"]
 
 [node name="Card" type="Area2D"]
-script = ExtResource("1_nei3b")
+script = ExtResource("1_tjl4h")
 
 [node name="Sprite2D" type="Sprite2D" parent="."]
 unique_name_in_owner = true
@@ -31,134 +35,67 @@ theme_override_constants/margin_top = 8
 theme_override_constants/margin_right = 8
 theme_override_constants/margin_bottom = 8
 
-[node name="Control" type="Control" parent="Sprite2D/CardContainer"]
+[node name="VBoxContainer" type="VBoxContainer" parent="Sprite2D/CardContainer"]
 layout_mode = 2
 mouse_filter = 2
+theme_override_constants/separation = 0
 
-[node name="DragonSprite" type="Sprite2D" parent="Sprite2D/CardContainer/Control"]
-unique_name_in_owner = true
-position = Vector2(56, 44)
-scale = Vector2(0.25, 0.25)
+[node name="CenterContainer" type="CenterContainer" parent="Sprite2D/CardContainer/VBoxContainer"]
+layout_mode = 2
 
-[node name="NameLabel" type="Label" parent="Sprite2D/CardContainer/Control"]
+[node name="HitPointsBar" type="TextureProgressBar" parent="Sprite2D/CardContainer/VBoxContainer/CenterContainer"]
 unique_name_in_owner = true
-layout_mode = 1
-anchors_preset = 10
-anchor_right = 1.0
-offset_bottom = 23.0
-grow_horizontal = 2
+layout_mode = 2
+mouse_filter = 2
+texture_under = ExtResource("3_cs1ci")
+texture_progress = ExtResource("4_6gnhj")
+
+[node name="HitPointsLabel" type="Label" parent="Sprite2D/CardContainer/VBoxContainer/CenterContainer"]
+unique_name_in_owner = true
+layout_mode = 2
+theme_override_font_sizes/font_size = 18
+text = "3 / 4"
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="NameLabel" type="Label" parent="Sprite2D/CardContainer/VBoxContainer"]
+unique_name_in_owner = true
+layout_mode = 2
 theme_override_colors/font_color = Color(0.109804, 0.109804, 0.109804, 1)
+theme_override_font_sizes/font_size = 18
 text = "CARD_NAME"
 horizontal_alignment = 1
 
-[node name="TextLabel" type="Label" parent="Sprite2D/CardContainer/Control"]
-unique_name_in_owner = true
-custom_minimum_size = Vector2(0, 54)
-layout_mode = 1
-anchors_preset = 12
-anchor_top = 1.0
-anchor_right = 1.0
-anchor_bottom = 1.0
-offset_top = -49.0
-grow_horizontal = 2
-grow_vertical = 0
-theme_override_colors/font_color = Color(0.109804, 0.109804, 0.109804, 1)
-text = "long text test here"
-horizontal_alignment = 1
-autowrap_mode = 2
+[node name="CenterContainer2" type="CenterContainer" parent="Sprite2D/CardContainer/VBoxContainer"]
+custom_minimum_size = Vector2(0, 32)
+layout_mode = 2
 
-[node name="EnergyControl" type="Control" parent="Sprite2D/CardContainer/Control"]
-unique_name_in_owner = true
-custom_minimum_size = Vector2(32, 32)
-layout_mode = 1
-anchors_preset = 0
-offset_right = 32.0
-offset_bottom = 32.0
+[node name="Control" type="Control" parent="Sprite2D/CardContainer/VBoxContainer/CenterContainer2"]
+layout_mode = 2
 mouse_filter = 2
 
-[node name="Sprite2D" type="Sprite2D" parent="Sprite2D/CardContainer/Control/EnergyControl"]
+[node name="DragonSprite" type="Sprite2D" parent="Sprite2D/CardContainer/VBoxContainer/CenterContainer2/Control"]
+unique_name_in_owner = true
+scale = Vector2(0.25, 0.25)
+
+[node name="HBoxContainer" type="HBoxContainer" parent="Sprite2D/CardContainer/VBoxContainer"]
+layout_mode = 2
+
+[node name="PlayControl" type="Control" parent="Sprite2D/CardContainer/VBoxContainer/HBoxContainer"]
+unique_name_in_owner = true
+custom_minimum_size = Vector2(32, 32)
+layout_mode = 2
+mouse_filter = 2
+
+[node name="PlayArea" type="Area2D" parent="Sprite2D/CardContainer/VBoxContainer/HBoxContainer/PlayControl"]
+script = ExtResource("5_wlisr")
+
+[node name="Sprite2D" type="Sprite2D" parent="Sprite2D/CardContainer/VBoxContainer/HBoxContainer/PlayControl/PlayArea"]
 scale = Vector2(0.25, 0.25)
 texture = ExtResource("3_osvk8")
 centered = false
 
-[node name="EnergyLabel" type="Label" parent="Sprite2D/CardContainer/Control/EnergyControl"]
-unique_name_in_owner = true
-layout_mode = 1
-anchors_preset = 8
-anchor_left = 0.5
-anchor_top = 0.5
-anchor_right = 0.5
-anchor_bottom = 0.5
-offset_left = -4.0
-offset_top = -10.0
-offset_right = 4.0
-offset_bottom = 10.0
-grow_horizontal = 2
-grow_vertical = 2
-theme_override_colors/font_color = Color(0.215686, 0.156863, 0.219608, 1)
-theme_override_font_sizes/font_size = 14
-text = "X"
-horizontal_alignment = 1
-vertical_alignment = 1
-
-[node name="HitPointsControl" type="Control" parent="Sprite2D/CardContainer/Control"]
-unique_name_in_owner = true
-custom_minimum_size = Vector2(32, 32)
-layout_mode = 1
-anchors_preset = 1
-anchor_left = 1.0
-anchor_right = 1.0
-offset_left = -32.0
-offset_bottom = 32.0
-grow_horizontal = 0
-mouse_filter = 2
-
-[node name="Sprite2D" type="Sprite2D" parent="Sprite2D/CardContainer/Control/HitPointsControl"]
-scale = Vector2(0.25, 0.25)
-texture = ExtResource("4_1mrel")
-centered = false
-
-[node name="HitPointsLabel" type="Label" parent="Sprite2D/CardContainer/Control/HitPointsControl"]
-unique_name_in_owner = true
-layout_mode = 1
-anchors_preset = 8
-anchor_left = 0.5
-anchor_top = 0.5
-anchor_right = 0.5
-anchor_bottom = 0.5
-offset_left = -4.0
-offset_top = -10.0
-offset_right = 4.0
-offset_bottom = 10.0
-grow_horizontal = 2
-grow_vertical = 2
-theme_override_colors/font_color = Color(0.215686, 0.156863, 0.219608, 1)
-theme_override_font_sizes/font_size = 14
-text = "X"
-horizontal_alignment = 1
-vertical_alignment = 1
-
-[node name="ScaleUpControl" type="Control" parent="Sprite2D/CardContainer/Control"]
-unique_name_in_owner = true
-visible = false
-custom_minimum_size = Vector2(32, 32)
-layout_mode = 1
-anchors_preset = 0
-offset_right = 32.0
-offset_bottom = 32.0
-tooltip_text = "Click here to scale this card up, increasing its size.
-You need energy to do it."
-mouse_filter = 1
-
-[node name="ScaleUpArea" type="Area2D" parent="Sprite2D/CardContainer/Control/ScaleUpControl"]
-script = ExtResource("4_02b53")
-
-[node name="Sprite2D" type="Sprite2D" parent="Sprite2D/CardContainer/Control/ScaleUpControl/ScaleUpArea"]
-scale = Vector2(0.25, 0.25)
-texture = ExtResource("4_jn3co")
-centered = false
-
-[node name="ScaleUpLabel" type="Label" parent="Sprite2D/CardContainer/Control/ScaleUpControl/ScaleUpArea"]
+[node name="PlayLabel" type="Label" parent="Sprite2D/CardContainer/VBoxContainer/HBoxContainer/PlayControl/PlayArea"]
 unique_name_in_owner = true
 anchors_preset = 8
 anchor_left = 0.5
@@ -177,15 +114,84 @@ text = "X"
 horizontal_alignment = 1
 vertical_alignment = 1
 
-[node name="CollisionPolygon2D" type="CollisionPolygon2D" parent="Sprite2D/CardContainer/Control/ScaleUpControl/ScaleUpArea"]
+[node name="CollisionPolygon2D" type="CollisionPolygon2D" parent="Sprite2D/CardContainer/VBoxContainer/HBoxContainer/PlayControl/PlayArea"]
+scale = Vector2(0.25, 0.25)
+polygon = PackedVector2Array(83.1, 13, 84.9, 13, 106, 7.4, 106, 9.9, 109, 11.9, 109, 31, 128, 38.9, 128, 47.9, 119.9, 61.1, 128, 70, 128, 84, 113, 91.3, 113, 92.6, 116.4, 111, 114.2, 111, 112.2, 115, 108.9, 115, 91.7, 113.2, 84.2, 128, 69.9, 128, 60.5, 120, 46.1, 128, 39.6, 128, 36, 126.2, 36, 122.3, 31.6, 109, 13.3, 109, 8, 105, 8, 98.7, 12.3, 84, 0, 75.4, 0, 63, 11, 53.1, 11, 52.3, 2, 31, 4.9, 31, 6.9, 28, 11.6, 28, 25, 25.3, 28.3, 6, 29.9, 6, 31.9, 3, 36.4, 3, 52.9, 10.3, 63, 0.2, 75, 0)
+
+[node name="ScaleUpControl" type="Control" parent="Sprite2D/CardContainer/VBoxContainer/HBoxContainer"]
+unique_name_in_owner = true
+custom_minimum_size = Vector2(32, 32)
+layout_mode = 2
+tooltip_text = "Click here to scale this card up, increasing its size.
+You need energy to do it."
+mouse_filter = 1
+
+[node name="ScaleUpArea" type="Area2D" parent="Sprite2D/CardContainer/VBoxContainer/HBoxContainer/ScaleUpControl"]
+script = ExtResource("4_02b53")
+
+[node name="Sprite2D" type="Sprite2D" parent="Sprite2D/CardContainer/VBoxContainer/HBoxContainer/ScaleUpControl/ScaleUpArea"]
+scale = Vector2(0.25, 0.25)
+texture = ExtResource("4_jn3co")
+centered = false
+
+[node name="ScaleUpLabel" type="Label" parent="Sprite2D/CardContainer/VBoxContainer/HBoxContainer/ScaleUpControl/ScaleUpArea"]
+unique_name_in_owner = true
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = 11.5
+offset_top = 6.0
+offset_right = 20.5
+offset_bottom = 26.0
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_colors/font_color = Color(0.215686, 0.156863, 0.219608, 1)
+theme_override_font_sizes/font_size = 14
+text = "X"
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="CollisionPolygon2D" type="CollisionPolygon2D" parent="Sprite2D/CardContainer/VBoxContainer/HBoxContainer/ScaleUpControl/ScaleUpArea"]
 scale = Vector2(0.25, 0.25)
 polygon = PackedVector2Array(68, 3.2, 74, 9.2, 74, 11.4, 123, 79.4, 123, 81.5, 128, 91.6, 125.1, 92, 123.1, 95, 87, 95, 87, 122.8, 82.8, 127, 44, 127, 44, 125.1, 41, 123.1, 41, 95, 5.2, 95, 1, 90.8, 1, 85.4, 60, 3.4, 60, 1, 68, 1)
+
+[node name="TooltipPanel" type="PanelContainer" parent="Sprite2D"]
+unique_name_in_owner = true
+visible = false
+z_index = 128
+anchors_preset = 6
+anchor_left = 1.0
+anchor_top = 0.5
+anchor_right = 1.0
+anchor_bottom = 0.5
+offset_left = -64.0
+offset_top = -84.0
+offset_right = -64.0
+offset_bottom = -44.0
+grow_vertical = 2
+mouse_filter = 2
+theme_override_styles/panel = SubResource("StyleBoxFlat_bw7m7")
+
+[node name="TextLabel" type="Label" parent="Sprite2D/TooltipPanel"]
+unique_name_in_owner = true
+custom_minimum_size = Vector2(128, 64)
+layout_mode = 2
+theme_override_colors/font_color = Color(0.109804, 0.109804, 0.109804, 1)
+theme_override_font_sizes/font_size = 18
+text = "long text test here"
+horizontal_alignment = 1
+autowrap_mode = 2
 
 [node name="CollisionPolygon2D" type="CollisionPolygon2D" parent="."]
 polygon = PackedVector2Array(64, 64, -64, 64, -64, -64, 64, -64)
 
 [connection signal="mouse_entered" from="." to="." method="_on_mouse_entered"]
 [connection signal="mouse_exited" from="." to="." method="_on_mouse_exited"]
-[connection signal="mouse_entered" from="Sprite2D/CardContainer/Control/ScaleUpControl/ScaleUpArea" to="Sprite2D/CardContainer/Control/ScaleUpControl/ScaleUpArea" method="_on_mouse_entered"]
-[connection signal="mouse_exited" from="Sprite2D/CardContainer/Control/ScaleUpControl/ScaleUpArea" to="Sprite2D/CardContainer/Control/ScaleUpControl/ScaleUpArea" method="_on_mouse_exited"]
-[connection signal="pressed" from="Sprite2D/CardContainer/Control/ScaleUpControl/ScaleUpArea" to="." method="_on_scale_up_area_pressed"]
+[connection signal="mouse_entered" from="Sprite2D/CardContainer/VBoxContainer/HBoxContainer/PlayControl/PlayArea" to="Sprite2D/CardContainer/VBoxContainer/HBoxContainer/PlayControl/PlayArea" method="_on_mouse_entered"]
+[connection signal="mouse_exited" from="Sprite2D/CardContainer/VBoxContainer/HBoxContainer/PlayControl/PlayArea" to="Sprite2D/CardContainer/VBoxContainer/HBoxContainer/PlayControl/PlayArea" method="_on_mouse_exited"]
+[connection signal="pressed" from="Sprite2D/CardContainer/VBoxContainer/HBoxContainer/PlayControl/PlayArea" to="." method="_on_play_area_pressed"]
+[connection signal="mouse_entered" from="Sprite2D/CardContainer/VBoxContainer/HBoxContainer/ScaleUpControl/ScaleUpArea" to="Sprite2D/CardContainer/VBoxContainer/HBoxContainer/ScaleUpControl/ScaleUpArea" method="_on_mouse_entered"]
+[connection signal="mouse_exited" from="Sprite2D/CardContainer/VBoxContainer/HBoxContainer/ScaleUpControl/ScaleUpArea" to="Sprite2D/CardContainer/VBoxContainer/HBoxContainer/ScaleUpControl/ScaleUpArea" method="_on_mouse_exited"]
+[connection signal="pressed" from="Sprite2D/CardContainer/VBoxContainer/HBoxContainer/ScaleUpControl/ScaleUpArea" to="." method="_on_scale_up_area_pressed"]
