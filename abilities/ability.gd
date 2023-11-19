@@ -5,7 +5,8 @@ class_name Ability
 @export var description: String
 
 
-func use(_card: Card) -> void:
+func use(card: Card) -> void:
+	await card.get_tree().create_timer(0.01).timeout
 	pass
 
 

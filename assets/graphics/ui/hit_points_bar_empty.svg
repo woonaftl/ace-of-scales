@@ -11,6 +11,7 @@
    sodipodi:docname="hit_points_bar_empty.svg"
    xmlns:inkscape="http://www.inkscape.org/namespaces/inkscape"
    xmlns:sodipodi="http://sodipodi.sourceforge.net/DTD/sodipodi-0.dtd"
+   xmlns:xlink="http://www.w3.org/1999/xlink"
    xmlns="http://www.w3.org/2000/svg"
    xmlns:svg="http://www.w3.org/2000/svg">
   <sodipodi:namedview
@@ -26,8 +27,8 @@
      showgrid="true"
      showguides="true"
      inkscape:zoom="5.9651515"
-     inkscape:cx="51.968504"
-     inkscape:cy="32.689865"
+     inkscape:cx="48.448057"
+     inkscape:cy="32.857506"
      inkscape:window-width="1920"
      inkscape:window-height="1017"
      inkscape:window-x="-8"
@@ -44,13 +45,37 @@
        originy="0" />
   </sodipodi:namedview>
   <defs
-     id="defs2" />
+     id="defs2">
+    <linearGradient
+       inkscape:collect="always"
+       id="linearGradient14329">
+      <stop
+         style="stop-color:#3a0000;stop-opacity:1;"
+         offset="0"
+         id="stop14325" />
+      <stop
+         style="stop-color:#220000;stop-opacity:1;"
+         offset="1"
+         id="stop14327" />
+    </linearGradient>
+    <radialGradient
+       inkscape:collect="always"
+       xlink:href="#linearGradient14329"
+       id="radialGradient14331"
+       cx="13.771068"
+       cy="3.1877342"
+       fx="13.771068"
+       fy="3.1877342"
+       r="13.745599"
+       gradientTransform="matrix(1,0,0,0.23005659,0,2.454375)"
+       gradientUnits="userSpaceOnUse" />
+  </defs>
   <g
      inkscape:label="Layer 1"
      inkscape:groupmode="layer"
      id="layer1">
     <rect
-       style="fill:#220000;fill-opacity:1;stroke:#520000;stroke-width:0.450676;stroke-linecap:round;stroke-linejoin:round;stroke-dasharray:none;stroke-opacity:1;paint-order:fill markers stroke"
+       style="fill:url(#radialGradient14331);fill-opacity:1;stroke:#493a0a;stroke-width:0.450676;stroke-linecap:round;stroke-linejoin:round;stroke-dasharray:none;stroke-opacity:1;paint-order:fill markers stroke"
        id="rect1622"
        width="27.040522"
        height="5.8738551"

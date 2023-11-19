@@ -32,7 +32,9 @@ import/blender/enabled=false
 
 [gui]
 
-theme/custom_font="res://assets/fonts/taylor-sans/TaylorSans-Regular.ttf"
+common/snap_controls_to_pixels=false
+theme/custom="res://default_theme.tres"
+theme/custom_font="res://assets/fonts/modern_antiqua/ModernAntiqua.ttf"
 
 [rendering]
 

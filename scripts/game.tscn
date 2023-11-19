@@ -63,14 +63,18 @@ anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
 
-[node name="TileControl" type="Control" parent="TileContainer"]
+[node name="MarginContainer" type="MarginContainer" parent="TileContainer"]
+layout_mode = 2
+theme_override_constants/margin_bottom = 64
+
+[node name="TileControl" type="Control" parent="TileContainer/MarginContainer"]
 unique_name_in_owner = true
 custom_minimum_size = Vector2(384, 384)
 layout_mode = 2
 mouse_filter = 1
 script = ExtResource("1_dh102")
 
-[node name="TileMap" type="TileMap" parent="TileContainer/TileControl"]
+[node name="TileMap" type="TileMap" parent="TileContainer/MarginContainer/TileControl"]
 unique_name_in_owner = true
 tile_set = SubResource("TileSet_8gkoc")
 rendering_quadrant_size = 8
@@ -79,51 +83,52 @@ script = ExtResource("6_78rt2")
 
 [node name="MarginContainer" type="MarginContainer" parent="."]
 layout_mode = 1
-anchors_preset = 2
-anchor_top = 1.0
-anchor_bottom = 1.0
-offset_top = -128.0
-offset_right = 40.0
-grow_vertical = 0
-theme_override_constants/margin_bottom = 128
+offset_right = 222.0
+offset_bottom = 276.0
+theme_override_constants/margin_left = 8
+theme_override_constants/margin_top = 8
+theme_override_constants/margin_right = 8
+theme_override_constants/margin_bottom = 8
 
-[node name="EndTurnButton" type="Button" parent="."]
+[node name="TopLeftContainer" type="VBoxContainer" parent="MarginContainer"]
+layout_mode = 2
+
+[node name="BackToMenuButton" type="Button" parent="MarginContainer/TopLeftContainer"]
 unique_name_in_owner = true
-layout_mode = 1
-anchors_preset = 3
-anchor_left = 1.0
-anchor_top = 1.0
-anchor_right = 1.0
-anchor_bottom = 1.0
-offset_left = -90.0
-offset_top = -31.0
-grow_horizontal = 0
-grow_vertical = 0
+layout_mode = 2
 tooltip_text = "End your turn.
 Your opponent will make their move."
-theme_override_font_sizes/font_size = 24
-text = "END TURN"
-
-[node name="BackToMenuButton" type="Button" parent="."]
-unique_name_in_owner = true
-layout_mode = 1
-offset_right = 121.0
-offset_bottom = 37.0
-tooltip_text = "End your turn.
-Your opponent will make their move."
+focus_mode = 0
 theme_override_font_sizes/font_size = 24
 text = "BACK TO MENU"
 
-[node name="HumanContainer" type="VBoxContainer" parent="."]
+[node name="OpponentDiscardPileLabel" type="Label" parent="MarginContainer/TopLeftContainer"]
+unique_name_in_owner = true
+custom_minimum_size = Vector2(128, 128)
+layout_mode = 2
+size_flags_horizontal = 0
+theme_override_font_sizes/font_size = 42
+text = "XXX"
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="MarginContainer2" type="MarginContainer" parent="."]
 layout_mode = 1
 anchors_preset = 2
 anchor_top = 1.0
 anchor_bottom = 1.0
-offset_top = -260.0
-offset_right = 128.0
+offset_top = -276.0
+offset_right = 144.0
 grow_vertical = 0
+theme_override_constants/margin_left = 8
+theme_override_constants/margin_top = 8
+theme_override_constants/margin_right = 8
+theme_override_constants/margin_bottom = 8
 
-[node name="HumanEnergyControl" type="Control" parent="HumanContainer"]
+[node name="BottomLeftContainer" type="VBoxContainer" parent="MarginContainer2"]
+layout_mode = 2
+
+[node name="HumanEnergyControl" type="Control" parent="MarginContainer2/BottomLeftContainer"]
 unique_name_in_owner = true
 custom_minimum_size = Vector2(128, 128)
 layout_mode = 2
@@ -132,11 +137,11 @@ Energy is spent on playing cards.
 Energy is gained by controlling the board."
 mouse_filter = 1
 
-[node name="Sprite2D" type="Sprite2D" parent="HumanContainer/HumanEnergyControl"]
+[node name="Sprite2D" type="Sprite2D" parent="MarginContainer2/BottomLeftContainer/HumanEnergyControl"]
 texture = ExtResource("8_d4f4y")
 centered = false
 
-[node name="HumanEnergyLabel" type="Label" parent="HumanContainer/HumanEnergyControl"]
+[node name="HumanEnergyLabel" type="Label" parent="MarginContainer2/BottomLeftContainer/HumanEnergyControl"]
 unique_name_in_owner = true
 layout_mode = 1
 anchors_preset = 8
@@ -155,16 +160,17 @@ theme_override_font_sizes/font_size = 42
 text = "999"
 horizontal_alignment = 1
 
-[node name="HumanDeckLabel" type="Label" parent="HumanContainer"]
+[node name="HumanDrawPileLabel" type="Label" parent="MarginContainer2/BottomLeftContainer"]
 unique_name_in_owner = true
 custom_minimum_size = Vector2(128, 128)
 layout_mode = 2
+size_flags_horizontal = 0
 theme_override_font_sizes/font_size = 42
 text = "XXX"
 horizontal_alignment = 1
 vertical_alignment = 1
 
-[node name="OpponentContainer" type="VBoxContainer" parent="."]
+[node name="MarginContainer3" type="MarginContainer" parent="."]
 layout_mode = 1
 anchors_preset = 1
 anchor_left = 1.0
@@ -172,28 +178,36 @@ anchor_right = 1.0
 offset_left = -128.0
 offset_bottom = 260.0
 grow_horizontal = 0
+theme_override_constants/margin_left = 8
+theme_override_constants/margin_top = 8
+theme_override_constants/margin_right = 8
+theme_override_constants/margin_bottom = 8
 
-[node name="OpponentDeckLabel" type="Label" parent="OpponentContainer"]
+[node name="TopRightContainer" type="VBoxContainer" parent="MarginContainer3"]
+layout_mode = 2
+
+[node name="OpponentDrawPileLabel" type="Label" parent="MarginContainer3/TopRightContainer"]
 unique_name_in_owner = true
 custom_minimum_size = Vector2(128, 128)
 layout_mode = 2
+size_flags_horizontal = 8
 theme_override_font_sizes/font_size = 42
 text = "XXX"
 horizontal_alignment = 1
 vertical_alignment = 1
 
-[node name="OpponentEnergyControl" type="Control" parent="OpponentContainer"]
+[node name="OpponentEnergyControl" type="Control" parent="MarginContainer3/TopRightContainer"]
 unique_name_in_owner = true
 custom_minimum_size = Vector2(128, 128)
 layout_mode = 2
 tooltip_text = "Your opponent's current energy."
 mouse_filter = 1
 
-[node name="Sprite2D" type="Sprite2D" parent="OpponentContainer/OpponentEnergyControl"]
+[node name="Sprite2D" type="Sprite2D" parent="MarginContainer3/TopRightContainer/OpponentEnergyControl"]
 texture = ExtResource("9_oa8vq")
 centered = false
 
-[node name="OpponentEnergyLabel" type="Label" parent="OpponentContainer/OpponentEnergyControl"]
+[node name="OpponentEnergyLabel" type="Label" parent="MarginContainer3/TopRightContainer/OpponentEnergyControl"]
 unique_name_in_owner = true
 layout_mode = 1
 anchors_preset = 8
@@ -212,23 +226,53 @@ theme_override_font_sizes/font_size = 42
 text = "999"
 horizontal_alignment = 1
 
-[node name="GameOverDialog" type="AcceptDialog" parent="."]
-unique_name_in_owner = true
-title = "GAME OVER"
-ok_button_text = "BACK TO MENU"
-dialog_text = "You lose"
+[node name="MarginContainer4" type="MarginContainer" parent="."]
+layout_mode = 1
+anchors_preset = 3
+anchor_left = 1.0
+anchor_top = 1.0
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_left = -162.0
+offset_top = -194.0
+grow_horizontal = 0
+grow_vertical = 0
+theme_override_constants/margin_left = 8
+theme_override_constants/margin_top = 8
+theme_override_constants/margin_right = 8
+theme_override_constants/margin_bottom = 8
 
-[node name="VictoryDialog" type="AcceptDialog" parent="."]
-unique_name_in_owner = true
-title = "VICTORY"
-ok_button_text = "BACK TO MENU"
-dialog_text = "You win"
+[node name="BottomRightContainer" type="VBoxContainer" parent="MarginContainer4"]
+layout_mode = 2
 
-[node name="LevelCompleteDialog" type="AcceptDialog" parent="."]
+[node name="HumanDiscardPileLabel" type="Label" parent="MarginContainer4/BottomRightContainer"]
 unique_name_in_owner = true
-title = "VICTORY"
-ok_button_text = "NEXT"
-dialog_text = "You win"
+custom_minimum_size = Vector2(128, 128)
+layout_mode = 2
+size_flags_horizontal = 8
+theme_override_font_sizes/font_size = 42
+text = "XXX"
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="EndTurnButton" type="Button" parent="MarginContainer4/BottomRightContainer"]
+unique_name_in_owner = true
+layout_mode = 2
+tooltip_text = "End your turn.
+Your opponent will make their move."
+focus_mode = 0
+theme_override_font_sizes/font_size = 24
+text = "END TURN"
+
+[node name="CenterContainer" type="CenterContainer" parent="."]
+unique_name_in_owner = true
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+mouse_filter = 2
 
 [node name="ParallaxBackground" type="ParallaxBackground" parent="."]
 
@@ -237,11 +281,5 @@ scale = Vector2(2, 2)
 texture = ExtResource("11_icxqw")
 centered = false
 
-[connection signal="pressed" from="EndTurnButton" to="." method="_on_end_turn_button_pressed"]
-[connection signal="pressed" from="BackToMenuButton" to="." method="_on_back_to_menu_button_pressed"]
-[connection signal="canceled" from="GameOverDialog" to="." method="_on_game_over_dialog_confirmed"]
-[connection signal="confirmed" from="GameOverDialog" to="." method="_on_game_over_dialog_confirmed"]
-[connection signal="canceled" from="VictoryDialog" to="." method="_on_victory_dialog_confirmed"]
-[connection signal="confirmed" from="VictoryDialog" to="." method="_on_victory_dialog_confirmed"]
-[connection signal="canceled" from="LevelCompleteDialog" to="." method="_on_level_complete_dialog_confirmed"]
-[connection signal="confirmed" from="LevelCompleteDialog" to="." method="_on_level_complete_dialog_confirmed"]
+[connection signal="pressed" from="MarginContainer/TopLeftContainer/BackToMenuButton" to="." method="_on_back_to_menu_button_pressed"]
+[connection signal="pressed" from="MarginContainer4/BottomRightContainer/EndTurnButton" to="." method="_on_end_turn_button_pressed"]

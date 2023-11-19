@@ -2,16 +2,16 @@
 
 importer="texture"
 type="CompressedTexture2D"
-uid="uid://b6pejo7sbtw05"
-path="res://.godot/imported/card_blank_blue.svg-dc76297319bc8c7874c4305d589a907d.ctex"
+uid="uid://cuku2723lxwdm"
+path="res://.godot/imported/button_normal.png-86a5f8ed635d6f8aa610213a21429f0c.ctex"
 metadata={
 "vram_texture": false
 }
 
 [deps]
 
-source_file="res://assets/graphics/card_blank_blue.svg"
-dest_files=["res://.godot/imported/card_blank_blue.svg-dc76297319bc8c7874c4305d589a907d.ctex"]
+source_file="res://assets/graphics/ui/button_normal.png"
+dest_files=["res://.godot/imported/button_normal.png-86a5f8ed635d6f8aa610213a21429f0c.ctex"]
 
 [params]
 
@@ -32,6 +32,3 @@ process/hdr_as_srgb=false
 process/hdr_clamp_exposure=false
 process/size_limit=0
 detect_3d/compress_to=1
-svg/scale=1.0
-editor/scale_with_editor_scale=false
-editor/convert_colors_with_editor_theme=false

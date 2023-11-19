@@ -2,16 +2,16 @@
 
 importer="texture"
 type="CompressedTexture2D"
-uid="uid://ttxd6jhm0e5o"
-path="res://.godot/imported/card_blank_red.svg-aba5826154b75dad9e1f4c065223703a.ctex"
+uid="uid://df6surinqf35w"
+path="res://.godot/imported/main_menu_tile.png-b460614dda8813a3d3fb0fdd11a47d6b.ctex"
 metadata={
 "vram_texture": false
 }
 
 [deps]
 
-source_file="res://assets/graphics/card_blank_red.svg"
-dest_files=["res://.godot/imported/card_blank_red.svg-aba5826154b75dad9e1f4c065223703a.ctex"]
+source_file="res://assets/graphics/main_menu_tile.png"
+dest_files=["res://.godot/imported/main_menu_tile.png-b460614dda8813a3d3fb0fdd11a47d6b.ctex"]
 
 [params]
 
@@ -32,6 +32,3 @@ process/hdr_as_srgb=false
 process/hdr_clamp_exposure=false
 process/size_limit=0
 detect_3d/compress_to=1
-svg/scale=1.0
-editor/scale_with_editor_scale=false
-editor/convert_colors_with_editor_theme=false

@@ -1,6 +1,8 @@
 extends Control
 
 
+const POPUP_TIME_TURN = 0.75
+const POPUP_TIME_END = 3.5
 const ROTATED_CARDS_Y_OFFSET: float = 10.
 const CARD_ROTATION_ANGLE: float = 0.04
 const DEFAULT_CARDS_IN_HAND: int = 5
@@ -32,18 +34,18 @@ var level: int = 1:
 		_deal_cards(opponent)
 
 
-@onready var game_over_dialog: AcceptDialog = %GameOverDialog as AcceptDialog
-@onready var level_complete_dialog: AcceptDialog = %LevelCompleteDialog as AcceptDialog
-@onready var victory_dialog: AcceptDialog = %VictoryDialog as AcceptDialog
 @onready var tile_control: Control = %TileControl as Control
 @onready var tile_map: TileMap = %TileMap as TileMap
 @onready var human_energy_control: Control = %HumanEnergyControl as Control
 @onready var human_energy_label: Label = %HumanEnergyLabel as Label
-@onready var human_deck_label: Label = %HumanDeckLabel as Label
+@onready var human_draw_pile_label: Label = %HumanDrawPileLabel as Label
+@onready var human_discard_pile_label: Label = %HumanDiscardPileLabel as Label
 @onready var opponent_energy_control: Control = %OpponentEnergyControl as Control
 @onready var opponent_energy_label: Label = %OpponentEnergyLabel as Label
-@onready var opponent_deck_label: Label = %OpponentDeckLabel as Label
+@onready var opponent_draw_pile_label: Label = %OpponentDrawPileLabel as Label
+@onready var opponent_discard_pile_label: Label = %OpponentDiscardPileLabel as Label
 @onready var end_turn_button: Button = %EndTurnButton as Button
+@onready var center_container: CenterContainer = %CenterContainer as CenterContainer
 
 
 func _ready():
@@ -57,6 +59,7 @@ func _ready():
 	play_starting_cards_human()
 	await _prepare_turn(human)
 	current_turn = human
+	await show_popup("YOUR TURN", POPUP_TIME_TURN)
 
 
 func fill_deck_human() -> void:
@@ -106,9 +109,29 @@ func _process(_delta: float) -> void:
 		reset_card.is_highlighted = false
 	human_energy_label.text = str(human.energy)
 	opponent_energy_label.text = str(opponent.energy)
-	end_turn_button.visible = current_turn == human
-	human_deck_label.text = str(len(QueryCard.get_cards(human, Card.CardState.DRAW)))
-	opponent_deck_label.text = str(len(QueryCard.get_cards(opponent, Card.CardState.DRAW)))
+	end_turn_button.disabled = current_turn != human
+	# draw and discard pile counters
+	var human_draw_pile_size: int = len(QueryCard.get_cards(human, Card.CardState.DRAW))
+	if human_draw_pile_size > 0:
+		human_draw_pile_label.text = str(human_draw_pile_size)
+	else:
+		human_draw_pile_label.text = ""
+	var human_discard_pile_size: int = len(QueryCard.get_cards(human, Card.CardState.DISCARD))
+	if human_discard_pile_size > 0:
+		human_discard_pile_label.text = str(human_discard_pile_size)
+	else:
+		human_discard_pile_label.text = ""
+
+	var opponent_draw_pile_size: int = len(QueryCard.get_cards(opponent, Card.CardState.DRAW))
+	if opponent_draw_pile_size > 0:
+		opponent_draw_pile_label.text = str(opponent_draw_pile_size)
+	else:
+		opponent_draw_pile_label.text = ""
+	var opponent_discard_pile_size: int = len(QueryCard.get_cards(opponent, Card.CardState.DISCARD))
+	if opponent_discard_pile_size > 0:
+		opponent_discard_pile_label.text = str(opponent_discard_pile_size)
+	else:
+		opponent_discard_pile_label.text = ""
 	# scaling card
 	for card in QueryCard.get_cards(human, Card.CardState.BOARD_SCALING):
 		var mouse_pos: Vector2 = get_global_mouse_position()
@@ -176,29 +199,29 @@ func _process(_delta: float) -> void:
 			if card.player.is_human:
 				card.target_position = Vector2(
 					center_x + relative_index * card_size.x,
-					viewport_size.y - card_size.y / 2. + abs(relative_index) * ROTATED_CARDS_Y_OFFSET
+					viewport_size.y - card_size.y / 2. - 32. + abs(
+						relative_index
+					) * ROTATED_CARDS_Y_OFFSET
 				)
 				card.target_rotation = relative_index * CARD_ROTATION_ANGLE
 			else:
 				card.target_position = Vector2(
 					center_x - relative_index * card_size.x,
-					card_size.y / 2. - abs(relative_index) * ROTATED_CARDS_Y_OFFSET
+					card_size.y / 2. - abs(relative_index) * ROTATED_CARDS_Y_OFFSET - 32.
 				)
 				card.target_rotation = relative_index * CARD_ROTATION_ANGLE + PI
-	# cards in deck
+	# cards in draw pile
 	for card in QueryCard.get_cards_in_state(Card.CardState.DRAW):
 		if card.player.is_human:
-			card.target_position = Vector2(64., get_viewport_rect().size.y - 64.)
+			card.target_position = human_draw_pile_label.global_position + Vector2(64., 64.)
 		else:
-			card.target_position = Vector2(get_viewport_rect().size.x - 64., 64.)
+			card.target_position = opponent_draw_pile_label.global_position + Vector2(64., 64.)
+	# cards in discard pile
 	for card in QueryCard.get_cards_in_state(Card.CardState.DISCARD):
 		if card.player.is_human:
-			card.target_position = Vector2(
-				get_viewport_rect().size.x - 64.,
-				get_viewport_rect().size.y - 64.
-			)
+			card.target_position = human_discard_pile_label.global_position + Vector2(64., 64.)
 		else:
-			card.target_position = Vector2(64., 64.)
+			card.target_position = opponent_discard_pile_label.global_position + Vector2(64., 64.)
 
 
 func _unhandled_input(event: InputEvent) -> void:
@@ -229,27 +252,12 @@ func _on_end_turn_button_pressed() -> void:
 			card.state = Card.CardState.DISCARD
 		current_turn = opponent
 		await _prepare_turn(opponent)
+		await show_popup("ENEMY TURN", POPUP_TIME_TURN)
 		await _opponent_turn()
 		await _prepare_turn(human)
 		current_turn = human
+		await show_popup("YOUR TURN", POPUP_TIME_TURN)
 		_check_lose()
-
-
-func _on_game_over_dialog_confirmed():
-	get_tree().change_scene_to_file("res://scripts/main_menu.tscn")
-
-
-func _on_victory_dialog_confirmed():
-	get_tree().change_scene_to_file("res://scripts/main_menu.tscn")
-
-
-func _on_level_complete_dialog_confirmed():
-	for card: Card in QueryCard.get_cards_of_player(human):
-		card.state = Card.CardState.DRAW
-	level += 1
-	play_starting_cards_human()
-	await _prepare_turn(human)
-	current_turn = human
 
 
 func _on_user_input_failed(message: String) -> void:
@@ -426,6 +434,7 @@ func _opponent_turn() -> void:
 		moves = get_possible_opponent_moves()
 	for card: Card in QueryCard.get_cards(opponent, Card.CardState.HAND):
 		card.state = Card.CardState.DISCARD
+	await get_tree().create_timer(0.5).timeout
 
 
 func get_possible_scaling_directions(card: Card) -> Array:
@@ -446,17 +455,35 @@ func _check_lose() -> void:
 	if len(QueryCard.get_cards(human, Card.CardState.BOARD)) + len(
 		QueryCard.get_cards(human, Card.CardState.BOARD_SCALING)
 	) == 0:
-		game_over_dialog.popup_centered()
-		await game_over_dialog.canceled
+		await show_popup("GAME OVER", POPUP_TIME_END)
+		get_tree().change_scene_to_file("res://scripts/main_menu.tscn")
 	elif len(QueryCard.get_cards(opponent, Card.CardState.BOARD)) + len(
 		QueryCard.get_cards(opponent, Card.CardState.BOARD_SCALING)
 	) == 0:
 		if level < 3:
-			level_complete_dialog.popup_centered()
-			await level_complete_dialog.canceled
+			await show_popup("VICTORY", POPUP_TIME_END)
+			next_level()
 		else:
-			victory_dialog.popup_centered()
-			await victory_dialog.canceled
+			await show_popup("VICTORY", POPUP_TIME_END)
+			get_tree().change_scene_to_file("res://scripts/main_menu.tscn")
+
+
+func next_level():
+	for card: Card in QueryCard.get_cards_of_player(human):
+		card.state = Card.CardState.DRAW
+	level += 1
+	play_starting_cards_human()
+	await _prepare_turn(human)
+	current_turn = human
+	await show_popup("YOUR TURN", POPUP_TIME_TURN)
+
+
+func show_popup(message: String, popup_time: float) -> void:
+	var popup_label: Node = preload("res://scripts/popup_label.tscn").instantiate()
+	center_container.add_child(popup_label)
+	popup_label.text = message
+	popup_label.life_span = popup_time
+	await popup_label.done
 
 
 func get_vacant_tiles() -> Array:
