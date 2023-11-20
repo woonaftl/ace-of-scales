@@ -41,11 +41,20 @@ var board_scale: Vector2i = Vector2i.ONE
 @onready var player: Player
 
 
-@onready var is_highlighted: bool:
+@onready var is_damage_highlighted: bool:
 	set(new_value):
-		is_highlighted = new_value
-		if is_highlighted:
+		is_damage_highlighted = new_value
+		if is_damage_highlighted:
 			modulate = Color.LIGHT_PINK
+		else:
+			modulate = Color.WHITE
+
+
+@onready var is_heal_highlighted: bool:
+	set(new_value):
+		is_heal_highlighted = new_value
+		if is_heal_highlighted:
+			modulate = Color.LIGHT_GREEN
 		else:
 			modulate = Color.WHITE
 
@@ -56,7 +65,7 @@ var board_scale: Vector2i = Vector2i.ONE
 			modulate = Color.RED
 			await get_tree().create_timer(0.1).timeout
 			modulate = Color.WHITE
-		hit_points = clamp(new_value, 0, 99999)
+		hit_points = clamp(new_value, 0, blueprint.hit_points)
 		if hit_points == 0:
 			if board_scale.x > 1:
 				scale_down()
@@ -70,7 +79,7 @@ var board_scale: Vector2i = Vector2i.ONE
 	set(new_value):
 		blueprint = new_value
 		name_label.text = blueprint.name
-		text_label.text = blueprint.ability.description
+		text_label.text = blueprint.ability_description
 		play_label.text = str(blueprint.play_cost)
 		hit_points = blueprint.hit_points
 		hit_points_bar.max_value = blueprint.hit_points
@@ -86,58 +95,58 @@ var board_scale: Vector2i = Vector2i.ONE
 		match state:
 			CardState.BOARD:
 				if player.is_human:
-					sprite.texture = preload("res://assets/graphics/card_blank_human.svg")
+					sprite.texture = preload("res://assets/graphics/card/blank_human.svg")
 				else:
-					sprite.texture = preload("res://assets/graphics/card_blank_opponent.svg")
+					sprite.texture = preload("res://assets/graphics/card/blank_opponent.svg")
 				z_index = 0
 				target_cell = board_cell
 			CardState.DRAW:
 				if player.is_human:
-					sprite.texture = preload("res://assets/graphics/card_back_human.png")
+					sprite.texture = preload("res://assets/graphics/card/back_human.png")
 				else:
-					sprite.texture = preload("res://assets/graphics/card_back_opponent.png")
+					sprite.texture = preload("res://assets/graphics/card/back_opponent.png")
 				z_index = 0
 				board_scale = Vector2i.ONE
 				hit_points = blueprint.hit_points
 				target_cell = Vector2i(-1, -1)
 			CardState.DISCARD:
 				if player.is_human:
-					sprite.texture = preload("res://assets/graphics/card_back_human.png")
+					sprite.texture = preload("res://assets/graphics/card/back_human.png")
 				else:
-					sprite.texture = preload("res://assets/graphics/card_back_opponent.png")
+					sprite.texture = preload("res://assets/graphics/card/back_opponent.png")
 				z_index = 0
 				board_scale = Vector2i.ONE
 				hit_points = blueprint.hit_points
 				target_cell = Vector2i(-1, -1)
 			CardState.HAND:
 				if player.is_human:
-					sprite.texture = preload("res://assets/graphics/card_blank_human.svg")
+					sprite.texture = preload("res://assets/graphics/card/blank_human.svg")
 				else:
-					sprite.texture = preload("res://assets/graphics/card_back_opponent.png")
+					sprite.texture = preload("res://assets/graphics/card/back_opponent.png")
 				z_index = 0
 				board_scale = Vector2i.ONE
 				hit_points = blueprint.hit_points
 				target_cell = Vector2i(-1, -1)
 			CardState.HAND_SELECTED:
 				if player.is_human:
-					sprite.texture = preload("res://assets/graphics/card_blank_human.svg")
+					sprite.texture = preload("res://assets/graphics/card/blank_human.svg")
 				else:
-					sprite.texture = preload("res://assets/graphics/card_blank_opponent.svg")
+					sprite.texture = preload("res://assets/graphics/card/blank_opponent.svg")
 				z_index = 16
 				board_scale = Vector2i.ONE
 				hit_points = blueprint.hit_points
 			CardState.BOARD_SCALING:
 				if player.is_human:
-					sprite.texture = preload("res://assets/graphics/card_blank_human.svg")
+					sprite.texture = preload("res://assets/graphics/card/blank_human.svg")
 				else:
-					sprite.texture = preload("res://assets/graphics/card_blank_opponent.svg")
+					sprite.texture = preload("res://assets/graphics/card/blank_opponent.svg")
 				z_index = 16
 				target_cell = board_cell
 			CardState.BOARD_SELECTED:
 				if player.is_human:
-					sprite.texture = preload("res://assets/graphics/card_blank_human.svg")
+					sprite.texture = preload("res://assets/graphics/card/blank_human.svg")
 				else:
-					sprite.texture = preload("res://assets/graphics/card_blank_opponent.svg")
+					sprite.texture = preload("res://assets/graphics/card/blank_opponent.svg")
 				z_index = 16
 
 
@@ -170,8 +179,10 @@ func _process(delta: float) -> void:
 			target_scale = board_scale
 		CardState.BOARD:
 			target_scale = board_scale
-			if is_highlighted:
+			if is_damage_highlighted:
 				target_rotation = 0.12
+			elif is_heal_highlighted:
+				target_rotation = -0.12
 			else:
 				target_rotation = 0.
 		CardState.HAND:
@@ -286,7 +297,8 @@ func play(new_board_cell: Vector2i) -> void:
 	is_used_this_turn = true
 	board_cell = new_board_cell
 	player.energy -= blueprint.play_cost
-	await blueprint.ability.use(self)
+	if blueprint.play_ability != null:
+		await blueprint.play_ability.use(self)
 
 
 func reset() -> void:

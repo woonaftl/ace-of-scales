@@ -10,7 +10,7 @@
 [ext_resource type="Texture2D" uid="uid://cjwcsnbb5mt3" path="res://assets/graphics/tiles/tile_ability_highlight.svg" id="7_k4a5u"]
 [ext_resource type="Texture2D" uid="uid://blxkrpdcaai8v" path="res://assets/graphics/energy.svg" id="8_d4f4y"]
 [ext_resource type="Texture2D" uid="uid://q8i7yb13ip80" path="res://assets/graphics/energy_opponent.svg" id="9_oa8vq"]
-[ext_resource type="Texture2D" uid="uid://cr2ho4uxjaccq" path="res://assets/graphics/background.png" id="11_icxqw"]
+[ext_resource type="Texture2D" uid="uid://cr2ho4uxjaccq" path="res://assets/graphics/background/table.png" id="11_icxqw"]
 
 [sub_resource type="TileSetAtlasSource" id="TileSetAtlasSource_8h7ua"]
 texture = ExtResource("3_exdp3")

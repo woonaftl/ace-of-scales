@@ -1,11 +1,11 @@
 [gd_scene load_steps=10 format=3 uid="uid://doltcoflrwktf"]
 
 [ext_resource type="Script" path="res://scripts/card.gd" id="1_tjl4h"]
-[ext_resource type="Texture2D" uid="uid://v4tf3pt0xdm0" path="res://assets/graphics/card_blank_human.svg" id="2_5avda"]
-[ext_resource type="Texture2D" uid="uid://p6lokh4jyo27" path="res://assets/graphics/ui/hit_points_bar_empty.svg" id="3_0ayh1"]
+[ext_resource type="Texture2D" uid="uid://v4tf3pt0xdm0" path="res://assets/graphics/card/blank_human.svg" id="2_5avda"]
+[ext_resource type="Texture2D" uid="uid://p6lokh4jyo27" path="res://assets/graphics/hit_points_bar/hit_points_bar_empty.svg" id="3_0ayh1"]
 [ext_resource type="Texture2D" uid="uid://blxkrpdcaai8v" path="res://assets/graphics/energy.svg" id="3_osvk8"]
 [ext_resource type="Script" path="res://scripts/scale_up_area.gd" id="4_02b53"]
-[ext_resource type="Texture2D" uid="uid://qoxppkgoiu8p" path="res://assets/graphics/ui/hit_points_bar_full.svg" id="4_cjak3"]
+[ext_resource type="Texture2D" uid="uid://qoxppkgoiu8p" path="res://assets/graphics/hit_points_bar/hit_points_bar_full.svg" id="4_cjak3"]
 [ext_resource type="Texture2D" uid="uid://dhsoeaivb5d1r" path="res://assets/graphics/scale_up.svg" id="4_jn3co"]
 [ext_resource type="Script" path="res://scripts/play_area.gd" id="5_wlisr"]
 

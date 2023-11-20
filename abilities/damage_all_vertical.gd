@@ -1,7 +1,7 @@
 extends PlayAbility
 
 
-const DAMAGE: int = 2
+const DAMAGE: int = 1
 
 
 func use(card: Card) -> void:
@@ -21,30 +21,18 @@ func use(card: Card) -> void:
 
 func get_affected_cells(card: Card) -> Array[Vector2i]:
 	if card.state == Card.CardState.HAND_SELECTED or card.state == Card.CardState.BOARD_SELECTED:
-		return CellsHelpers.get_cells_near_rectangle(
+		return CellsHelpers.get_cells_above_and_below(
 			card.target_cell,
-			card.board_scale
+			card.board_scale,
+			5
 		)
 	else:
-		return CellsHelpers.get_cells_near_rectangle(
+		return CellsHelpers.get_cells_above_and_below(
 			card.board_cell,
-			card.board_scale
+			card.board_scale,
+			5
 		)
+
 
 func get_damaged_cards(card: Card) -> Array[Card]:
-	var eligible_targets: Array[Card] = QueryCard.get_cards_in_cells(get_affected_cells(card)).filter(
-		func(affected_card: Card):
-			return affected_card.player != card.player
-	)
-	if len(eligible_targets) > 0:
-		return [get_highest_hit_points_card(eligible_targets)]
-	else:
-		return []
-
-
-func get_highest_hit_points_card(cards: Array[Card]) -> Card:
-	var result: Card
-	for next_card: Card in cards:
-		if result == null or next_card.hit_points > result.hit_points:
-			result = next_card
-	return result
+	return QueryCard.get_cards_in_cells(get_affected_cells(card))

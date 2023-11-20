@@ -1,0 +1,7 @@
+[gd_resource type="Resource" load_steps=2 format=3 uid="uid://bshec3bwlrout"]
+
+[ext_resource type="Script" path="res://abilities/damage_or_heal_diagonal.gd" id="1_mv1h8"]
+
+[resource]
+script = ExtResource("1_mv1h8")
+description = "1 damage to enemies and 1 healing to allies diagonally"

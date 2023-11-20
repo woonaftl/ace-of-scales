@@ -17,10 +17,11 @@ func _process(_delta: float) -> void:
 	]):
 		for cell: Vector2i in card.get_occupied_cells(card.target_cell):
 			highlight_cell(cell)
-		for cell: Vector2i in card.blueprint.ability.get_affected_cells(card):
-			if is_cell_within_playable_area(card.target_cell):
-				if is_cell_within_playable_area(cell):
-					set_cell(0, cell, 4, Vector2i.ZERO)
+		if card.blueprint.play_ability != null:
+			for cell: Vector2i in card.blueprint.play_ability.get_affected_cells(card):
+				if is_cell_within_playable_area(card.target_cell):
+					if is_cell_within_playable_area(cell):
+						set_cell(0, cell, 4, Vector2i.ZERO)
 
 
 func reset_cells() -> void:
@@ -48,7 +49,10 @@ func is_pos_vacant(global_pos: Vector2) -> bool:
 
 
 func is_cell_vacant(cell: Vector2i) -> bool:
-	return is_cell_within_playable_area(cell) and [0, 1].has(get_cell_source_id(0, cell))
+	return is_cell_within_playable_area(cell) and QueryCard.get_cards_in_state(Card.CardState.BOARD).all(
+		func(card: Card):
+			return not cell in card.get_occupied_cells()
+	)
 
 
 func get_pos_source_id(global_pos: Vector2) -> int:

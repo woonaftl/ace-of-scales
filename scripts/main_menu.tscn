@@ -2,7 +2,7 @@
 
 [ext_resource type="Theme" uid="uid://dxv24qpxef2jy" path="res://default_theme.tres" id="1_qrrc4"]
 [ext_resource type="Script" path="res://scripts/main_menu.gd" id="1_suxk0"]
-[ext_resource type="Texture2D" uid="uid://df6surinqf35w" path="res://assets/graphics/main_menu_tile.png" id="2_0f73q"]
+[ext_resource type="Texture2D" uid="uid://df6surinqf35w" path="res://assets/graphics/background/main_menu_tile.png" id="2_0f73q"]
 
 [sub_resource type="TileSetAtlasSource" id="TileSetAtlasSource_d0fd5"]
 texture = ExtResource("2_0f73q")
@@ -65,6 +65,7 @@ theme_override_font_sizes/font_size = 24
 text = "START"
 
 [node name="QuitButton" type="Button" parent="VBoxContainer"]
+unique_name_in_owner = true
 custom_minimum_size = Vector2(192, 0)
 layout_mode = 2
 size_flags_horizontal = 4

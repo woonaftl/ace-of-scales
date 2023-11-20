@@ -1,15 +1,16 @@
 [gd_resource type="Resource" script_class="Blueprint" load_steps=4 format=3 uid="uid://d3uu5e2yd487r"]
 
-[ext_resource type="Resource" uid="uid://bshec3bwlrout" path="res://abilities/damage_diagonal.tres" id="1_hv5s4"]
+[ext_resource type="Resource" uid="uid://bshec3bwlrout" path="res://abilities/damage_or_heal_diagonal.tres" id="1_hv5s4"]
 [ext_resource type="Script" path="res://blueprints/blueprint.gd" id="1_mmsyy"]
-[ext_resource type="Texture2D" uid="uid://dkqeyrlkoljuf" path="res://assets/graphics/blueprints/ash.png" id="3_dgqdx"]
+[ext_resource type="Texture2D" uid="uid://dkqeyrlkoljuf" path="res://assets/graphics/dragons/ash.png" id="3_dgqdx"]
 
 [resource]
 script = ExtResource("1_mmsyy")
 name = "Ash"
 texture = ExtResource("3_dgqdx")
 hit_points = 2
-ability = ExtResource("1_hv5s4")
+ability_description = "1 damage to enemies and 1 healing to allies diagonally"
+play_ability = ExtResource("1_hv5s4")
 play_cost = 1
 scale_up_2_cost = 3
 scale_up_3_cost = 6

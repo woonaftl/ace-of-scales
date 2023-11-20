@@ -1,0 +1,6 @@
+[gd_resource type="Resource" load_steps=2 format=3 uid="uid://d3u5yniyc7kl3"]
+
+[ext_resource type="Script" path="res://abilities/add_energy.gd" id="1_0xfsf"]
+
+[resource]
+script = ExtResource("1_0xfsf")

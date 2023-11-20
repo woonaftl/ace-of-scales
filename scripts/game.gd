@@ -9,7 +9,11 @@ const DEFAULT_CARDS_IN_HAND: int = 5
 const ALL_BLUEPRINTS: Array = [
 	preload("res://blueprints/ash.tres"),
 	preload("res://blueprints/cinder.tres"),
-	preload("res://blueprints/ember.tres")
+	preload("res://blueprints/ember.tres"),
+	preload("res://blueprints/obsidian.tres"),
+	preload("res://blueprints/ruby.tres"),
+	preload("res://blueprints/sapphire.tres"),
+	preload("res://blueprints/sparkle.tres")
 ]
 
 
@@ -64,9 +68,10 @@ func _ready():
 
 func fill_deck_human() -> void:
 	for blueprint in ALL_BLUEPRINTS:
-		for index in 5:
+		for index in 2:
 			var new_card = preload("res://scripts/card.tscn").instantiate()
 			tile_control.add_child(new_card)
+			new_card.global_position = get_viewport_rect().size / 2.
 			new_card.player = human
 			new_card.blueprint = blueprint
 			new_card.state = Card.CardState.DRAW
@@ -81,9 +86,10 @@ func play_starting_cards_human() -> void:
 
 func fill_deck_opponent() -> void:
 	for blueprint in ALL_BLUEPRINTS:
-		for index in 5:
+		for index in 2:
 			var new_card = preload("res://scripts/card.tscn").instantiate()
 			tile_control.add_child(new_card)
+			new_card.global_position = get_viewport_rect().size / 2.
 			new_card.player = opponent
 			new_card.blueprint = blueprint
 			new_card.state = Card.CardState.DRAW
@@ -106,7 +112,8 @@ func play_starting_cards_opponent() -> void:
 
 func _process(_delta: float) -> void:
 	for reset_card: Card in QueryCard.get_all_cards():
-		reset_card.is_highlighted = false
+		reset_card.is_damage_highlighted = false
+		reset_card.is_heal_highlighted = false
 	human_energy_label.text = str(human.energy)
 	opponent_energy_label.text = str(opponent.energy)
 	end_turn_button.disabled = current_turn != human
@@ -185,8 +192,11 @@ func _process(_delta: float) -> void:
 				card.board_scale
 			)
 			# highlight which cards will be affected if played
-			for affected_card: Card in card.blueprint.ability.get_affected_cards(card):
-				affected_card.is_highlighted = true
+			if card.blueprint.play_ability != null:
+				for damaged_card: Card in card.blueprint.play_ability.get_damaged_cards(card):
+					damaged_card.is_damage_highlighted = true
+				for healed_card: Card in card.blueprint.play_ability.get_healed_cards(card):
+					healed_card.is_heal_highlighted = true
 	# cards in hand
 	for player in [human, opponent]:
 		var cards_in_hand = QueryCard.get_cards(player, Card.CardState.HAND)
@@ -336,6 +346,8 @@ func _prepare_turn(player: Player) -> void:
 	player.energy = 0
 	for card: Card in QueryCard.get_cards(player, Card.CardState.BOARD):
 		for _index in card.board_scale.x * card.board_scale.y:
+			if card.blueprint.turn_ability != null:
+				card.blueprint.turn_ability.use(card)
 			add_energy(
 				card.global_position + Vector2(
 					randf_range(-64. * card.board_scale.x, 64. * card.board_scale.x),
@@ -362,11 +374,6 @@ func add_energy(p_global: Vector2, player: Player) -> void:
 		projectile.texture = preload("res://assets/graphics/energy_opponent.svg")
 		projectile.target_position = opponent_energy_control.global_position + Vector2(64., 64.)
 	projectile.z_index = 128
-	projectile.arrived.connect(_on_projectile_arrived)
-
-
-func _on_projectile_arrived(player):
-	player.energy += 1
 
 
 func _deal_cards(player: Player) -> void:

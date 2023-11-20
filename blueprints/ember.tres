@@ -2,14 +2,15 @@
 
 [ext_resource type="Script" path="res://blueprints/blueprint.gd" id="1_8mjln"]
 [ext_resource type="Resource" uid="uid://b7vjpxk3yi14s" path="res://abilities/damage_highest_hp_enemy_nearby.tres" id="1_w4wpr"]
-[ext_resource type="Texture2D" uid="uid://7d238wq3yrun" path="res://assets/graphics/blueprints/ember.svg" id="2_v7eg6"]
+[ext_resource type="Texture2D" uid="uid://cqo4glvp4wbp3" path="res://assets/graphics/dragons/ember.png" id="3_3oimm"]
 
 [resource]
 script = ExtResource("1_8mjln")
 name = "Ember"
-texture = ExtResource("2_v7eg6")
+texture = ExtResource("3_3oimm")
 hit_points = 3
-ability = ExtResource("1_w4wpr")
+ability_description = "2 damage to one enemy nearby with highest hp"
+play_ability = ExtResource("1_w4wpr")
 play_cost = 2
 scale_up_2_cost = 3
 scale_up_3_cost = 6

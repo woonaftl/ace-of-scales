@@ -8,9 +8,10 @@
    version="1.1"
    id="svg5"
    inkscape:version="1.2.1 (9c6d41e410, 2022-07-14)"
-   sodipodi:docname="tile_highlight.svg"
+   sodipodi:docname="tile_ability_highlight.svg"
    xmlns:inkscape="http://www.inkscape.org/namespaces/inkscape"
    xmlns:sodipodi="http://sodipodi.sourceforge.net/DTD/sodipodi-0.dtd"
+   xmlns:xlink="http://www.w3.org/1999/xlink"
    xmlns="http://www.w3.org/2000/svg"
    xmlns:svg="http://www.w3.org/2000/svg">
   <sodipodi:namedview
@@ -26,7 +27,7 @@
      showgrid="true"
      showguides="true"
      inkscape:zoom="1.0544998"
-     inkscape:cx="-97.676643"
+     inkscape:cx="-117.5913"
      inkscape:cy="106.21149"
      inkscape:window-width="1920"
      inkscape:window-height="1017"
@@ -42,13 +43,36 @@
        empspacing="4" />
   </sodipodi:namedview>
   <defs
-     id="defs2" />
+     id="defs2">
+    <linearGradient
+       inkscape:collect="always"
+       id="linearGradient5355">
+      <stop
+         style="stop-color:#decc55;stop-opacity:0.60000002;"
+         offset="0"
+         id="stop5351" />
+      <stop
+         style="stop-color:#decc54;stop-opacity:0.40000001;"
+         offset="1"
+         id="stop5353" />
+    </linearGradient>
+    <radialGradient
+       inkscape:collect="always"
+       xlink:href="#linearGradient5355"
+       id="radialGradient5357"
+       cx="16.933334"
+       cy="16.933334"
+       fx="16.933334"
+       fy="16.933334"
+       r="16.404167"
+       gradientUnits="userSpaceOnUse" />
+  </defs>
   <g
      inkscape:label="Layer 1"
      inkscape:groupmode="layer"
      id="layer1">
     <rect
-       style="fill:#cdde83;fill-opacity:0.5;stroke:none;stroke-width:1.74375;stroke-linejoin:round;paint-order:fill markers stroke"
+       style="fill:url(#radialGradient5357);fill-opacity:1;stroke:none;stroke-width:1.74375;stroke-linejoin:round;paint-order:fill markers stroke"
        id="rect6600"
        width="32.808334"
        height="32.808334"

@@ -57,3 +57,29 @@ static func get_cells_adjacent_to_rectangle(
 		result.append(top_left_cell + Vector2i(-1, y))
 		result.append(top_left_cell + Vector2i(size.x, y))
 	return result
+
+
+static func get_cells_above_and_below(
+	top_left_cell: Vector2i,
+	size: Vector2i,
+	selection_range: int
+) -> Array[Vector2i]:
+	var result: Array[Vector2i] = []
+	for x: int in size.x:
+		for y: int in selection_range:
+			result.append(top_left_cell + Vector2i(x, size.y + y))
+			result.append(top_left_cell + Vector2i(x, -1 - y))
+	return result
+
+
+static func get_cells_left_and_right(
+	top_left_cell: Vector2i,
+	size: Vector2i,
+	selection_range: int
+) -> Array[Vector2i]:
+	var result: Array[Vector2i] = []
+	for y: int in size.y:
+		for x: int in selection_range:
+			result.append(top_left_cell + Vector2i(size.x + x, y))
+			result.append(top_left_cell + Vector2i(-1 - x, y))
+	return result
