@@ -7,21 +7,20 @@ const ROTATED_CARDS_Y_OFFSET: float = 10.
 const CARD_ROTATION_ANGLE: float = 0.04
 const DEFAULT_CARDS_IN_HAND: int = 5
 const ALL_BLUEPRINTS: Array = [
-	preload("res://blueprints/ash.tres"),
 	preload("res://blueprints/cinder.tres"),
+	preload("res://blueprints/crimson.tres"),
+	preload("res://blueprints/dawn.tres"),
 	preload("res://blueprints/ember.tres"),
+	preload("res://blueprints/emerald.tres"),
 	preload("res://blueprints/obsidian.tres"),
 	preload("res://blueprints/ruby.tres"),
 	preload("res://blueprints/sapphire.tres"),
-	preload("res://blueprints/sparkle.tres")
+	preload("res://blueprints/sparkle.tres"),
+	preload("res://blueprints/tempest.tres")
 ]
 
 
-var current_turn: Player:
-	set(new_value):
-		current_turn = new_value
-
-
+var current_turn: Player
 var human: Player
 var opponent: Player
 
@@ -193,9 +192,9 @@ func _process(_delta: float) -> void:
 			)
 			# highlight which cards will be affected if played
 			if card.blueprint.play_ability != null:
-				for damaged_card: Card in card.blueprint.play_ability.get_damaged_cards(card):
+				for damaged_card: Card in card.blueprint.play_ability.get_damaged_cards(card, card.target_cell):
 					damaged_card.is_damage_highlighted = true
-				for healed_card: Card in card.blueprint.play_ability.get_healed_cards(card):
+				for healed_card: Card in card.blueprint.play_ability.get_healed_cards(card, card.target_cell):
 					healed_card.is_heal_highlighted = true
 	# cards in hand
 	for player in [human, opponent]:
@@ -400,20 +399,62 @@ func get_possible_opponent_moves() -> Array[OpponentMove]:
 	for card in QueryCard.get_cards(opponent, Card.CardState.BOARD):
 		if not card.is_used_this_turn:
 			if opponent.energy >= card.blueprint.play_cost:
-				result.append(OpponentMove.new(card, false, card.board_cell))
+				result.append(OpponentMove.new(
+					card,
+					false,
+					card.board_cell,
+					0 + get_card_play_ability_value(card, card.board_cell)
+				))
 				for cell in vacant_tiles:
 					if can_place_card_here(card, cell):
-						result.append(OpponentMove.new(card, false, cell))
+						result.append(OpponentMove.new(
+							card,
+							false,
+							cell,
+							0 + get_card_play_ability_value(card, cell)
+						))
 			if opponent.energy >= card.get_scale_up_cost():
 				for cell in get_possible_scaling_directions(card):
-					result.append(OpponentMove.new(card, true, cell))
+					result.append(OpponentMove.new(
+						card,
+						true,
+						cell,
+						2 + get_card_scale_value(card, cell)
+					))
 	for card in QueryCard.get_cards(opponent, Card.CardState.HAND):
 		if not card.is_used_this_turn:
 			if opponent.energy >= card.blueprint.play_cost:
 				for cell in vacant_tiles:
 					if can_place_card_here(card, cell):
-						result.append(OpponentMove.new(card, false, cell))
+						result.append(OpponentMove.new(
+							card,
+							false,
+							cell,
+							1 + get_card_play_ability_value(card, cell)
+						))
 	return result
+
+
+func get_card_play_ability_value(card: Card, cell: Vector2i) -> int:
+	if card.blueprint.play_ability != null:
+		@warning_ignore("integer_division")
+		return card.blueprint.play_ability.get_value(card, cell) / card.blueprint.play_cost
+	else:
+		return 1
+
+
+func get_card_scale_value(card: Card, cell: Vector2i) -> int:
+	var overlapping_cards: Array = QueryCard.get_cards_in_rectangle(
+		cell,
+		card.board_scale + Vector2i.ONE
+	)
+	return 2 * len(overlapping_cards.filter(
+		func(overlapping_card: Card):
+			return overlapping_card.player != card.player
+	)) - 2 * len(overlapping_cards.filter(
+		func(overlapping_card: Card):
+			return overlapping_card.player == card.player
+	))
 
 
 func pick_opponent_move(moves: Array[OpponentMove]) -> OpponentMove:
@@ -422,15 +463,8 @@ func pick_opponent_move(moves: Array[OpponentMove]) -> OpponentMove:
 	for move: OpponentMove in moves:
 		if result == null:
 			result = move
-		elif move.is_scale:
-			if not result.is_scale:
-				result = move
-			elif move.card.board_scale > result.card.board_scale:
-				result = move
-		elif not result.is_scale:
-			if move.card.state == Card.CardState.HAND:
-				if result.card.state != Card.CardState.HAND:
-					result = move
+		elif move.value > result.value:
+			result = move
 	return result
 
 

@@ -1,0 +1,18 @@
+[gd_resource type="Resource" script_class="Blueprint" load_steps=4 format=3 uid="uid://ba43oy80vruhv"]
+
+[ext_resource type="Resource" uid="uid://co5hsqkkbgxbm" path="res://abilities/transfer_from_adjacent.tres" id="1_r1e2s"]
+[ext_resource type="Script" path="res://blueprints/blueprint.gd" id="2_5of7x"]
+[ext_resource type="Texture2D" uid="uid://bumh72b74jdvw" path="res://assets/graphics/dragons/crimson.png" id="3_5dpif"]
+
+[resource]
+script = ExtResource("2_5of7x")
+name = "Crimson"
+texture = ExtResource("3_5dpif")
+hit_points = 2
+ability_description = "Transfer 1 hp from adjacent enemies to allies nearby"
+play_ability = ExtResource("1_r1e2s")
+play_cost = 1
+scale_up_2_cost = 3
+scale_up_3_cost = 6
+scale_up_4_cost = 12
+scale_up_5_cost = 18

@@ -18,7 +18,7 @@ func _process(_delta: float) -> void:
 		for cell: Vector2i in card.get_occupied_cells(card.target_cell):
 			highlight_cell(cell)
 		if card.blueprint.play_ability != null:
-			for cell: Vector2i in card.blueprint.play_ability.get_affected_cells(card):
+			for cell: Vector2i in card.blueprint.play_ability.get_affected_cells(card, card.target_cell):
 				if is_cell_within_playable_area(card.target_cell):
 					if is_cell_within_playable_area(cell):
 						set_cell(0, cell, 4, Vector2i.ZERO)

@@ -4,4 +4,3 @@
 
 [resource]
 script = ExtResource("1_r42wy")
-description = "1 damage to ALL cards in this row"

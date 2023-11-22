@@ -14,7 +14,7 @@ config/name="Ace of Scales"
 config/description="Created for Game Off 2023 jam"
 run/main_scene="res://scripts/main_menu.tscn"
 config/features=PackedStringArray("4.2", "GL Compatibility")
-config/icon="res://assets/graphics/dragons/ash.png"
+config/icon="res://assets/graphics/dragons/emerald.png"
 
 [autoload]
 

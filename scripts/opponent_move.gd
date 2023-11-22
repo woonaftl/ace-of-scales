@@ -5,12 +5,14 @@ class_name OpponentMove
 var card: Card
 var is_scale: bool
 var target: Vector2i
+var value: int
 
 
-func _init(new_card: Card, new_is_scale: bool, new_target: Vector2i):
+func _init(new_card: Card, new_is_scale: bool, new_target: Vector2i, new_value: int):
 	card = new_card
 	is_scale = new_is_scale
 	target = new_target
+	value = new_value
 
 
 func play():

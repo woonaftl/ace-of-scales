@@ -2,16 +2,16 @@
 
 importer="texture"
 type="CompressedTexture2D"
-uid="uid://dkqeyrlkoljuf"
-path="res://.godot/imported/ash.png-9d30be5597d32e10397f1d16cd4b9f32.ctex"
+uid="uid://dykmbfw48ygmn"
+path="res://.godot/imported/tempest.png-9fdc422d61c5058dfc22bd922f9c7066.ctex"
 metadata={
 "vram_texture": false
 }
 
 [deps]
 
-source_file="res://assets/graphics/dragons/ash.png"
-dest_files=["res://.godot/imported/ash.png-9d30be5597d32e10397f1d16cd4b9f32.ctex"]
+source_file="res://assets/graphics/dragons/tempest.png"
+dest_files=["res://.godot/imported/tempest.png-9fdc422d61c5058dfc22bd922f9c7066.ctex"]
 
 [params]
 
