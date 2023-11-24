@@ -2,16 +2,16 @@
 
 importer="texture"
 type="CompressedTexture2D"
-uid="uid://qoxppkgoiu8p"
-path="res://.godot/imported/hit_points_bar_full.svg-4c983f9c2fc400b4d697d23812a088a6.ctex"
+uid="uid://p6lokh4jyo27"
+path="res://.godot/imported/opponent_empty.svg-b8b670dc99b90c4fefdcd88e35dff75b.ctex"
 metadata={
 "vram_texture": false
 }
 
 [deps]
 
-source_file="res://assets/graphics/hit_points_bar/hit_points_bar_full.svg"
-dest_files=["res://.godot/imported/hit_points_bar_full.svg-4c983f9c2fc400b4d697d23812a088a6.ctex"]
+source_file="res://assets/graphics/hit_points_bar/opponent_empty.svg"
+dest_files=["res://.godot/imported/opponent_empty.svg-b8b670dc99b90c4fefdcd88e35dff75b.ctex"]
 
 [params]
 

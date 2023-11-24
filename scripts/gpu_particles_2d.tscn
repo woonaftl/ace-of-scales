@@ -1,0 +1,18 @@
+[gd_scene load_steps=3 format=3 uid="uid://b48lasxisb3vn"]
+
+[ext_resource type="Texture2D" uid="uid://sbapuynkg81m" path="res://assets/graphics/star_particle.png" id="1_4ade3"]
+
+[sub_resource type="ParticleProcessMaterial" id="ParticleProcessMaterial_w0v1m"]
+particle_flag_disable_z = true
+spread = 180.0
+initial_velocity_min = 100.0
+initial_velocity_max = 100.0
+gravity = Vector3(0, 0, 0)
+scale_min = 0.4
+scale_max = 0.8
+
+[node name="GPUParticles2D" type="GPUParticles2D"]
+amount = 5
+process_material = SubResource("ParticleProcessMaterial_w0v1m")
+texture = ExtResource("1_4ade3")
+lifetime = 0.3

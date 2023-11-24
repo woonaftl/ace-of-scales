@@ -2,16 +2,16 @@
 
 importer="texture"
 type="CompressedTexture2D"
-uid="uid://cf7bvhhxs1tuu"
-path="res://.godot/imported/card_back.png-1dc8ee14efaa527fc51d446231c1770d.ctex"
+uid="uid://qoxppkgoiu8p"
+path="res://.godot/imported/opponent_full.svg-d2ea8869bfe792818325383adc4f670b.ctex"
 metadata={
 "vram_texture": false
 }
 
 [deps]
 
-source_file="res://assets/graphics/card_back.png"
-dest_files=["res://.godot/imported/card_back.png-1dc8ee14efaa527fc51d446231c1770d.ctex"]
+source_file="res://assets/graphics/hit_points_bar/opponent_full.svg"
+dest_files=["res://.godot/imported/opponent_full.svg-d2ea8869bfe792818325383adc4f670b.ctex"]
 
 [params]
 
@@ -32,3 +32,6 @@ process/hdr_as_srgb=false
 process/hdr_clamp_exposure=false
 process/size_limit=0
 detect_3d/compress_to=1
+svg/scale=1.0
+editor/scale_with_editor_scale=false
+editor/convert_colors_with_editor_theme=false

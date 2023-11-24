@@ -2,16 +2,16 @@
 
 importer="texture"
 type="CompressedTexture2D"
-uid="uid://p6lokh4jyo27"
-path="res://.godot/imported/hit_points_bar_empty.svg-fb13c9d260f0739997b4173518359278.ctex"
+uid="uid://dih5cpbn5nwkb"
+path="res://.godot/imported/human_full.svg-fb45a48fa0ec369b7c295dfebf7a4654.ctex"
 metadata={
 "vram_texture": false
 }
 
 [deps]
 
-source_file="res://assets/graphics/hit_points_bar/hit_points_bar_empty.svg"
-dest_files=["res://.godot/imported/hit_points_bar_empty.svg-fb13c9d260f0739997b4173518359278.ctex"]
+source_file="res://assets/graphics/hit_points_bar/human_full.svg"
+dest_files=["res://.godot/imported/human_full.svg-fb45a48fa0ec369b7c295dfebf7a4654.ctex"]
 
 [params]
 

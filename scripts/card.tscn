@@ -1,13 +1,29 @@
-[gd_scene load_steps=10 format=3 uid="uid://doltcoflrwktf"]
+[gd_scene load_steps=13 format=3 uid="uid://doltcoflrwktf"]
 
 [ext_resource type="Script" path="res://scripts/card.gd" id="1_tjl4h"]
 [ext_resource type="Texture2D" uid="uid://v4tf3pt0xdm0" path="res://assets/graphics/card/blank_human.svg" id="2_5avda"]
-[ext_resource type="Texture2D" uid="uid://p6lokh4jyo27" path="res://assets/graphics/hit_points_bar/hit_points_bar_empty.svg" id="3_0ayh1"]
+[ext_resource type="PackedScene" uid="uid://b48lasxisb3vn" path="res://scripts/gpu_particles_2d.tscn" id="3_gce57"]
+[ext_resource type="Texture2D" uid="uid://p6lokh4jyo27" path="res://assets/graphics/hit_points_bar/opponent_empty.svg" id="3_ggsrt"]
 [ext_resource type="Texture2D" uid="uid://blxkrpdcaai8v" path="res://assets/graphics/energy.svg" id="3_osvk8"]
 [ext_resource type="Script" path="res://scripts/scale_up_area.gd" id="4_02b53"]
-[ext_resource type="Texture2D" uid="uid://qoxppkgoiu8p" path="res://assets/graphics/hit_points_bar/hit_points_bar_full.svg" id="4_cjak3"]
 [ext_resource type="Texture2D" uid="uid://dhsoeaivb5d1r" path="res://assets/graphics/scale_up.svg" id="4_jn3co"]
+[ext_resource type="Texture2D" uid="uid://qoxppkgoiu8p" path="res://assets/graphics/hit_points_bar/opponent_full.svg" id="4_sscmg"]
 [ext_resource type="Script" path="res://scripts/play_area.gd" id="5_wlisr"]
+[ext_resource type="Texture2D" uid="uid://cj41hmxnqty28" path="res://assets/graphics/card/selection.png" id="9_bn8qx"]
+
+[sub_resource type="ParticleProcessMaterial" id="ParticleProcessMaterial_m8864"]
+particle_flag_disable_z = true
+emission_shape = 6
+emission_ring_axis = Vector3(0, 0, 1)
+emission_ring_height = 64.0
+emission_ring_radius = 64.0
+emission_ring_inner_radius = 64.0
+spread = 180.0
+initial_velocity_min = 100.0
+initial_velocity_max = 100.0
+gravity = Vector3(0, 0, 0)
+scale_min = 0.4
+scale_max = 0.8
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_bw7m7"]
 bg_color = Color(0.6, 0.564706, 0.501961, 1)
@@ -23,6 +39,16 @@ corner_radius_bottom_left = 10
 
 [node name="Card" type="Area2D"]
 script = ExtResource("1_tjl4h")
+
+[node name="Selection" type="Sprite2D" parent="."]
+unique_name_in_owner = true
+visible = false
+modulate = Color(0.933333, 1, 0.760784, 1)
+texture = ExtResource("9_bn8qx")
+
+[node name="GPUParticles2D" parent="Selection" instance=ExtResource("3_gce57")]
+unique_name_in_owner = true
+process_material = SubResource("ParticleProcessMaterial_m8864")
 
 [node name="Sprite2D" type="Sprite2D" parent="."]
 unique_name_in_owner = true
@@ -114,8 +140,8 @@ offset_right = 52.0
 offset_bottom = 24.0
 grow_horizontal = 2
 mouse_filter = 2
-texture_under = ExtResource("3_0ayh1")
-texture_progress = ExtResource("4_cjak3")
+texture_under = ExtResource("3_ggsrt")
+texture_progress = ExtResource("4_sscmg")
 
 [node name="HitPointsLabel" type="Label" parent="Face/HitPointsBar"]
 unique_name_in_owner = true

@@ -23,6 +23,7 @@ const ALL_BLUEPRINTS: Array = [
 var current_turn: Player
 var human: Player
 var opponent: Player
+var is_game_on: bool
 
 
 var level: int = 1:
@@ -63,6 +64,7 @@ func _ready():
 	await _prepare_turn(human)
 	current_turn = human
 	await show_popup("YOUR TURN", POPUP_TIME_TURN)
+	is_game_on = true
 
 
 func fill_deck_human() -> void:
@@ -115,7 +117,7 @@ func _process(_delta: float) -> void:
 		reset_card.is_heal_highlighted = false
 	human_energy_label.text = str(human.energy)
 	opponent_energy_label.text = str(opponent.energy)
-	end_turn_button.disabled = current_turn != human
+	end_turn_button.disabled = current_turn != human or not is_game_on
 	# draw and discard pile counters
 	var human_draw_pile_size: int = len(QueryCard.get_cards(human, Card.CardState.DRAW))
 	if human_draw_pile_size > 0:
@@ -236,6 +238,10 @@ func _process(_delta: float) -> void:
 func _unhandled_input(event: InputEvent) -> void:
 	if event is InputEventMouseButton and event.pressed and event.button_index == MOUSE_BUTTON_LEFT:
 		var mouse_pos: Vector2 = get_global_mouse_position()
+		var particles: GPUParticles2D = preload("res://scripts/gpu_particles_2d.tscn").instantiate()
+		add_child(particles)
+		particles.global_position = mouse_pos
+		particles.one_shot = true
 		if tile_control.get_global_rect().has_point(mouse_pos):
 			var cell: Vector2i = tile_map.global_to_map(mouse_pos)
 			for card: Card in QueryCard.get_cards(human, Card.CardState.BOARD_SCALING):
@@ -257,6 +263,7 @@ func _on_end_turn_button_pressed() -> void:
 	if current_turn != human:
 		_on_user_input_failed("Not your turn")
 	elif not QueryCard.clear_selectiom():
+		await check_lose()
 		for card: Card in QueryCard.get_cards(human, Card.CardState.HAND):
 			card.state = Card.CardState.DISCARD
 		current_turn = opponent
@@ -266,7 +273,6 @@ func _on_end_turn_button_pressed() -> void:
 		await _prepare_turn(human)
 		current_turn = human
 		await show_popup("YOUR TURN", POPUP_TIME_TURN)
-		_check_lose()
 
 
 func _on_user_input_failed(message: String) -> void:
@@ -307,6 +313,7 @@ func scale_card(card: Card, board_direction: Vector2i) -> void:
 		card.state = Card.CardState.BOARD
 	else:
 		card.scale_up(board_direction)
+		await check_lose()
 
 
 func can_place_card_here(card, target_cell: Vector2i) -> bool:
@@ -492,21 +499,29 @@ func get_possible_scaling_directions(card: Card) -> Array:
 	return result
 
 
-func _check_lose() -> void:
-	if len(QueryCard.get_cards(human, Card.CardState.BOARD)) + len(
-		QueryCard.get_cards(human, Card.CardState.BOARD_SCALING)
-	) == 0:
-		await show_popup("GAME OVER", POPUP_TIME_END)
-		get_tree().change_scene_to_file("res://scripts/main_menu.tscn")
-	elif len(QueryCard.get_cards(opponent, Card.CardState.BOARD)) + len(
-		QueryCard.get_cards(opponent, Card.CardState.BOARD_SCALING)
-	) == 0:
-		if level < 3:
-			await show_popup("VICTORY", POPUP_TIME_END)
-			next_level()
-		else:
-			await show_popup("VICTORY", POPUP_TIME_END)
+func check_lose() -> void:
+	if is_game_on:
+		if len(QueryCard.get_cards(human, Card.CardState.BOARD)) + len(
+			QueryCard.get_cards(human, Card.CardState.BOARD_SCALING)
+		) + len(
+			QueryCard.get_cards(human, Card.CardState.BOARD_SELECTED)
+		) == 0:
+			is_game_on = false
+			await show_popup("GAME OVER", POPUP_TIME_END)
 			get_tree().change_scene_to_file("res://scripts/main_menu.tscn")
+		elif len(QueryCard.get_cards(opponent, Card.CardState.BOARD)) + len(
+			QueryCard.get_cards(opponent, Card.CardState.BOARD_SCALING)
+		) + len(
+			QueryCard.get_cards(opponent, Card.CardState.BOARD_SELECTED)
+		) == 0:
+			if level < 3:
+				is_game_on = false
+				await show_popup("VICTORY", POPUP_TIME_END)
+				next_level()
+			else:
+				is_game_on = false
+				await show_popup("VICTORY", POPUP_TIME_END)
+				get_tree().change_scene_to_file("res://scripts/main_menu.tscn")
 
 
 func next_level():
@@ -517,6 +532,7 @@ func next_level():
 	await _prepare_turn(human)
 	current_turn = human
 	await show_popup("YOUR TURN", POPUP_TIME_TURN)
+	is_game_on = true
 
 
 func show_popup(message: String, popup_time: float) -> void:

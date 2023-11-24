@@ -38,7 +38,19 @@ var board_scale: Vector2i = Vector2i.ONE
 @onready var tooltip_panel: PanelContainer = %TooltipPanel as PanelContainer
 @onready var play_label: Label = %PlayLabel as Label
 @onready var scale_up_label: Label = %ScaleUpLabel as Label
-@onready var player: Player
+@onready var selection: Sprite2D = %Selection as Sprite2D
+@onready var particles: GPUParticles2D = %GPUParticles2D as GPUParticles2D
+
+
+@onready var player: Player:
+	set(new_value):
+		player = new_value
+		if player.is_human:
+			hit_points_bar.texture_under = preload("res://assets/graphics/hit_points_bar/human_empty.svg")
+			hit_points_bar.texture_progress = preload("res://assets/graphics/hit_points_bar/human_full.svg")
+		else:
+			hit_points_bar.texture_under = preload("res://assets/graphics/hit_points_bar/opponent_empty.svg")
+			hit_points_bar.texture_progress = preload("res://assets/graphics/hit_points_bar/opponent_full.svg")
 
 
 @onready var is_damage_highlighted: bool:
@@ -92,6 +104,8 @@ var board_scale: Vector2i = Vector2i.ONE
 		face.visible = not (state == CardState.DRAW or state == CardState.DISCARD or (
 			state == CardState.HAND and not player.is_human)
 		)
+		selection.visible = state == CardState.HAND_SELECTED or state == CardState.BOARD_SELECTED
+		particles.restart()
 		match state:
 			CardState.BOARD:
 				if player.is_human:
@@ -209,6 +223,10 @@ func _process(delta: float) -> void:
 func _unhandled_input(event: InputEvent) -> void:
 	if event is InputEventMouseButton and event.pressed and event.button_index == MOUSE_BUTTON_LEFT:
 		if state == CardState.HAND and is_mouse_inside:
+			var particles: GPUParticles2D = preload("res://scripts/gpu_particles_2d.tscn").instantiate()
+			add_child(particles)
+			particles.global_position = get_global_mouse_position()
+			particles.one_shot = true
 			QueryCard.clear_selectiom()
 			if get_tree().current_scene.current_turn != get_tree().current_scene.human:
 				user_input_failed.emit("Not your turn")
@@ -299,6 +317,7 @@ func play(new_board_cell: Vector2i) -> void:
 	player.energy -= blueprint.play_cost
 	if blueprint.play_ability != null:
 		await blueprint.play_ability.use(self)
+		await get_tree().current_scene.check_lose()
 
 
 func reset() -> void:
