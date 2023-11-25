@@ -1,6 +1,0 @@
-[gd_resource type="Resource" load_steps=2 format=3 uid="uid://co5hsqkkbgxbm"]
-
-[ext_resource type="Script" path="res://abilities/transfer_from_adjacent.gd" id="1_mi85c"]
-
-[resource]
-script = ExtResource("1_mi85c")

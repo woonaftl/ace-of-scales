@@ -1,6 +1,0 @@
-[gd_resource type="Resource" load_steps=2 format=3 uid="uid://cbh8xdc4kkhs5"]
-
-[ext_resource type="Script" path="res://abilities/damage_all_vertical.gd" id="1_4ewby"]
-
-[resource]
-script = ExtResource("1_4ewby")

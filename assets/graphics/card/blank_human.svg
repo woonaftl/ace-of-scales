@@ -8,7 +8,7 @@
    version="1.1"
    id="svg689"
    inkscape:version="1.2.1 (9c6d41e410, 2022-07-14)"
-   sodipodi:docname="card_blank.svg"
+   sodipodi:docname="blank_human.svg"
    xmlns:inkscape="http://www.inkscape.org/namespaces/inkscape"
    xmlns:sodipodi="http://sodipodi.sourceforge.net/DTD/sodipodi-0.dtd"
    xmlns:xlink="http://www.w3.org/1999/xlink"
@@ -26,8 +26,8 @@
      inkscape:document-units="mm"
      showgrid="false"
      inkscape:zoom="4.2179991"
-     inkscape:cx="38.169757"
-     inkscape:cy="66.856345"
+     inkscape:cx="33.428172"
+     inkscape:cy="67.093424"
      inkscape:window-width="1920"
      inkscape:window-height="1017"
      inkscape:window-x="-8"
@@ -40,15 +40,15 @@
        inkscape:collect="always"
        id="linearGradient6700">
       <stop
-         style="stop-color:#d3c7a4;stop-opacity:1;"
+         style="stop-color:#988d76;stop-opacity:1;"
          offset="0"
          id="stop6696" />
       <stop
-         style="stop-color:#c4b997;stop-opacity:1;"
+         style="stop-color:#888269;stop-opacity:1;"
          offset="0.60771704"
          id="stop6704" />
       <stop
-         style="stop-color:#aaa184;stop-opacity:1;"
+         style="stop-color:#78745c;stop-opacity:1;"
          offset="1"
          id="stop6698" />
     </linearGradient>
@@ -97,7 +97,7 @@
      inkscape:groupmode="layer"
      id="layer1">
     <rect
-       style="fill:url(#radialGradient6702);fill-opacity:1;stroke:#493a0a;stroke-width:0.927543;stroke-linecap:round;stroke-linejoin:round;stroke-dasharray:none;stroke-opacity:1;paint-order:fill markers stroke"
+       style="fill:url(#radialGradient6702);fill-opacity:1;stroke:#26251d;stroke-width:0.927543;stroke-linecap:round;stroke-linejoin:round;stroke-dasharray:none;stroke-opacity:1;paint-order:fill markers stroke"
        id="rect3090"
        width="32.939121"
        height="32.939125"

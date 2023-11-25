@@ -6,17 +6,71 @@ const POPUP_TIME_END = 3.5
 const ROTATED_CARDS_Y_OFFSET: float = 10.
 const CARD_ROTATION_ANGLE: float = 0.04
 const DEFAULT_CARDS_IN_HAND: int = 5
-const ALL_BLUEPRINTS: Array = [
-	preload("res://blueprints/cinder.tres"),
-	preload("res://blueprints/crimson.tres"),
-	preload("res://blueprints/dawn.tres"),
-	preload("res://blueprints/ember.tres"),
-	preload("res://blueprints/emerald.tres"),
-	preload("res://blueprints/obsidian.tres"),
-	preload("res://blueprints/ruby.tres"),
-	preload("res://blueprints/sapphire.tres"),
-	preload("res://blueprints/sparkle.tres"),
-	preload("res://blueprints/tempest.tres")
+const BLUEPRINTS_HUMAN: Array = [
+	preload("res://data/blueprints/ruby.tres"),
+	preload("res://data/blueprints/cinder.tres"),
+	preload("res://data/blueprints/ember.tres"),
+	preload("res://data/blueprints/ember.tres"),
+	preload("res://data/blueprints/obsidian.tres"),
+	preload("res://data/blueprints/ruby.tres"),
+	preload("res://data/blueprints/ruby.tres"),
+	preload("res://data/blueprints/sapphire.tres"),
+	preload("res://data/blueprints/sapphire.tres"),
+	preload("res://data/blueprints/sapphire.tres"),
+]
+const BLUEPRINTS_JACK: Array = [
+	preload("res://data/blueprints/obsidian.tres"),
+	preload("res://data/blueprints/cinder.tres"),
+	preload("res://data/blueprints/ember.tres"),
+	preload("res://data/blueprints/ruby.tres"),
+	preload("res://data/blueprints/ruby.tres"),
+	preload("res://data/blueprints/sapphire.tres"),
+	preload("res://data/blueprints/sapphire.tres"),
+	preload("res://data/blueprints/sparkle.tres"),
+	preload("res://data/blueprints/sparkle.tres"),
+	preload("res://data/blueprints/tempest.tres"),
+]
+const BLUEPRINTS_QUEEN: Array = [
+	preload("res://data/blueprints/crimson.tres"),
+	preload("res://data/blueprints/ember.tres"),
+	preload("res://data/blueprints/cinder.tres"),
+	preload("res://data/blueprints/cinder.tres"),
+	preload("res://data/blueprints/crimson.tres"),
+	preload("res://data/blueprints/crimson.tres"),
+	preload("res://data/blueprints/ember.tres"),
+	preload("res://data/blueprints/emerald.tres"),
+	preload("res://data/blueprints/emerald.tres"),
+	preload("res://data/blueprints/tempest.tres"),
+	preload("res://data/blueprints/tempest.tres"),
+]
+const BLUEPRINTS_KING: Array = [
+	preload("res://data/blueprints/obsidian.tres"),
+	preload("res://data/blueprints/ember.tres"),
+	preload("res://data/blueprints/obsidian.tres"),
+	preload("res://data/blueprints/cinder.tres"),
+	preload("res://data/blueprints/crimson.tres"),
+	preload("res://data/blueprints/dawn.tres"),
+	preload("res://data/blueprints/ember.tres"),
+	preload("res://data/blueprints/ember.tres"),
+	preload("res://data/blueprints/emerald.tres"),
+	preload("res://data/blueprints/ruby.tres"),
+	preload("res://data/blueprints/sapphire.tres"),
+	preload("res://data/blueprints/tempest.tres"),
+]
+const BLUEPRINTS_ACE: Array = [
+	preload("res://data/blueprints/obsidian.tres"),
+	preload("res://data/blueprints/sparkle.tres"),
+	preload("res://data/blueprints/ember.tres"),
+	preload("res://data/blueprints/obsidian.tres"),
+	preload("res://data/blueprints/cinder.tres"),
+	preload("res://data/blueprints/cinder.tres"),
+	preload("res://data/blueprints/crimson.tres"),
+	preload("res://data/blueprints/dawn.tres"),
+	preload("res://data/blueprints/dawn.tres"),
+	preload("res://data/blueprints/emerald.tres"),
+	preload("res://data/blueprints/ruby.tres"),
+	preload("res://data/blueprints/sapphire.tres"),
+	preload("res://data/blueprints/tempest.tres"),
 ]
 
 
@@ -24,9 +78,10 @@ var current_turn: Player
 var human: Player
 var opponent: Player
 var is_game_on: bool
+var turn: int = 1
 
 
-var level: int = 1:
+@onready var level: int:
 	set(new_value):
 		level = new_value
 		for card in QueryCard.get_cards_of_player(opponent):
@@ -49,7 +104,12 @@ var level: int = 1:
 @onready var opponent_draw_pile_label: Label = %OpponentDrawPileLabel as Label
 @onready var opponent_discard_pile_label: Label = %OpponentDiscardPileLabel as Label
 @onready var end_turn_button: Button = %EndTurnButton as Button
-@onready var center_container: CenterContainer = %CenterContainer as CenterContainer
+@onready var tile_container: CenterContainer = %TileContainer as CenterContainer
+@onready var top_left_container: VBoxContainer = %TopLeftContainer as VBoxContainer
+@onready var top_right_container: VBoxContainer = %TopRightContainer as VBoxContainer
+@onready var bottom_left_container: VBoxContainer = %BottomLeftContainer as VBoxContainer
+@onready var bottom_right_container: VBoxContainer = %BottomRightContainer as VBoxContainer
+@onready var parallax_background: ParallaxBackground = %ParallaxBackground as ParallaxBackground
 
 
 func _ready():
@@ -58,6 +118,27 @@ func _ready():
 	human.is_human = true
 	opponent = Player.new()
 	opponent.is_human = false
+	await dialogue_opponent(
+		preload("res://data/characters/jack.tres"),
+		"So it says you're here to [i]free the Dragonfolk[/i]. What the hell does it even mean?"
+	)
+	await dialogue_human(
+		"I don't think the [color=#fff082]King of Scales[/color] is a just ruler."
+	)
+	await dialogue_opponent(
+		preload("res://data/characters/jack.tres"),
+		"Whatever, in order to get to the [color=#fff082]King of Scales[/color], you need to get through me!"
+	)
+	await dialogue_opponent(
+		preload("res://data/characters/jack.tres"),
+		"And, according to our centuries old tradition, we, the Dragons, always fight with cards!"
+	)
+	tile_container.visible = true
+	top_left_container.visible = true
+	top_right_container.visible = true
+	bottom_left_container.visible = true
+	bottom_right_container.visible = true
+	parallax_background.visible = true
 	level = 1
 	await fill_deck_human()
 	play_starting_cards_human()
@@ -65,50 +146,70 @@ func _ready():
 	current_turn = human
 	await show_popup("YOUR TURN", POPUP_TIME_TURN)
 	is_game_on = true
+	await dialogue_opponent(
+		preload("res://data/characters/jack.tres"),
+		"You look so tiny, I'm going to give you a first turn advantage. Just use your [img=24x24]res://assets/graphics/energy.svg[/img][color=#b482b7]energy[/color] to move the cards from your hand to the board."
+	)
+	await dialogue_opponent(
+		preload("res://data/characters/jack.tres"),
+		"When you use up all of your [img=24x24]res://assets/graphics/energy.svg[/img][color=#b482b7]energy[/color], end your turn."
+	)
 
 
 func fill_deck_human() -> void:
-	for blueprint in ALL_BLUEPRINTS:
-		for index in 2:
-			var new_card = preload("res://scripts/card.tscn").instantiate()
-			tile_control.add_child(new_card)
-			new_card.global_position = get_viewport_rect().size / 2.
-			new_card.player = human
-			new_card.blueprint = blueprint
-			new_card.state = Card.CardState.DRAW
-			await get_tree().create_timer(0.01).timeout
+	for blueprint in BLUEPRINTS_HUMAN:
+		var new_card = preload("res://data/scenes/card.tscn").instantiate()
+		tile_control.add_child(new_card)
+		new_card.global_position = get_viewport_rect().size / 2.
+		new_card.player = human
+		new_card.blueprint = blueprint
+		new_card.state = Card.CardState.DRAW
+		await get_tree().create_timer(0.01).timeout
 
 
 func play_starting_cards_human() -> void:
 	var player_deck = QueryCard.get_cards(human, Card.CardState.DRAW)
 	if len(player_deck) > 0:
-		player_deck.pick_random().play(Vector2i(0, tile_map.y_max))
+		player_deck[0].play(Vector2i(0, tile_map.y_max))
 
 
 func fill_deck_opponent() -> void:
-	for blueprint in ALL_BLUEPRINTS:
-		for index in 2:
-			var new_card = preload("res://scripts/card.tscn").instantiate()
-			tile_control.add_child(new_card)
-			new_card.global_position = get_viewport_rect().size / 2.
-			new_card.player = opponent
-			new_card.blueprint = blueprint
-			new_card.state = Card.CardState.DRAW
-			await get_tree().create_timer(0.01).timeout
+	var deck: Array = []
+	match level:
+		1:
+			deck = BLUEPRINTS_JACK
+		2:
+			deck = BLUEPRINTS_QUEEN
+		3:
+			deck = BLUEPRINTS_KING
+		_:
+			deck = BLUEPRINTS_ACE
+	for blueprint in deck:
+		var new_card = preload("res://data/scenes/card.tscn").instantiate()
+		tile_control.add_child(new_card)
+		new_card.global_position = get_viewport_rect().size / 2.
+		new_card.player = opponent
+		new_card.blueprint = blueprint
+		new_card.state = Card.CardState.DRAW
+		await get_tree().create_timer(0.01).timeout
 
 
 func play_starting_cards_opponent() -> void:
 	var player_deck = QueryCard.get_cards(opponent, Card.CardState.DRAW)
 	if len(player_deck) > 0:
-		player_deck.pick_random().play(Vector2i(tile_map.x_max, 0))
+		player_deck[0].play(Vector2i(tile_map.x_max, 0))
 	if level > 1:
 		player_deck = QueryCard.get_cards(opponent, Card.CardState.DRAW)
 		if len(player_deck) > 0:
-			player_deck.pick_random().play(Vector2i(tile_map.x_max - 1, 0))
+			player_deck[0].play(Vector2i(tile_map.x_max - 1, 0))
 	if level > 2:
 		player_deck = QueryCard.get_cards(opponent, Card.CardState.DRAW)
 		if len(player_deck) > 0:
-			player_deck.pick_random().play(Vector2i(tile_map.x_max, 1))
+			player_deck[0].play(Vector2i(tile_map.x_max, 1))
+	if level > 3:
+		player_deck = QueryCard.get_cards(opponent, Card.CardState.DRAW)
+		if len(player_deck) > 0:
+			player_deck[0].play(Vector2i(tile_map.x_max - 2, 1))
 
 
 func _process(_delta: float) -> void:
@@ -238,7 +339,7 @@ func _process(_delta: float) -> void:
 func _unhandled_input(event: InputEvent) -> void:
 	if event is InputEventMouseButton and event.pressed and event.button_index == MOUSE_BUTTON_LEFT:
 		var mouse_pos: Vector2 = get_global_mouse_position()
-		var particles: GPUParticles2D = preload("res://scripts/gpu_particles_2d.tscn").instantiate()
+		var particles: GPUParticles2D = preload("res://data/scenes/gpu_particles_2d.tscn").instantiate()
 		add_child(particles)
 		particles.global_position = mouse_pos
 		particles.one_shot = true
@@ -256,7 +357,7 @@ func _unhandled_input(event: InputEvent) -> void:
 
 
 func _on_back_to_menu_button_pressed():
-	get_tree().change_scene_to_file("res://scripts/main_menu.tscn")
+	get_tree().change_scene_to_file("res://data/scenes/main_menu.tscn")
 
 
 func _on_end_turn_button_pressed() -> void:
@@ -270,13 +371,10 @@ func _on_end_turn_button_pressed() -> void:
 		await _prepare_turn(opponent)
 		await show_popup("ENEMY TURN", POPUP_TIME_TURN)
 		await _opponent_turn()
-		await _prepare_turn(human)
-		current_turn = human
-		await show_popup("YOUR TURN", POPUP_TIME_TURN)
 
 
 func _on_user_input_failed(message: String) -> void:
-	var new_floating_text = preload("res://scripts/floating_hint.tscn").instantiate()
+	var new_floating_text = preload("res://data/scenes/floating_hint.tscn").instantiate()
 	add_child(new_floating_text)
 	new_floating_text.global_position = get_global_mouse_position()
 	new_floating_text.text = message
@@ -351,9 +449,9 @@ func can_scale_card_here(card: Node, board_direction: Vector2i) -> bool:
 func _prepare_turn(player: Player) -> void:
 	player.energy = 0
 	for card: Card in QueryCard.get_cards(player, Card.CardState.BOARD):
+		if card.blueprint.turn_ability != null:
+			card.blueprint.turn_ability.use(card)
 		for _index in card.board_scale.x * card.board_scale.y:
-			if card.blueprint.turn_ability != null:
-				card.blueprint.turn_ability.use(card)
 			add_energy(
 				card.global_position + Vector2(
 					randf_range(-64. * card.board_scale.x, 64. * card.board_scale.x),
@@ -368,7 +466,7 @@ func _prepare_turn(player: Player) -> void:
 
 
 func add_energy(p_global: Vector2, player: Player) -> void:
-	var projectile = preload("res://scripts/energy_projectile.tscn").instantiate()
+	var projectile = preload("res://data/scenes/energy_projectile.tscn").instantiate()
 	add_child(projectile)
 	projectile.global_position = p_global
 	projectile.scale = Vector2(0.2, 0.2)
@@ -482,7 +580,27 @@ func _opponent_turn() -> void:
 		moves = get_possible_opponent_moves()
 	for card: Card in QueryCard.get_cards(opponent, Card.CardState.HAND):
 		card.state = Card.CardState.DISCARD
-	await get_tree().create_timer(0.5).timeout
+	await get_tree().create_timer(1.).timeout
+	await check_lose()
+	if is_game_on:
+		await _prepare_turn(human)
+		current_turn = human
+		await show_popup("YOUR TURN", POPUP_TIME_TURN)
+		turn += 1
+		if level == 1 and turn == 2:
+			await dialogue_opponent(
+				preload("res://data/characters/jack.tres"),
+				"When your turn starts, you get [img=24x24]res://assets/graphics/energy.svg[/img][color=#b482b7]energy[/color] for each cell on the board occupied by your cards. For us dragons, territory is everything."
+			)
+			await dialogue_opponent(
+				preload("res://data/characters/jack.tres"),
+				"You can play not only the cards in your hand, but move around the cards already on the board, too. But it costs [img=24x24]res://assets/graphics/energy.svg[/img][color=#b482b7]energy[/color]."
+			)
+		elif level == 1 and turn == 3:
+			await dialogue_opponent(
+				preload("res://data/characters/jack.tres"),
+				"Once you get enough energy, you can [img=24x24]res://assets/graphics/scale_up.svg[/img][color=#b8657e]scale[/color] your cards! Bigger equals better! Bigger card captures everyone below it right into your hand!"
+			)
 
 
 func get_possible_scaling_directions(card: Card) -> Array:
@@ -508,39 +626,145 @@ func check_lose() -> void:
 		) == 0:
 			is_game_on = false
 			await show_popup("GAME OVER", POPUP_TIME_END)
-			get_tree().change_scene_to_file("res://scripts/main_menu.tscn")
+			clear_board()
+			if level < 2:
+				await dialogue_opponent(
+					preload("res://data/characters/jack.tres"),
+					"If you have no cards on board, you lose. Did I forget to tell you that? Oops."
+				)
+			elif level < 3:
+				await dialogue_opponent(
+					preload("res://data/characters/queen.tres"),
+					"Haha, get good before you dare to challenge me! I'm in a good mood today but next time your bones are going straight into the gorge!"
+				)
+			elif level < 4:
+				await dialogue_opponent(
+					preload("res://data/characters/king.tres"),
+					"Know your place, [b]peasant[/b]."
+				)
+			else:
+				await dialogue_opponent(
+					preload("res://data/characters/ace.tres"),
+					"Such a shame that your talent is wasted on this character. You could have been a [color=#fff082]King[/color], but you wanted more..."
+				)
+			get_tree().change_scene_to_file("res://data/scenes/main_menu.tscn")
 		elif len(QueryCard.get_cards(opponent, Card.CardState.BOARD)) + len(
 			QueryCard.get_cards(opponent, Card.CardState.BOARD_SCALING)
 		) + len(
 			QueryCard.get_cards(opponent, Card.CardState.BOARD_SELECTED)
 		) == 0:
-			if level < 3:
-				is_game_on = false
-				await show_popup("VICTORY", POPUP_TIME_END)
+			is_game_on = false
+			await show_popup("VICTORY", POPUP_TIME_END)
+			clear_board()
+			if level < 2:
+				await dialogue_opponent(
+					preload("res://data/characters/jack.tres"),
+					"I can't believe you've done it. I've just taught you how to play and you've already beaten me..."
+				)
+				await dialogue_opponent(
+					preload("res://data/characters/jack.tres"),
+					"Mom! Mommy!"
+				)
+				next_level()
+			elif level < 3:
+				await dialogue_opponent(
+					preload("res://data/characters/queen.tres"),
+					"My minions! They fail me again and again. Also, I had such terrible luck and this card game doesn't require any skill or strength..."
+				)
+				await dialogue_human(
+					"Just move out of my way, [b]loser[/b]."
+				)
+				next_level()
+			elif level < 4:
+				await dialogue_opponent(
+					preload("res://data/characters/king.tres"),
+					"I can't believe it. I have never lost this game before... Does it mean you're the new [color=#fff082]King[/color]? The rules of this game are so ancient I forgot them..."
+				)
+				await dialogue_human(
+					"Down with monarchy! I demand freedom for all of Dragonfolk!"
+				)
+				await dialogue_opponent(
+					preload("res://data/characters/ace.tres"),
+					"Freedom? Do you even know what it takes to be truly free, [b]mortal[/b]?"
+				)
 				next_level()
 			else:
-				is_game_on = false
-				await show_popup("VICTORY", POPUP_TIME_END)
-				get_tree().change_scene_to_file("res://scripts/main_menu.tscn")
+				await dialogue_opponent(
+					preload("res://data/characters/ace.tres"),
+					"Nooooooooooooooooooooo"
+				)
+				UserSettings.is_victory = true
+				get_tree().change_scene_to_file("res://data/scenes/credits.tscn")
+
+
+func clear_board():
+	for card: Card in QueryCard.get_cards_of_player(human):
+		card.state = Card.CardState.DRAW
 
 
 func next_level():
-	for card: Card in QueryCard.get_cards_of_player(human):
-		card.state = Card.CardState.DRAW
 	level += 1
 	play_starting_cards_human()
 	await _prepare_turn(human)
 	current_turn = human
 	await show_popup("YOUR TURN", POPUP_TIME_TURN)
 	is_game_on = true
+	if level == 2:
+		await dialogue_opponent(
+			preload("res://data/characters/queen.tres"),
+			"You rascal! I'm the [color=#fff082]Queen of Scales[/color] and I'm going to show you your place!"
+		)
+		await dialogue_opponent(
+			preload("res://data/characters/queen.tres"),
+			"And your place is low, very low, in the depths of the deepest and darkest ravine, where I throw bones of my enemies."
+		)
+		await dialogue_opponent(
+			preload("res://data/characters/queen.tres"),
+			"Bones I burn to ashes."
+		)
+		await dialogue_human(
+			"There aren't too many bones there if the ravine is so deep."
+		)
+		await dialogue_opponent(
+			preload("res://data/characters/queen.tres"),
+			"Oh, you know nothing! Enough of that!"
+		)
+	elif level == 3:
+		await dialogue_opponent(
+			preload("res://data/characters/king.tres"),
+			"I am the [color=#fff082]King of Scales[/color]! Get ready to fight!"
+		)
+	elif level == 4:
+		await dialogue_opponent(
+			preload("res://data/characters/ace.tres"),
+			"I am the [color=#fff082]Ace of Scales[/color]. You'll find your freedom in the grave."
+		)
 
 
 func show_popup(message: String, popup_time: float) -> void:
-	var popup_label: Node = preload("res://scripts/popup_label.tscn").instantiate()
-	center_container.add_child(popup_label)
-	popup_label.text = message
+	var popup_label: Node = preload("res://data/scenes/popup_label.tscn").instantiate()
+	add_child(popup_label)
 	popup_label.life_span = popup_time
+	popup_label.display_text(message)
 	await popup_label.done
+
+
+func dialogue_human(line: String) -> void:
+	var dialogue: Node = preload("res://data/scenes/dialogue_box.tscn").instantiate()
+	add_child(dialogue)
+	dialogue.global_position = Vector2(7, 663)
+	dialogue.say(preload("res://data/characters/you.tres"), line)
+	while len(get_tree().get_nodes_in_group("dialogue")) > 0:
+		await get_tree().create_timer(0.01).timeout
+
+
+func dialogue_opponent(character: Character, line: String) -> void:
+	var dialogue = preload("res://data/scenes/dialogue_box.tscn").instantiate()
+	add_child(dialogue)
+	dialogue.global_position = Vector2(7, 63)
+	dialogue.say(character, line)
+	while len(get_tree().get_nodes_in_group("dialogue")) > 0:
+		await get_tree().create_timer(0.01).timeout
 
 
 func get_vacant_tiles() -> Array:

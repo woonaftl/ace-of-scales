@@ -11,6 +11,7 @@
    sodipodi:docname="energy_opponent.svg"
    xmlns:inkscape="http://www.inkscape.org/namespaces/inkscape"
    xmlns:sodipodi="http://sodipodi.sourceforge.net/DTD/sodipodi-0.dtd"
+   xmlns:xlink="http://www.w3.org/1999/xlink"
    xmlns="http://www.w3.org/2000/svg"
    xmlns:svg="http://www.w3.org/2000/svg">
   <sodipodi:namedview
@@ -26,8 +27,8 @@
      showgrid="true"
      showguides="true"
      inkscape:zoom="2.9825758"
-     inkscape:cx="72.755904"
-     inkscape:cy="63.703327"
+     inkscape:cx="65.71501"
+     inkscape:cy="64.038607"
      inkscape:window-width="1920"
      inkscape:window-height="1017"
      inkscape:window-x="-8"
@@ -42,14 +43,37 @@
        empspacing="4" />
   </sodipodi:namedview>
   <defs
-     id="defs2" />
+     id="defs2">
+    <linearGradient
+       inkscape:collect="always"
+       id="linearGradient10464">
+      <stop
+         style="stop-color:#b89783;stop-opacity:1;"
+         offset="0"
+         id="stop10460" />
+      <stop
+         style="stop-color:#786255;stop-opacity:1;"
+         offset="1"
+         id="stop10462" />
+    </linearGradient>
+    <radialGradient
+       inkscape:collect="always"
+       xlink:href="#linearGradient10464"
+       id="radialGradient10466"
+       cx="-0.18234495"
+       cy="-0.18234497"
+       fx="-0.18234495"
+       fy="-0.18234497"
+       r="18.533578"
+       gradientUnits="userSpaceOnUse" />
+  </defs>
   <g
      inkscape:label="Layer 1"
      inkscape:groupmode="layer"
      id="layer1">
     <path
        sodipodi:type="star"
-       style="fill:#d3ad96;stroke:#604f45;stroke-width:1.60245256;stroke-linejoin:round;paint-order:fill markers stroke;fill-opacity:1;stroke-dasharray:none;stroke-opacity:1"
+       style="fill:url(#radialGradient10466);stroke:#2e2621;stroke-width:1.60245256;stroke-linejoin:round;paint-order:fill markers stroke;fill-opacity:1;stroke-dasharray:none;stroke-opacity:1"
        id="path1567"
        inkscape:flatsided="false"
        sodipodi:sides="11"

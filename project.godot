@@ -12,8 +12,9 @@ config_version=5
 
 config/name="Ace of Scales"
 config/description="Created for Game Off 2023 jam"
-run/main_scene="res://scripts/main_menu.tscn"
+run/main_scene="res://data/scenes/main_menu.tscn"
 config/features=PackedStringArray("4.2", "GL Compatibility")
+boot_splash/bg_color=Color(0, 0, 0, 1)
 config/icon="res://assets/graphics/dragons/emerald.png"
 
 [autoload]
@@ -36,10 +37,17 @@ import/fbx/enabled=false
 [gui]
 
 common/snap_controls_to_pixels=false
-theme/custom="res://default_theme.tres"
+theme/custom="res://data/default_theme.tres"
 theme/custom_font="res://assets/fonts/modern_antiqua/ModernAntiqua.ttf"
+
+[importer_defaults]
+
+texture={
+"mipmaps/generate": true
+}
 
 [rendering]
 
-renderer/rendering_method="gl_compatibility"
-renderer/rendering_method.mobile="gl_compatibility"
+renderer/rendering_method="mobile"
+environment/defaults/default_clear_color=Color(0, 0, 0, 1)
+anti_aliasing/quality/msaa_2d=3

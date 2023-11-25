@@ -1,6 +1,0 @@
-[gd_resource type="Resource" load_steps=2 format=3 uid="uid://duaux5lv10x67"]
-
-[ext_resource type="Script" path="res://abilities/damage_self_and_adjacent.gd" id="1_fx8ea"]
-
-[resource]
-script = ExtResource("1_fx8ea")

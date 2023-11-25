@@ -8,7 +8,7 @@
    version="1.1"
    id="svg689"
    inkscape:version="1.2.1 (9c6d41e410, 2022-07-14)"
-   sodipodi:docname="card_blank_opponent.svg"
+   sodipodi:docname="blank_opponent.svg"
    xmlns:inkscape="http://www.inkscape.org/namespaces/inkscape"
    xmlns:sodipodi="http://sodipodi.sourceforge.net/DTD/sodipodi-0.dtd"
    xmlns:xlink="http://www.w3.org/1999/xlink"
@@ -26,7 +26,7 @@
      inkscape:document-units="mm"
      showgrid="false"
      inkscape:zoom="6.3593747"
-     inkscape:cx="64.000003"
+     inkscape:cx="60.697792"
      inkscape:cy="64.000003"
      inkscape:window-width="1920"
      inkscape:window-height="1017"
@@ -40,15 +40,15 @@
        inkscape:collect="always"
        id="linearGradient6700">
       <stop
-         style="stop-color:#d3b6a4;stop-opacity:1;"
+         style="stop-color:#998477;stop-opacity:1;"
          offset="0"
          id="stop6696" />
       <stop
-         style="stop-color:#c4a897;stop-opacity:1;"
+         style="stop-color:#877468;stop-opacity:1;"
          offset="0.60771704"
          id="stop6704" />
       <stop
-         style="stop-color:#aa9384;stop-opacity:1;"
+         style="stop-color:#78685d;stop-opacity:1;"
          offset="1"
          id="stop6698" />
     </linearGradient>

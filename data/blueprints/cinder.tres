@@ -1,0 +1,18 @@
+[gd_resource type="Resource" script_class="Blueprint" load_steps=4 format=3 uid="uid://bmubj3ad0fy37"]
+
+[ext_resource type="Resource" uid="uid://duaux5lv10x67" path="res://data/abilities/damage_self_and_adjacent.tres" id="1_nadmx"]
+[ext_resource type="Script" path="res://scripts/blueprint.gd" id="1_s7ntm"]
+[ext_resource type="Texture2D" uid="uid://dlhaokioho3t6" path="res://assets/graphics/dragons/cinder.png" id="3_wbsqb"]
+
+[resource]
+script = ExtResource("1_s7ntm")
+name = "Cinder"
+texture = ExtResource("3_wbsqb")
+hit_points = 4
+ability_description = "2 damage to self and adjacent enemies"
+play_ability = ExtResource("1_nadmx")
+play_cost = 2
+scale_up_2_cost = 4
+scale_up_3_cost = 8
+scale_up_4_cost = 14
+scale_up_5_cost = 20

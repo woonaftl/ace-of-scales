@@ -1,0 +1,7 @@
+[gd_resource type="Resource" load_steps=2 format=3 uid="uid://b7vjpxk3yi14s"]
+
+[ext_resource type="Script" path="res://scripts/abilities/damage_highest_hp_enemy_nearby.gd" id="1_leo5p"]
+
+[resource]
+script = ExtResource("1_leo5p")
+description = "2 dmg to highest hp enemy nearby"

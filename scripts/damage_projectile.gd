@@ -33,7 +33,7 @@ func _process(delta: float) -> void:
 			)
 			if len(cards_to_heal) > 0:
 				var healed_card = cards_to_heal.pick_random()
-				var projectile: Node = preload("res://scripts/damage_projectile.tscn").instantiate()
+				var projectile: Node = load("res://data/scenes/damage_projectile.tscn").instantiate()
 				get_tree().current_scene.add_child(projectile)
 				projectile.global_position = target.global_position
 				projectile.attacker = target

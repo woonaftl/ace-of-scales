@@ -1,9 +1,0 @@
-[gd_scene load_steps=3 format=3 uid="uid://xwkg1q0kn7il"]
-
-[ext_resource type="Script" path="res://scripts/energy_projectile.gd" id="1_7bcy2"]
-[ext_resource type="Texture2D" uid="uid://blxkrpdcaai8v" path="res://assets/graphics/energy.svg" id="1_jnukl"]
-
-[node name="EnergyProjectile" type="Sprite2D"]
-scale = Vector2(0.2, 0.2)
-texture = ExtResource("1_jnukl")
-script = ExtResource("1_7bcy2")

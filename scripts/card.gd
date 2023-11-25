@@ -223,10 +223,10 @@ func _process(delta: float) -> void:
 func _unhandled_input(event: InputEvent) -> void:
 	if event is InputEventMouseButton and event.pressed and event.button_index == MOUSE_BUTTON_LEFT:
 		if state == CardState.HAND and is_mouse_inside:
-			var particles: GPUParticles2D = preload("res://scripts/gpu_particles_2d.tscn").instantiate()
-			add_child(particles)
-			particles.global_position = get_global_mouse_position()
-			particles.one_shot = true
+			var new_particles: GPUParticles2D = preload("res://data/scenes/gpu_particles_2d.tscn").instantiate()
+			add_child(new_particles)
+			new_particles.global_position = get_global_mouse_position()
+			new_particles.one_shot = true
 			QueryCard.clear_selectiom()
 			if get_tree().current_scene.current_turn != get_tree().current_scene.human:
 				user_input_failed.emit("Not your turn")

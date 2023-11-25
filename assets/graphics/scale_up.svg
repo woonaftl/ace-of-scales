@@ -11,6 +11,7 @@
    sodipodi:docname="scale_up.svg"
    xmlns:inkscape="http://www.inkscape.org/namespaces/inkscape"
    xmlns:sodipodi="http://sodipodi.sourceforge.net/DTD/sodipodi-0.dtd"
+   xmlns:xlink="http://www.w3.org/1999/xlink"
    xmlns="http://www.w3.org/2000/svg"
    xmlns:svg="http://www.w3.org/2000/svg">
   <sodipodi:namedview
@@ -26,7 +27,7 @@
      showgrid="true"
      showguides="true"
      inkscape:zoom="5.9651516"
-     inkscape:cx="55.991871"
+     inkscape:cx="52.471424"
      inkscape:cy="90.358139"
      inkscape:window-width="1920"
      inkscape:window-height="1017"
@@ -42,14 +43,38 @@
        empspacing="4" />
   </sodipodi:namedview>
   <defs
-     id="defs2" />
+     id="defs2">
+    <linearGradient
+       inkscape:collect="always"
+       id="linearGradient15843">
+      <stop
+         style="stop-color:#b8657e;stop-opacity:1;"
+         offset="0"
+         id="stop15839" />
+      <stop
+         style="stop-color:#784252;stop-opacity:1;"
+         offset="1"
+         id="stop15841" />
+    </linearGradient>
+    <radialGradient
+       inkscape:collect="always"
+       xlink:href="#linearGradient15843"
+       id="radialGradient15845"
+       cx="16.933333"
+       cy="16.93336"
+       fx="16.933333"
+       fy="16.93336"
+       r="15.548599"
+       gradientTransform="matrix(1,0,0,1.0000026,0,-4.372547e-5)"
+       gradientUnits="userSpaceOnUse" />
+  </defs>
   <g
      inkscape:label="Layer 1"
      inkscape:groupmode="layer"
      id="layer1">
     <path
        id="rect3153"
-       style="fill:#da7896;fill-opacity:1;stroke:#603542;stroke-width:1.464;stroke-linejoin:round;stroke-opacity:1;paint-order:fill markers stroke"
+       style="fill:url(#radialGradient15845);fill-opacity:1;stroke:#2e1920;stroke-width:1.464;stroke-linejoin:round;stroke-opacity:1;paint-order:fill markers stroke"
        d="M 16.933333,2.1166666 31.749999,23.283333 H 21.166666 l 0,8.466666 -8.466666,0 0,-8.466666 H 2.1166666 Z"
        sodipodi:nodetypes="cccccccc" />
   </g>

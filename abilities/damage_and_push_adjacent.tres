@@ -1,6 +1,0 @@
-[gd_resource type="Resource" load_steps=2 format=3 uid="uid://8ryd3lhc56qx"]
-
-[ext_resource type="Script" path="res://abilities/damage_and_push_adjacent.gd" id="1_ocwbo"]
-
-[resource]
-script = ExtResource("1_ocwbo")
