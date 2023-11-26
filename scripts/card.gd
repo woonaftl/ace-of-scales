@@ -75,6 +75,7 @@ var board_scale: Vector2i = Vector2i.ONE
 	set(new_value):
 		if new_value < hit_points:
 			modulate = Color.RED
+			AudioBus.play("Hurt")
 			await get_tree().create_timer(0.1).timeout
 			modulate = Color.WHITE
 		hit_points = clamp(new_value, 0, blueprint.hit_points)
@@ -223,6 +224,7 @@ func _process(delta: float) -> void:
 func _unhandled_input(event: InputEvent) -> void:
 	if event is InputEventMouseButton and event.pressed and event.button_index == MOUSE_BUTTON_LEFT:
 		if state == CardState.HAND and is_mouse_inside:
+			AudioBus.play("Select")
 			var new_particles: GPUParticles2D = preload("res://data/scenes/gpu_particles_2d.tscn").instantiate()
 			add_child(new_particles)
 			new_particles.global_position = get_global_mouse_position()
@@ -243,6 +245,7 @@ func _on_scale_up_area_pressed():
 	if len(QueryCard.get_cards_in_state(CardState.HAND_SELECTED)) == 0:
 		if len(QueryCard.get_cards_in_state(CardState.BOARD_SELECTED)) == 0:
 			if len(QueryCard.get_cards_in_state(CardState.BOARD_SCALING)) == 0:
+				AudioBus.play("Select")
 				get_viewport().set_input_as_handled()
 				if get_tree().current_scene.current_turn != get_tree().current_scene.human:
 					user_input_failed.emit("Not your turn")
@@ -262,6 +265,7 @@ func _on_play_area_pressed() -> void:
 	if len(QueryCard.get_cards_in_state(CardState.HAND_SELECTED)) == 0:
 		if len(QueryCard.get_cards_in_state(CardState.BOARD_SELECTED)) == 0:
 			if len(QueryCard.get_cards_in_state(CardState.BOARD_SCALING)) == 0:
+				AudioBus.play("Select")
 				get_viewport().set_input_as_handled()
 				if get_tree().current_scene.current_turn != get_tree().current_scene.human:
 					user_input_failed.emit("Not your turn")
@@ -278,9 +282,10 @@ func _on_play_area_pressed() -> void:
 
 
 func scale_up(board_direction: Vector2i) -> void:
+	AudioBus.play("ScaleUp")
 	var cost: int = get_scale_up_cost()
 	board_cell = Vector2i(
-		min(board_direction.x, board_cell.x), 
+		min(board_direction.x, board_cell.x),
 		min(board_direction.y, board_cell.y)
 	)
 	board_scale += Vector2i.ONE
@@ -299,6 +304,7 @@ func scale_up(board_direction: Vector2i) -> void:
 
 
 func scale_down() -> void:
+	AudioBus.play("ScaleDown")
 	board_scale = board_scale - Vector2i.ONE
 	var new_board_cells: Array = [
 		board_cell,
@@ -311,6 +317,7 @@ func scale_down() -> void:
 
 
 func play(new_board_cell: Vector2i) -> void:
+	AudioBus.play("Play")
 	state = CardState.BOARD
 	is_used_this_turn = true
 	board_cell = new_board_cell

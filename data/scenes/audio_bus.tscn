@@ -1,0 +1,49 @@
+[gd_scene load_steps=12 format=3 uid="uid://kbplbqjvextq"]
+
+[ext_resource type="AudioStream" uid="uid://c18bf3ckuqo2m" path="res://assets/audio/characters/jack.wav" id="1_16q3x"]
+[ext_resource type="Script" path="res://scripts/audio_bus.gd" id="1_dqfy3"]
+[ext_resource type="AudioStream" uid="uid://cyhldcxy67ggr" path="res://assets/audio/click.wav" id="2_fmey2"]
+[ext_resource type="AudioStream" uid="uid://bva3lhect4wax" path="res://assets/audio/characters/you.wav" id="2_lp8yk"]
+[ext_resource type="AudioStream" uid="uid://dotc3rsqrmjjt" path="res://assets/audio/hurt.wav" id="3_am16v"]
+[ext_resource type="AudioStream" uid="uid://b735eq85sd53h" path="res://assets/audio/play.wav" id="3_hkkim"]
+[ext_resource type="AudioStream" uid="uid://f2prui3g12h5" path="res://assets/audio/characters/queen.wav" id="3_ptl8i"]
+[ext_resource type="AudioStream" uid="uid://bpjkyn512jqy1" path="res://assets/audio/scale_up.wav" id="4_b3e1a"]
+[ext_resource type="AudioStream" uid="uid://bn8a3mtq1lwuv" path="res://assets/audio/scale_down.wav" id="5_4ehn3"]
+[ext_resource type="AudioStream" uid="uid://cv3hdft2rrx8h" path="res://assets/audio/characters/king.wav" id="5_frjhe"]
+[ext_resource type="AudioStream" uid="uid://dayvu0dxorc2k" path="res://assets/audio/characters/ace.wav" id="6_jjxkt"]
+
+[node name="AudioBus" type="Node"]
+script = ExtResource("1_dqfy3")
+
+[node name="Click" type="AudioStreamPlayer" parent="."]
+stream = ExtResource("2_fmey2")
+
+[node name="Hurt" type="AudioStreamPlayer" parent="."]
+stream = ExtResource("3_am16v")
+
+[node name="Play" type="AudioStreamPlayer" parent="."]
+stream = ExtResource("3_hkkim")
+
+[node name="ScaleUp" type="AudioStreamPlayer" parent="."]
+stream = ExtResource("4_b3e1a")
+
+[node name="ScaleDown" type="AudioStreamPlayer" parent="."]
+stream = ExtResource("5_4ehn3")
+
+[node name="Select" type="AudioStreamPlayer" parent="."]
+stream = ExtResource("3_hkkim")
+
+[node name="You" type="AudioStreamPlayer" parent="."]
+stream = ExtResource("2_lp8yk")
+
+[node name="Jack" type="AudioStreamPlayer" parent="."]
+stream = ExtResource("1_16q3x")
+
+[node name="Queen" type="AudioStreamPlayer" parent="."]
+stream = ExtResource("3_ptl8i")
+
+[node name="King" type="AudioStreamPlayer" parent="."]
+stream = ExtResource("5_frjhe")
+
+[node name="Ace" type="AudioStreamPlayer" parent="."]
+stream = ExtResource("6_jjxkt")

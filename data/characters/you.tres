@@ -1,9 +1,10 @@
 [gd_resource type="Resource" script_class="Character" load_steps=3 format=3 uid="uid://v2ydhi877arw"]
 
 [ext_resource type="Script" path="res://scripts/character.gd" id="1_mbv1t"]
-[ext_resource type="Texture2D" uid="uid://dlhaokioho3t6" path="res://assets/graphics/dragons/cinder.png" id="2_xgfta"]
+[ext_resource type="Texture2D" uid="uid://dmfpcyqr1i1u8" path="res://assets/graphics/characters/you.png" id="2_qsh4x"]
 
 [resource]
 script = ExtResource("1_mbv1t")
 name = "You"
-texture = ExtResource("2_xgfta")
+texture = ExtResource("2_qsh4x")
+sound = "You"

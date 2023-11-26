@@ -86,8 +86,8 @@ var turn: int = 1
 		level = new_value
 		for card in QueryCard.get_cards_of_player(opponent):
 			card.queue_free()
-		tile_map.x_max = level + 1
-		tile_map.y_max = level + 1
+		tile_map.x_max = clamp(level + 1, 2, 4)
+		tile_map.y_max = clamp(level + 1, 2, 4)
 		await fill_deck_opponent()
 		play_starting_cards_opponent()
 		_deal_cards(opponent)
@@ -357,6 +357,7 @@ func _unhandled_input(event: InputEvent) -> void:
 
 
 func _on_back_to_menu_button_pressed():
+	AudioBus.play("Click")
 	get_tree().change_scene_to_file("res://data/scenes/main_menu.tscn")
 
 
@@ -364,6 +365,7 @@ func _on_end_turn_button_pressed() -> void:
 	if current_turn != human:
 		_on_user_input_failed("Not your turn")
 	elif not QueryCard.clear_selectiom():
+		AudioBus.play("Click")
 		await check_lose()
 		for card: Card in QueryCard.get_cards(human, Card.CardState.HAND):
 			card.state = Card.CardState.DISCARD

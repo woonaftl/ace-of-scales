@@ -1,6 +1,9 @@
 extends PanelContainer
 
 
+var sound_id: String
+
+
 @onready var character_sprite: Sprite2D = %Sprite2D as Sprite2D
 @onready var character_label: Label = %CharacterLabel as Label
 @onready var line_label: RichTextLabel = %LineLabel as RichTextLabel
@@ -11,7 +14,10 @@ func _ready() -> void:
 
 
 func _process(_delta: float) -> void:
-	line_label.visible_characters += UserSettings.characters_per_frame
+	if line_label.visible_ratio < 1:
+		line_label.visible_characters += UserSettings.characters_per_frame
+		if line_label.get_parsed_text().substr(line_label.visible_characters - 1, 1) != " ":
+			AudioBus.play(sound_id)
 
 
 func _input(event: InputEvent) -> void:
@@ -25,6 +31,7 @@ func _input(event: InputEvent) -> void:
 
 
 func say(character: Character, line: String) -> void:
+	sound_id = character.sound
 	character_label.text = character.name
 	character_sprite.texture = character.texture
 	line_label.text = line

@@ -13,8 +13,10 @@ func _ready():
 
 
 func _on_back_button_pressed():
+	AudioBus.play("Click")
 	get_tree().change_scene_to_file("res://data/scenes/main_menu.tscn")
 
 
 func _on_itch_button_pressed():
+	AudioBus.play("Click")
 	OS.shell_open("https://blackknighthalberd.itch.io")

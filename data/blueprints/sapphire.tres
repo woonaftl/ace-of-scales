@@ -2,7 +2,7 @@
 
 [ext_resource type="Resource" uid="uid://b3itipbr4q0kd" path="res://data/abilities/damage_all_horizontal.tres" id="1_vcajb"]
 [ext_resource type="Script" path="res://scripts/blueprint.gd" id="2_yhw4w"]
-[ext_resource type="Texture2D" uid="uid://dn6bvl5s3bmt" path="res://assets/graphics/dragons/sapphire.png" id="3_2yngy"]
+[ext_resource type="Texture2D" uid="uid://3wplifjns57w" path="res://assets/graphics/dragons/sapphire.png" id="3_2yngy"]
 
 [resource]
 script = ExtResource("2_yhw4w")

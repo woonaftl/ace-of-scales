@@ -1,9 +1,10 @@
 [gd_resource type="Resource" script_class="Character" load_steps=3 format=3 uid="uid://ct57ixyarn1wn"]
 
 [ext_resource type="Script" path="res://scripts/character.gd" id="1_rgpo4"]
-[ext_resource type="Texture2D" uid="uid://dlhaokioho3t6" path="res://assets/graphics/dragons/cinder.png" id="2_ppfek"]
+[ext_resource type="Texture2D" uid="uid://ko05fn7ukiai" path="res://assets/graphics/characters/ace.png" id="2_drtmp"]
 
 [resource]
 script = ExtResource("1_rgpo4")
 name = "Ace of Scales"
-texture = ExtResource("2_ppfek")
+texture = ExtResource("2_drtmp")
+sound = "Ace"

@@ -19,9 +19,10 @@ config/icon="res://assets/graphics/dragons/emerald.png"
 
 [autoload]
 
-UserSettings="*res://scripts/user_settings.gd"
+AudioBus="*res://data/scenes/audio_bus.tscn"
 EventBus="*res://scripts/event_bus.gd"
 QueryCard="*res://scripts/query_card.gd"
+UserSettings="*res://scripts/user_settings.gd"
 
 [display]
 

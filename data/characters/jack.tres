@@ -1,9 +1,10 @@
 [gd_resource type="Resource" script_class="Character" load_steps=3 format=3 uid="uid://daquo70dtcrt4"]
 
 [ext_resource type="Script" path="res://scripts/character.gd" id="1_6fk0p"]
-[ext_resource type="Texture2D" uid="uid://dlhaokioho3t6" path="res://assets/graphics/dragons/cinder.png" id="2_weyxj"]
+[ext_resource type="Texture2D" uid="uid://w663owyqokpd" path="res://assets/graphics/characters/jack.png" id="2_cj214"]
 
 [resource]
 script = ExtResource("1_6fk0p")
 name = "Jack of Scales"
-texture = ExtResource("2_weyxj")
+texture = ExtResource("2_cj214")
+sound = "Jack"
