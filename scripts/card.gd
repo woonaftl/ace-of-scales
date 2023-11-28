@@ -91,8 +91,8 @@ var board_scale: Vector2i = Vector2i.ONE
 @onready var blueprint: Blueprint:
 	set(new_value):
 		blueprint = new_value
-		name_label.text = blueprint.name
-		text_label.text = blueprint.ability_description
+		name_label.text = tr(blueprint.name)
+		text_label.text = tr(blueprint.ability_description)
 		play_label.text = str(blueprint.play_cost)
 		hit_points = blueprint.hit_points
 		hit_points_bar.max_value = blueprint.hit_points
@@ -231,11 +231,11 @@ func _unhandled_input(event: InputEvent) -> void:
 			new_particles.one_shot = true
 			QueryCard.clear_selectiom()
 			if get_tree().current_scene.current_turn != get_tree().current_scene.human:
-				user_input_failed.emit("Not your turn")
+				user_input_failed.emit(tr("Not your turn"))
 			elif not player.is_human:
-				user_input_failed.emit("This is not your card")
+				user_input_failed.emit(tr("This is not your card"))
 			elif player.energy < blueprint.play_cost:
-				user_input_failed.emit("Not enough energy")
+				user_input_failed.emit(tr("Not enough energy"))
 			else:
 				state = CardState.HAND_SELECTED
 			get_viewport().set_input_as_handled()
@@ -248,13 +248,13 @@ func _on_scale_up_area_pressed():
 				AudioBus.play("Select")
 				get_viewport().set_input_as_handled()
 				if get_tree().current_scene.current_turn != get_tree().current_scene.human:
-					user_input_failed.emit("Not your turn")
+					user_input_failed.emit(tr("Not your turn"))
 				elif not player.is_human:
-					user_input_failed.emit("This is not your card")
+					user_input_failed.emit(tr("This is not your card"))
 				elif player.energy < get_scale_up_cost():
-					user_input_failed.emit("Not enough energy")
+					user_input_failed.emit(tr("Not enough energy"))
 				elif is_used_this_turn:
-					user_input_failed.emit("Already played this turn")
+					user_input_failed.emit(tr("Already played this turn"))
 				elif state == CardState.BOARD:
 					state = CardState.BOARD_SCALING
 				elif state == CardState.HAND:
@@ -268,13 +268,13 @@ func _on_play_area_pressed() -> void:
 				AudioBus.play("Select")
 				get_viewport().set_input_as_handled()
 				if get_tree().current_scene.current_turn != get_tree().current_scene.human:
-					user_input_failed.emit("Not your turn")
+					user_input_failed.emit(tr("Not your turn"))
 				elif not player.is_human:
-					user_input_failed.emit("This is not your card")
+					user_input_failed.emit(tr("This is not your card"))
 				elif player.energy < blueprint.play_cost:
-					user_input_failed.emit("Not enough energy")
+					user_input_failed.emit(tr("Not enough energy"))
 				elif is_used_this_turn:
-					user_input_failed.emit("Already played this turn")
+					user_input_failed.emit(tr("Already played this turn"))
 				elif state == CardState.BOARD:
 					state = CardState.BOARD_SELECTED
 				elif state == CardState.HAND:

@@ -1,4 +1,4 @@
-[gd_scene load_steps=12 format=3 uid="uid://kbplbqjvextq"]
+[gd_scene load_steps=13 format=3 uid="uid://kbplbqjvextq"]
 
 [ext_resource type="AudioStream" uid="uid://c18bf3ckuqo2m" path="res://assets/audio/characters/jack.wav" id="1_16q3x"]
 [ext_resource type="Script" path="res://scripts/audio_bus.gd" id="1_dqfy3"]
@@ -11,39 +11,57 @@
 [ext_resource type="AudioStream" uid="uid://bn8a3mtq1lwuv" path="res://assets/audio/scale_down.wav" id="5_4ehn3"]
 [ext_resource type="AudioStream" uid="uid://cv3hdft2rrx8h" path="res://assets/audio/characters/king.wav" id="5_frjhe"]
 [ext_resource type="AudioStream" uid="uid://dayvu0dxorc2k" path="res://assets/audio/characters/ace.wav" id="6_jjxkt"]
+[ext_resource type="AudioStream" uid="uid://bg7ab7iok32jk" path="res://assets/audio/bg.wav" id="12_ajm6b"]
 
 [node name="AudioBus" type="Node"]
 script = ExtResource("1_dqfy3")
 
 [node name="Click" type="AudioStreamPlayer" parent="."]
 stream = ExtResource("2_fmey2")
+bus = &"Effects"
 
 [node name="Hurt" type="AudioStreamPlayer" parent="."]
 stream = ExtResource("3_am16v")
+bus = &"Effects"
 
 [node name="Play" type="AudioStreamPlayer" parent="."]
 stream = ExtResource("3_hkkim")
+bus = &"Effects"
 
 [node name="ScaleUp" type="AudioStreamPlayer" parent="."]
 stream = ExtResource("4_b3e1a")
+bus = &"Effects"
 
 [node name="ScaleDown" type="AudioStreamPlayer" parent="."]
 stream = ExtResource("5_4ehn3")
+bus = &"Effects"
 
 [node name="Select" type="AudioStreamPlayer" parent="."]
 stream = ExtResource("3_hkkim")
+bus = &"Effects"
 
 [node name="You" type="AudioStreamPlayer" parent="."]
 stream = ExtResource("2_lp8yk")
+bus = &"Effects"
 
 [node name="Jack" type="AudioStreamPlayer" parent="."]
 stream = ExtResource("1_16q3x")
+bus = &"Effects"
 
 [node name="Queen" type="AudioStreamPlayer" parent="."]
 stream = ExtResource("3_ptl8i")
+bus = &"Effects"
 
 [node name="King" type="AudioStreamPlayer" parent="."]
 stream = ExtResource("5_frjhe")
+bus = &"Effects"
 
 [node name="Ace" type="AudioStreamPlayer" parent="."]
 stream = ExtResource("6_jjxkt")
+bus = &"Effects"
+
+[node name="Background" type="AudioStreamPlayer" parent="."]
+stream = ExtResource("12_ajm6b")
+volume_db = -20.0
+autoplay = true
+bus = &"Background"

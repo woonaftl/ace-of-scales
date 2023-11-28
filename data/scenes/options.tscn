@@ -1,8 +1,9 @@
-[gd_scene load_steps=4 format=3 uid="uid://cskipppyxass2"]
+[gd_scene load_steps=5 format=3 uid="uid://cskipppyxass2"]
 
 [ext_resource type="Script" path="res://scripts/options_menu.gd" id="1_x5tdo"]
 [ext_resource type="TileSet" uid="uid://bi5dglwc4cnuo" path="res://data/menu_tile_set.tres" id="2_msfup"]
-[ext_resource type="Script" path="res://scripts/volume_slider.gd" id="3_o4oej"]
+[ext_resource type="Script" path="res://scripts/effects_volume_slider.gd" id="3_jrjnb"]
+[ext_resource type="Script" path="res://scripts/background_volume_slider.gd" id="4_ywmg1"]
 
 [node name="OptionsMenu" type="CenterContainer"]
 anchors_preset = 15
@@ -34,12 +35,14 @@ layout_mode = 2
 theme_override_constants/separation = 16
 
 [node name="Label" type="Label" parent="MarginContainer/VBoxContainer/HBoxContainerFullScreen"]
+custom_minimum_size = Vector2(350, 0)
 layout_mode = 2
 theme_override_font_sizes/font_size = 28
 text = "DISPLAY MODE"
 
 [node name="WindowModeButton" type="OptionButton" parent="MarginContainer/VBoxContainer/HBoxContainerFullScreen"]
 unique_name_in_owner = true
+custom_minimum_size = Vector2(200, 0)
 layout_mode = 2
 theme_override_font_sizes/font_size = 28
 item_count = 2
@@ -56,19 +59,41 @@ size_flags_vertical = 8
 theme_override_constants/separation = 16
 
 [node name="Label" type="Label" parent="MarginContainer/VBoxContainer/HBoxContainer"]
+custom_minimum_size = Vector2(350, 0)
 layout_mode = 2
 theme_override_font_sizes/font_size = 28
-text = "VOLUME"
-horizontal_alignment = 1
+text = "EFFECTS VOLUME"
 
-[node name="VolumeSlider" type="HSlider" parent="MarginContainer/VBoxContainer/HBoxContainer"]
+[node name="EffectsVolumeSlider" type="HSlider" parent="MarginContainer/VBoxContainer/HBoxContainer"]
+custom_minimum_size = Vector2(200, 0)
 layout_mode = 2
 size_flags_horizontal = 3
 size_flags_vertical = 1
 focus_mode = 0
 max_value = 1.0
 step = 0.001
-script = ExtResource("3_o4oej")
+script = ExtResource("3_jrjnb")
+
+[node name="HBoxContainer2" type="HBoxContainer" parent="MarginContainer/VBoxContainer"]
+layout_mode = 2
+size_flags_vertical = 8
+theme_override_constants/separation = 16
+
+[node name="Label" type="Label" parent="MarginContainer/VBoxContainer/HBoxContainer2"]
+custom_minimum_size = Vector2(350, 0)
+layout_mode = 2
+theme_override_font_sizes/font_size = 28
+text = "BACKGROUND VOLUME"
+
+[node name="BackgroundVolumeSlider" type="HSlider" parent="MarginContainer/VBoxContainer/HBoxContainer2"]
+custom_minimum_size = Vector2(200, 0)
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_vertical = 1
+focus_mode = 0
+max_value = 1.0
+step = 0.001
+script = ExtResource("4_ywmg1")
 
 [node name="BackButton" type="Button" parent="MarginContainer/VBoxContainer"]
 custom_minimum_size = Vector2(150, 0)
@@ -79,5 +104,6 @@ theme_override_font_sizes/font_size = 28
 text = "BACK"
 
 [connection signal="item_selected" from="MarginContainer/VBoxContainer/HBoxContainerFullScreen/WindowModeButton" to="." method="_on_option_button_item_selected"]
-[connection signal="value_changed" from="MarginContainer/VBoxContainer/HBoxContainer/VolumeSlider" to="MarginContainer/VBoxContainer/HBoxContainer/VolumeSlider" method="_on_value_changed"]
+[connection signal="value_changed" from="MarginContainer/VBoxContainer/HBoxContainer/EffectsVolumeSlider" to="MarginContainer/VBoxContainer/HBoxContainer/EffectsVolumeSlider" method="_on_value_changed"]
+[connection signal="value_changed" from="MarginContainer/VBoxContainer/HBoxContainer2/BackgroundVolumeSlider" to="MarginContainer/VBoxContainer/HBoxContainer2/BackgroundVolumeSlider" method="_on_value_changed"]
 [connection signal="pressed" from="MarginContainer/VBoxContainer/BackButton" to="." method="_on_back_button_pressed"]

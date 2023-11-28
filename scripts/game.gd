@@ -120,18 +120,18 @@ func _ready():
 	opponent.is_human = false
 	await dialogue_opponent(
 		preload("res://data/characters/jack.tres"),
-		"So it says you're here to [i]free the Dragonfolk[/i]. What the hell does it even mean?"
+		"JACK_GREETING_1"
 	)
 	await dialogue_human(
-		"I don't think the [color=#fff082]King of Scales[/color] is a just ruler."
+		"REPLY_TO_JACK_1"
 	)
 	await dialogue_opponent(
 		preload("res://data/characters/jack.tres"),
-		"Whatever, in order to get to the [color=#fff082]King of Scales[/color], you need to get through me!"
+		"JACK_GREETING_2"
 	)
 	await dialogue_opponent(
 		preload("res://data/characters/jack.tres"),
-		"And, according to our centuries old tradition, we, the Dragons, always fight with cards!"
+		"JACK_GREETING_3"
 	)
 	tile_container.visible = true
 	top_left_container.visible = true
@@ -148,11 +148,11 @@ func _ready():
 	is_game_on = true
 	await dialogue_opponent(
 		preload("res://data/characters/jack.tres"),
-		"You look so tiny, I'm going to give you a first turn advantage. Just use your [img=24x24]res://assets/graphics/energy.svg[/img][color=#b482b7]energy[/color] to move the cards from your hand to the board."
+		"TUTORIAL_1"
 	)
 	await dialogue_opponent(
 		preload("res://data/characters/jack.tres"),
-		"When you use up all of your [img=24x24]res://assets/graphics/energy.svg[/img][color=#b482b7]energy[/color], end your turn."
+		"TUTORIAL_2"
 	)
 
 
@@ -202,14 +202,10 @@ func play_starting_cards_opponent() -> void:
 		player_deck = QueryCard.get_cards(opponent, Card.CardState.DRAW)
 		if len(player_deck) > 0:
 			player_deck[0].play(Vector2i(tile_map.x_max - 1, 0))
-	if level > 2:
-		player_deck = QueryCard.get_cards(opponent, Card.CardState.DRAW)
-		if len(player_deck) > 0:
-			player_deck[0].play(Vector2i(tile_map.x_max, 1))
 	if level > 3:
 		player_deck = QueryCard.get_cards(opponent, Card.CardState.DRAW)
 		if len(player_deck) > 0:
-			player_deck[0].play(Vector2i(tile_map.x_max - 2, 1))
+			player_deck[0].play(Vector2i(tile_map.x_max, 1))
 
 
 func _process(_delta: float) -> void:
@@ -367,12 +363,13 @@ func _on_end_turn_button_pressed() -> void:
 	elif not QueryCard.clear_selectiom():
 		AudioBus.play("Click")
 		await check_lose()
-		for card: Card in QueryCard.get_cards(human, Card.CardState.HAND):
-			card.state = Card.CardState.DISCARD
-		current_turn = opponent
-		await _prepare_turn(opponent)
-		await show_popup("ENEMY TURN", POPUP_TIME_TURN)
-		await _opponent_turn()
+		if is_game_on:
+			for card: Card in QueryCard.get_cards(human, Card.CardState.HAND):
+				card.state = Card.CardState.DISCARD
+			current_turn = opponent
+			await _prepare_turn(opponent)
+			await show_popup(tr("ENEMY TURN"), POPUP_TIME_TURN)
+			await _opponent_turn()
 
 
 func _on_user_input_failed(message: String) -> void:
@@ -384,15 +381,15 @@ func _on_user_input_failed(message: String) -> void:
 
 func play_card(card: Card, board_cell: Vector2i) -> void:
 	if current_turn != card.player:
-		_on_user_input_failed("Not your turn")
+		_on_user_input_failed(tr("Not your turn"))
 	elif card.player.energy < card.blueprint.play_cost:
-		_on_user_input_failed("Not enough energy")
+		_on_user_input_failed(tr("Not enough energy"))
 		if card.state == Card.CardState.HAND_SELECTED:
 			card.state = Card.CardState.HAND
 		elif card.state == Card.CardState.BOARD_SELECTED:
 			card.state = Card.CardState.BOARD
 	elif not can_place_card_here(card, board_cell):
-		_on_user_input_failed("This place is already occupied")
+		_on_user_input_failed(tr("This place is already occupied"))
 		if card.state == Card.CardState.HAND_SELECTED:
 			card.state = Card.CardState.HAND
 		elif card.state == Card.CardState.BOARD_SELECTED:
@@ -404,12 +401,12 @@ func play_card(card: Card, board_cell: Vector2i) -> void:
 func scale_card(card: Card, board_direction: Vector2i) -> void:
 	var cost: int = card.get_scale_up_cost()
 	if current_turn != card.player:
-		_on_user_input_failed("Not your turn")
+		_on_user_input_failed(tr("Not your turn"))
 	elif not can_scale_card_here(card, board_direction):
-		_on_user_input_failed("Cannot scale this card in this direction")
+		_on_user_input_failed(tr("Cannot scale this card in this direction"))
 		card.state = Card.CardState.BOARD
 	elif card.player.energy < cost:
-		_on_user_input_failed("Not enough energy")
+		_on_user_input_failed(tr("Not enough energy"))
 		card.state = Card.CardState.BOARD
 	else:
 		card.scale_up(board_direction)
@@ -587,21 +584,21 @@ func _opponent_turn() -> void:
 	if is_game_on:
 		await _prepare_turn(human)
 		current_turn = human
-		await show_popup("YOUR TURN", POPUP_TIME_TURN)
+		await show_popup(tr("YOUR TURN"), POPUP_TIME_TURN)
 		turn += 1
 		if level == 1 and turn == 2:
 			await dialogue_opponent(
 				preload("res://data/characters/jack.tres"),
-				"When your turn starts, you get [img=24x24]res://assets/graphics/energy.svg[/img][color=#b482b7]energy[/color] for each cell on the board occupied by your cards. For us dragons, territory is everything."
+				"TUTORIAL_3"
 			)
 			await dialogue_opponent(
 				preload("res://data/characters/jack.tres"),
-				"You can play not only the cards in your hand, but move around the cards already on the board, too. But it costs [img=24x24]res://assets/graphics/energy.svg[/img][color=#b482b7]energy[/color]."
+				"TUTORIAL_4"
 			)
 		elif level == 1 and turn == 3:
 			await dialogue_opponent(
 				preload("res://data/characters/jack.tres"),
-				"Once you get enough energy, you can [img=24x24]res://assets/graphics/scale_up.svg[/img][color=#b8657e]scale[/color] your cards! Bigger equals better! Bigger card captures everyone below it right into your hand!"
+				"TUTORIAL_5"
 			)
 
 
@@ -627,27 +624,27 @@ func check_lose() -> void:
 			QueryCard.get_cards(human, Card.CardState.BOARD_SELECTED)
 		) == 0:
 			is_game_on = false
-			await show_popup("GAME OVER", POPUP_TIME_END)
+			await show_popup(tr("GAME OVER"), POPUP_TIME_END)
 			clear_board()
 			if level < 2:
 				await dialogue_opponent(
 					preload("res://data/characters/jack.tres"),
-					"If you have no cards on board, you lose. Did I forget to tell you that? Oops."
+					"JACK_VICTORY"
 				)
 			elif level < 3:
 				await dialogue_opponent(
 					preload("res://data/characters/queen.tres"),
-					"Haha, get good before you dare to challenge me! I'm in a good mood today but next time your bones are going straight into the gorge!"
+					"QUEEN_VICTORY"
 				)
 			elif level < 4:
 				await dialogue_opponent(
 					preload("res://data/characters/king.tres"),
-					"Know your place, [b]peasant[/b]."
+					"KING_VICTORY"
 				)
 			else:
 				await dialogue_opponent(
 					preload("res://data/characters/ace.tres"),
-					"Such a shame that your talent is wasted on this character. You could have been a [color=#fff082]King[/color], but you wanted more..."
+					"ACE_VICTORY"
 				)
 			get_tree().change_scene_to_file("res://data/scenes/main_menu.tscn")
 		elif len(QueryCard.get_cards(opponent, Card.CardState.BOARD)) + len(
@@ -656,44 +653,44 @@ func check_lose() -> void:
 			QueryCard.get_cards(opponent, Card.CardState.BOARD_SELECTED)
 		) == 0:
 			is_game_on = false
-			await show_popup("VICTORY", POPUP_TIME_END)
+			await show_popup(tr("VICTORY"), POPUP_TIME_END)
 			clear_board()
 			if level < 2:
 				await dialogue_opponent(
 					preload("res://data/characters/jack.tres"),
-					"I can't believe you've done it. I've just taught you how to play and you've already beaten me..."
+					"JACK_DEFEATED_1"
 				)
 				await dialogue_opponent(
 					preload("res://data/characters/jack.tres"),
-					"Mom! Mommy!"
+					"JACK_DEFEATED_2"
 				)
 				next_level()
 			elif level < 3:
 				await dialogue_opponent(
 					preload("res://data/characters/queen.tres"),
-					"My minions! They fail me again and again. Also, I had such terrible luck and this card game doesn't require any skill or strength..."
+					"QUEEN_DEFEATED_1"
 				)
 				await dialogue_human(
-					"Just move out of my way, [b]loser[/b]."
+					"QUEEN_DEFEATED_2"
 				)
 				next_level()
 			elif level < 4:
 				await dialogue_opponent(
 					preload("res://data/characters/king.tres"),
-					"I can't believe it. I have never lost this game before... Does it mean you're the new [color=#fff082]King[/color]? The rules of this game are so ancient I forgot them..."
+					"KING_DEFEATED_1"
 				)
 				await dialogue_human(
-					"Down with monarchy! I demand freedom for all of Dragonfolk!"
+					"KING_DEFEATED_2"
 				)
 				await dialogue_opponent(
 					preload("res://data/characters/ace.tres"),
-					"Freedom? Do you even know what it takes to be truly free, [b]mortal[/b]?"
+					"KING_DEFEATED_3"
 				)
 				next_level()
 			else:
 				await dialogue_opponent(
 					preload("res://data/characters/ace.tres"),
-					"Nooooooooooooooooooooo"
+					"ACE_DEFEATED"
 				)
 				UserSettings.is_victory = true
 				get_tree().change_scene_to_file("res://data/scenes/credits.tscn")
@@ -709,37 +706,37 @@ func next_level():
 	play_starting_cards_human()
 	await _prepare_turn(human)
 	current_turn = human
-	await show_popup("YOUR TURN", POPUP_TIME_TURN)
+	await show_popup(tr("YOUR TURN"), POPUP_TIME_TURN)
 	is_game_on = true
 	if level == 2:
 		await dialogue_opponent(
 			preload("res://data/characters/queen.tres"),
-			"You rascal! I'm the [color=#fff082]Queen of Scales[/color] and I'm going to show you your place!"
+			"QUEEN_GREETING_1"
 		)
 		await dialogue_opponent(
 			preload("res://data/characters/queen.tres"),
-			"And your place is low, very low, in the depths of the deepest and darkest ravine, where I throw bones of my enemies."
+			"QUEEN_GREETING_2"
 		)
 		await dialogue_opponent(
 			preload("res://data/characters/queen.tres"),
-			"Bones I burn to ashes."
+			"QUEEN_GREETING_3"
 		)
 		await dialogue_human(
-			"There aren't too many bones there if the ravine is so deep."
+			"REPLY_TO_QUEEN_1"
 		)
 		await dialogue_opponent(
 			preload("res://data/characters/queen.tres"),
-			"Oh, you know nothing! Enough of that!"
+			"QUEEN_GREETING_4"
 		)
 	elif level == 3:
 		await dialogue_opponent(
 			preload("res://data/characters/king.tres"),
-			"I am the [color=#fff082]King of Scales[/color]! Get ready to fight!"
+			"KING_GREETING"
 		)
 	elif level == 4:
 		await dialogue_opponent(
 			preload("res://data/characters/ace.tres"),
-			"I am the [color=#fff082]Ace of Scales[/color]. You'll find your freedom in the grave."
+			"ACE_GREETING"
 		)
 
 

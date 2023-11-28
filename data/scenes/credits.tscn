@@ -61,7 +61,7 @@ layout_mode = 2
 theme_override_colors/default_color = Color(1, 0.976471, 0.901961, 1)
 theme_override_font_sizes/normal_font_size = 32
 bbcode_enabled = true
-text = "[center]From this day on, the dragons who were enslaved and put on faces of cards, gained their freedom and roamed the skies.[/center]"
+text = "STORY_END"
 fit_content = true
 
 [node name="ThankYouLabel" type="RichTextLabel" parent="VBoxContainer"]
@@ -72,7 +72,7 @@ theme_override_colors/font_outline_color = Color(0.619608, 0.462745, 0, 1)
 theme_override_constants/outline_size = 10
 theme_override_font_sizes/normal_font_size = 48
 bbcode_enabled = true
-text = "[center]THANKS FOR PLAYING[/center]"
+text = "THANKS"
 fit_content = true
 autowrap_mode = 0
 
@@ -82,9 +82,7 @@ layout_mode = 2
 theme_override_colors/default_color = Color(1, 0.976471, 0.901961, 1)
 theme_override_font_sizes/normal_font_size = 32
 bbcode_enabled = true
-text = "[center]Game by woona
-Powered by Godot Engine 4.2
-Made for Game Off 2023 Jam[/center]"
+text = "CREDITS_FULL"
 fit_content = true
 
 [node name="ItchButton" type="Button" parent="VBoxContainer"]
@@ -102,7 +100,7 @@ layout_mode = 2
 size_flags_horizontal = 4
 focus_mode = 0
 theme_override_font_sizes/font_size = 24
-text = "BACK TO MENU"
+text = "BACK"
 
 [connection signal="pressed" from="VBoxContainer/ItchButton" to="." method="_on_itch_button_pressed"]
 [connection signal="pressed" from="VBoxContainer/BackButton" to="." method="_on_back_button_pressed"]

@@ -17,6 +17,10 @@ config/features=PackedStringArray("4.2", "GL Compatibility")
 boot_splash/bg_color=Color(0, 0, 0, 1)
 config/icon="res://assets/graphics/dragons/emerald.png"
 
+[audio]
+
+buses/default_bus_layout="res://data/audio_bus_layout.tres"
+
 [autoload]
 
 AudioBus="*res://data/scenes/audio_bus.tscn"
@@ -39,13 +43,17 @@ import/fbx/enabled=false
 
 common/snap_controls_to_pixels=false
 theme/custom="res://data/default_theme.tres"
-theme/custom_font="res://assets/fonts/modern_antiqua/ModernAntiqua.ttf"
+theme/custom_font="res://assets/fonts/shadower/OpenType-TT/Shadower.ttf"
 
 [importer_defaults]
 
 texture={
 "mipmaps/generate": true
 }
+
+[internationalization]
+
+locale/translations=PackedStringArray("res://texts/ui.en.translation", "res://texts/ui.ru.translation", "res://texts/data.en.translation", "res://texts/data.ru.translation", "res://texts/dialogue.en.translation", "res://texts/dialogue.ru.translation")
 
 [rendering]
 

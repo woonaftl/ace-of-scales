@@ -32,6 +32,6 @@ func _input(event: InputEvent) -> void:
 
 func say(character: Character, line: String) -> void:
 	sound_id = character.sound
-	character_label.text = character.name
+	character_label.text = tr(character.name)
 	character_sprite.texture = character.texture
-	line_label.text = line
+	line_label.text = tr(line)

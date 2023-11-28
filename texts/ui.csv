@@ -1,0 +1,31 @@
+keys,en,ru
+MAIN MENU,MAIN MENU,ГЛАВНОЕ МЕНЮ
+NEW GAME,NEW GAME,НОВАЯ ИГРА
+OPTIONS,OPTIONS,НАСТРОЙКИ
+CREDITS,CREDITS,ОБ ИГРЕ
+QUIT,QUIT,ВЫХОД
+BACKGROUND VOLUME,BACKGROUND VOLUME,ГРОМКОСТЬ ФОНА
+EFFECTS VOLUME,EFFECTS VOLUME,ГРОМКОСТЬ ЗВУКОВ
+BACK,BACK,НАЗАД
+END TURN,END TURN,КОНЕЦ ХОДА
+DISPLAY MODE,DISPLAY MODE,РЕЖИМ ОТОБРАЖЕНИЯ
+WINDOWED,WINDOWED,ОКОННЫЙ РЕЖИМ
+FULL SCREEN,FULL SCREEN,ПОЛНЫЙ ЭКРАН
+ENEMY TURN,ENEMY TURN,ХОД ПРОТИВНИКА
+YOUR TURN,YOUR TURN,ВАШ ХОД
+GAME OVER,GAME OVER,ПОРАЖЕНИЕ
+VICTORY,VICTORY,ПОБЕДА
+Not your turn,Not your turn,Не твой ход
+This is not your card,This is not your card,Эта карта не твоя
+Not enough energy,Not enough energy,Не хватает энергия
+This place is already occupied,This place is already occupied,Это место уже занято
+Cannot scale this card in this direction,Cannot scale this card in this direction,В эту сторону нельзя увеличить карту
+Already played this turn,Already played this turn,На этом ходу эту карту уже разыграли
+STORY_END,"[center]From this day on, the dragons who were enslaved and put on faces of cards, gained their freedom and roamed the skies.[/center]","[center]Начиная с этого дня, порабощённые драконы, заточенные на игральных картах, стали свободно летать в небесах.[/center]"
+THANKS,[center]THANKS FOR PLAYING[/center],[center]СПАСИБО ЗА ИГРУ[/center]
+CREDITS_FULL,"[center]Game by woona
+Powered by Godot Engine 4.2
+Made in 30 days for Game Off 2023 Jam[/center]","[center]Автор: woona
+Движок Godot Engine 4.2
+Сделано за 30 дней для Game Off 2023[/center]"
+VISIT ITCH.IO,VISIT ITCH.IO,НА САЙТ ITCH.IO

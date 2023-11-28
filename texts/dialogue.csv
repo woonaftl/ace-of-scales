@@ -1,0 +1,34 @@
+﻿keys,en,ru
+Ace of Scales,Ace of Scales,Чешуйчатый Туз
+Jack of Scales,Jack of Scales,Чешуйчатый Валет
+Queen of Scales,Queen of Scales,Чешуйчатая Дама
+King of Scales,King of Scales,Чешуйчатый Король
+You,You,Ты
+JACK_GREETING_1,So it says you're here to [i]free the Dragonfolk[/i]. What does it even mean?,"Здесь написано, что ты здесь для того [i]освободить Драконий народ[/i]. Что это вообще значит?"
+REPLY_TO_JACK_1,I don't think the [color=#fff082]King of Scales[/color] is a just ruler.,"Я думаю, что [color=#fff082]Чешуйчатый король[/color] правит несправедливо."
+JACK_GREETING_2,"Whatever, in order to get to the [color=#fff082]King of Scales[/color], you need to get through me!","Что бы ты ни думал, чтобы добраться до [color=#fff082]Чешуйчатого Короля[/color], тебе придётся победить меня!"
+JACK_GREETING_3,"And, according to our centuries old tradition, we, the Dragons, always fight with cards!","И, следуя нашей многовековой традиции, мы, Драконы, выясняем отношения в карточной игре"
+TUTORIAL_1,"You look so tiny, I'm going to give you a first turn advantage. Just use your [img=24x24]res://assets/graphics/energy.svg[/img][color=#b482b7]energy[/color] to move the cards from your hand to the board.",Ты такой крохотный. Я дам тебе преимущество первого хода. Просто используй свою [img=24x24]res://assets/graphics/energy.svg[/img][color=#b482b7]энергию[/color] и выкладывай карты из руки на поле.
+TUTORIAL_2,"When you use up all of your [img=24x24]res://assets/graphics/energy.svg[/img][color=#b482b7]energy[/color], end your turn.","Когда у тебя закончится [img=24x24]res://assets/graphics/energy.svg[/img][color=#b482b7]энергия[/color], заканчивай свой ход."
+TUTORIAL_3,"When your turn starts, you get [img=24x24]res://assets/graphics/energy.svg[/img][color=#b482b7]energy[/color] for each cell on the board occupied by your cards. For us dragons, territory is everything.","Когда начинается очередной ход, ты получаешь [img=24x24]res://assets/graphics/energy.svg[/img][color=#b482b7]энергию[/color] за каждую клетку поля, занятую твоими картами. Для нас драконов территория - самое главное."
+TUTORIAL_4,"You can play not only the cards in your hand, but move around the cards already on the board, too. But it costs [img=24x24]res://assets/graphics/energy.svg[/img][color=#b482b7]energy[/color].","Ты можешь разыгрывать карты не только из руки, но и передвигать те, которые уже на поле. Но это стоит [img=24x24]res://assets/graphics/energy.svg[/img][color=#b482b7]энергию[/color]."
+TUTORIAL_5,"Once you get enough energy, you can [img=24x24]res://assets/graphics/scale_up.svg[/img][color=#b8657e]scale[/color] your cards! Bigger equals better! Bigger card captures everyone below it right into your hand!","Если у тебя достаточно энергии, ты можешь [img=24x24]res://assets/graphics/scale_up.svg[/img][color=#b8657e]увеличивать[/color] свои карты! Чем больше, тем лучше! Большие карты захватывают все карты под ними прямо в твою руку!"
+JACK_VICTORY,"If you have no cards on board, you lose. Did I forget to tell you that? Oops.","Если на поле нет твоих карт, ты проигрываешь. Я, что, забыл это сказать? Извини."
+QUEEN_VICTORY,"Haha, get good before you dare to challenge me! I'm in a good mood today but next time your bones are going straight into the gorge!","Хаха, научись играть перед тем как посмеешь бросать мне вызов! Сегодня у меня хорошее настроение, но в следующий раз твои кости отправляются прямо в то ущелье!"
+KING_VICTORY,"Know your place, [b]peasant[/b].","Знай своё место, [b]холоп[/b]."
+ACE_VICTORY,"Such a shame that your talent is wasted on this character. You could have been a [color=#fff082]King[/color], but you wanted more...","Как жаль, что такой талант оказался с таким дурацким характером. Из тебя бы вышел отличный [color=#fff082]Король[/color], но тебе нужно было что-то больше..."
+JACK_DEFEATED_1,I can't believe you've done it. I've just taught you how to play and you've already beaten me...,"Я не могу поверить своим глазам. Я только что научил тебя играть, и ты сразу меня побеждаешь..."
+JACK_DEFEATED_2,Mom! Mommy!,Мама! Мамочка!
+QUEEN_DEFEATED_1,"My minions! They fail me again and again. Also, I had such terrible luck and this card game doesn't require any skill or strength...","Мои слуги! Они подводят меня снова и снова. Кстати, мне ужасно не повезло, а в этой дурацкой карточной игре не нужен ни ум, ни сила..."
+QUEEN_DEFEATED_2,"Just move out of my way, [b]loser[/b].","С дороги, [b]неудачница[/b]."
+KING_DEFEATED_1,I can't believe it. I have never lost this game before... Does it mean you're the new [color=#fff082]King[/color]? The rules of this game are so ancient I forgot them...,"Не могу в это поверить. Я ещё никогда не проигрывал в эту игру... Это значит, что ты теперь новый [color=#fff082]Король[/color]? Правила игры настолько древние, что я уже забыл..."
+KING_DEFEATED_2,Down with monarchy! I demand freedom for all of Dragonfolk!,Долой самодержавие! Я требую свободы всему Драконьему народу!
+KING_DEFEATED_3,"Freedom? Do you even know what it takes to be truly free, [b]mortal[/b]?","Свободу? Знаешь ли ты, что значит это слово, [b]смертный[/b]?"
+ACE_DEFEATED,Nooooooooooooooooooooo,Неееееееееееееееееееет
+QUEEN_GREETING_1,You rascal! I'm the [color=#fff082]Queen of Scales[/color] and I'm going to show you your place!,"Негодяй! Я - [color=#fff082]Чешуйчатая Дама[/color] и я покажу тебе, где твоё место!"
+QUEEN_GREETING_2,"And your place is low, very low, in the depths of the deepest and darkest ravine, where I throw bones of my enemies.","Оно глубоко-глубоко на дне тёмного ущелья, куда не проникает солнечный свет и куда я сбрасываю кости своих врагов."
+QUEEN_GREETING_3,Bones I burn to ashes.,"Кости, которые я сжигаю дотла."
+REPLY_TO_QUEEN_1,There aren't too many bones there if the ravine is so deep.,"Там не так уж и много костей, раз ущелье настолько глубокое."
+QUEEN_GREETING_4,"Oh, you know nothing! Enough of that!",Вот и проверишь! Хватит болтать!
+KING_GREETING,I am the [color=#fff082]King of Scales[/color]! Get ready to fight!,Я [color=#fff082]Чешуйчатый Король[/color]! Готовься к бою!
+ACE_GREETING,I am the [color=#fff082]Ace of Scales[/color]. You'll find your freedom in the grave.,"Я [color=#fff082]Чешуйчатый Туз[/color]. Свобода наступает после смерти, и я освобожу тебя..."

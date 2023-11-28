@@ -1,0 +1,21 @@
+keys,en,ru
+Cinder,Cinder,Огарок
+Crimson,Crimson,Багрянец
+Dawn,Dawn,Рассвет
+Ember,Ember,Уголёк
+Emerald,Emerald,Изумруд
+Obsidian,Obsidian,Обсидиан
+Ruby,Ruby,Рубин
+Sapphire,Sapphire,Сапфир
+Sparkle,Sparkle,Искорка
+Tempest,Tempest,Буря
+CINDER_DESCRIPTION,"2 damage to self and adjacent enemies","2 урона себе и соседним врагам"
+TRANSFER_DESCRIPTION,"Transfer 1 hp from adjacent enemies to allies nearby","1 урона соседнему врагу и передаёт здоровье союзнику"
+REPEAT_DESCRIPTION,"Adjacent allies use their abilities for free","Соседние союзники используют свои способности бесплатно"
+EMBER_DESCRIPTION,"2 damage to one enemy nearby with highest hp","2 урона врагу рядом с наибольшим здоровьем"
+DIAGONAL_DESCRIPTION,"1 damage to enemies and 1 healing to allies diagonally","1 урон врагам и 1 лечение союзникам по диагонали"
+MIRROR_DESCRIPTION,"Passively mirrors all damage back to attacker","Пассивно возвращает урон назад атакующему"
+COLUMN_DESCRIPTION,"1 damage to ALL cards in this column","1 урон ВСЕМ картам в этом столбце"
+ROW_DESCRIPTION,"1 damage to ALL cards in this row","1 урон ВСЕМ картам в этой строке"
+ENERGY_DESCRIPTION,"Passively adds 1 additional energy at the start of the turn","Пассивно даёт 1 дополнительную энергию в начале хода"
+PUSH_DESCRIPTION,"1 damage to adjacent enemies and push them away (if possible)","1 урон соседним врагам и отталкивает их (если возможно)"

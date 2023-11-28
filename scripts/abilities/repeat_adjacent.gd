@@ -5,7 +5,7 @@ func use(card: Card) -> void:
 	super(card)
 	for healed_card in get_healed_cards(card, card.board_cell):
 		if healed_card.blueprint.play_ability != null:
-			if healed_card.blueprint.play_ability != load("res://abilities/repeat_adjacent.tres"):
+			if healed_card.blueprint.play_ability != load("res://data/abilities/repeat_adjacent.tres"):
 				await healed_card.blueprint.play_ability.use(healed_card)
 
 
