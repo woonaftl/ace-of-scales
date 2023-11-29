@@ -1,4 +1,4 @@
-extends CenterContainer
+extends Window
 
 
 @onready var window_mode_button: OptionButton = %WindowModeButton as OptionButton
@@ -12,12 +12,16 @@ func _ready() -> void:
 			window_mode_button.select(0)
 
 
+func _process(_delta: float) -> void:
+	move_to_center()
+
+
 func _on_back_button_pressed() -> void:
 	AudioBus.play("Click")
-	get_tree().change_scene_to_file("res://data/scenes/main_menu.tscn")
+	queue_free()
 
 
-func _on_option_button_item_selected(index: int):
+func _on_window_mode_button_item_selected(index: int) -> void:
 	match index:
 		0:
 			UserSettings.window_set_mode(DisplayServer.WINDOW_MODE_WINDOWED)

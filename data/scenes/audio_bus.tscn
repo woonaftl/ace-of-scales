@@ -62,6 +62,5 @@ bus = &"Effects"
 
 [node name="Background" type="AudioStreamPlayer" parent="."]
 stream = ExtResource("12_ajm6b")
-volume_db = -20.0
 autoplay = true
 bus = &"Background"

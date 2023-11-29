@@ -357,6 +357,13 @@ func _on_back_to_menu_button_pressed():
 	get_tree().change_scene_to_file("res://data/scenes/main_menu.tscn")
 
 
+func _on_options_button_pressed():
+	AudioBus.play("Click")
+	var options: Window = preload("res://data/scenes/options.tscn").instantiate()
+	add_child(options)
+	options.popup_centered()
+
+
 func _on_end_turn_button_pressed() -> void:
 	if current_turn != human:
 		_on_user_input_failed("Not your turn")
@@ -760,7 +767,7 @@ func dialogue_human(line: String) -> void:
 func dialogue_opponent(character: Character, line: String) -> void:
 	var dialogue = preload("res://data/scenes/dialogue_box.tscn").instantiate()
 	add_child(dialogue)
-	dialogue.global_position = Vector2(7, 63)
+	dialogue.global_position = Vector2(7, 103)
 	dialogue.say(character, line)
 	while len(get_tree().get_nodes_in_group("dialogue")) > 0:
 		await get_tree().create_timer(0.01).timeout
