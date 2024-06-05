@@ -23,9 +23,9 @@ Cannot scale this card in this direction,Cannot scale this card in this directio
 Already played this turn,Already played this turn,На этом ходу эту карту уже разыграли
 STORY_END,"[center]From this day on, the dragons who were enslaved and put on faces of cards, gained their freedom and roamed the skies.[/center]","[center]Начиная с этого дня, порабощённые драконы, заточенные на игральных картах, стали свободно летать в небесах.[/center]"
 THANKS,[center]THANKS FOR PLAYING[/center],[center]СПАСИБО ЗА ИГРУ[/center]
-CREDITS_FULL,"[center]Game by woona
+CREDITS_FULL,"[center]Game by Eugene Begunkov
 Powered by Godot Engine 4.2
-Made in 30 days for Game Off 2023 Jam[/center]","[center]Автор: woona
+Made in 30 days for Game Off 2023 Jam[/center]","[center]Автор: Евгений Бегунков
 Движок Godot Engine 4.2
 Сделано за 30 дней для Game Off 2023[/center]"
 VISIT ITCH.IO,VISIT ITCH.IO,НА САЙТ ITCH.IO
